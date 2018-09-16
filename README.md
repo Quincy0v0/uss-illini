@@ -1,10 +1,6 @@
 # USS-illini
 
-## this is a private place for geeeeeeeeeky geeeeeeeek on CS 411.
-```
-geek = "geek"
-```
-
+## Objectives:
 ```
 Basic Functionality:
   insert records to the database: insert new player's stats
@@ -14,9 +10,6 @@ Basic Functionality:
 Two Advanced Functions: 
   Many many data visualizations:
   Design UI matches in-game UI: calculate detail numbers using in-game mechanics
-  
-
-
 ```
 
 ## Set up the environment:
