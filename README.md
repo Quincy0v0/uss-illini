@@ -26,6 +26,11 @@ https://reactstrap.github.io/
 https://nodejs.org/en/
 // Use the 10.10.0 version
 ```
+### Data Visualization framworks
+```
+https://plot.ly/
+http://recharts.org/en-US/guide
+```
 ### Recommanded Web IDE: Webstorm
 ```
 https://www.jetbrains.com/webstorm/
