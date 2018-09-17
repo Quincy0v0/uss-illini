@@ -38,7 +38,7 @@ https://www.jetbrains.com/webstorm/
 ```
 ## To start hacking:
 ```
-  cd uss-illini             // enter the project directory
-  npm i                     // install the modules required for our Web App
-  npm start                 // you can view the site at http://localhost:3000/
+cd uss-illini             // enter the project directory
+npm i                     // install the modules required for our Web App
+npm start                 // you can view the site at http://localhost:3000/
 ```
