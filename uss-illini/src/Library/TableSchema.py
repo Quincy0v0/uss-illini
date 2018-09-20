@@ -125,7 +125,7 @@ TABLES['ships'] = ("""CREATE TABLE IF NOT EXISTS ships(
         KEY (ship_id)
 );""")
 
-TABLES['clan'] = ("""CREATE TABLE IF NOT EXISTS clan(
+TABLES['clans'] = ("""CREATE TABLE IF NOT EXISTS clan(
         tag VARCHAR(50) UNIQUE,
         name VARCHAR(50) UNIQUE,
         members_count INTEGER,

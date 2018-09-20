@@ -6,7 +6,8 @@ Main Methods:
     create_Table(DB_NAME,DB_user,DB_password,TABLES)
     insert_modify_delete(DB_NAME,DB_user,DB_password,add_module,data_module)
     execute(DB_NAME,DB_user,DB_password,code)
-    list() = query(DB_NAME,DB_user,DB_password,query,query_module
+    list() = query(DB_NAME,DB_user,DB_password,query,query_data)
+    list() = quick_query(DB_NAME,DB_user,DB_password,query)
 '''
 import mysql.connector
 from mysql.connector import errorcode
@@ -65,11 +66,23 @@ def execute(DB_NAME,DB_user,DB_password,code):
     cursor.close()
     cnx.close()
 
-def query(DB_NAME,DB_user,DB_password,query,query_module):
+def query(DB_NAME,DB_user,DB_password,query,query_data):
     cnx = mysql.connector.connect(user=DB_user,password=DB_password,database=DB_NAME)
     cursor = cnx.cursor()
-    cursor.execute(query, (query_module))
-    result = []]
+    cursor.execute(query, (query_data))
+    result = []
+    for data in cursor:
+        result.append(data)
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+    return result
+
+def quick_query(DB_NAME,DB_user,DB_password,query):
+    cnx = mysql.connector.connect(user=DB_user,password=DB_password,database=DB_NAME)
+    cursor = cnx.cursor()
+    cursor.execute(query)
+    result = []
     for data in cursor:
         result.append(data)
     cnx.commit()
