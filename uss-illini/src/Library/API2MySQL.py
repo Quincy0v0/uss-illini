@@ -33,11 +33,11 @@ def UpdateDB(account_ids,ship_ids,module_ids,clan_ids,DB_NAME,DB_user,DB_passwor
     for module_id in module_ids:
         InsertSchema.insert_module(module_id,DB_NAME,DB_user,DB_password)
     for ship_id in ship_ids:
-    InsertSchema.insert_ship(ship_id,DB_NAME,DB_user,DB_password)
+        InsertSchema.insert_ship(ship_id,DB_NAME,DB_user,DB_password)
     for clan_id in clan_ids:
         InsertSchema.insert_clan(clan_id,DB_NAME,DB_user,DB_password)
 
 example_account_ids = ["1011528019","1019218342"]
-example_ship_ids = [ship_id_dict[nation][ship_type][tier][ship] for nation in ship_id_dict.keys() for ship_type in ship_id_dict[nation].keys() for tier in ship_id_dict[nation][ship_type].keys() for ship in ship_id_dict[nation][ship_type][tier].keys()]
+example_ship_ids = [Ship_idDict.ship_id_dict[nation][ship_type][tier][ship] for nation in Ship_idDict.ship_id_dict.keys() for ship_type in Ship_idDict.ship_id_dict[nation].keys() for tier in Ship_idDict.ship_id_dict[nation][ship_type].keys() for ship in Ship_idDict.ship_id_dict[nation][ship_type][tier].keys()]
 example_module_ids = ["3308105424","3453759184","3318722256","3349589712","3349556944","3345362640","3346411216"]
 example_clan_ids = ["1000043952","1000044201"]
