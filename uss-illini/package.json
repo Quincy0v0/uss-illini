@@ -2,6 +2,7 @@
   "name": "uss-illini",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://ussillini.web.illinois.edu",
   "dependencies": {
     "bootstrap": "^4.1.3",
     "react": "^16.5.1",
