@@ -130,7 +130,7 @@ def insert_rank_account_stats(account_id,DB_NAME,DB_user,DB_password):
             p2m.execute(DB_NAME,DB_user,DB_password,code)
         values = "%s,"
         data = (int(season))
-        for value in ship[season]:
+        for value in a2p.get_rank_player(a2p.application_id,account_id)[season]:
             values += "%s,"
             data += value
         values = values[:-1]
