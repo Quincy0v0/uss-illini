@@ -42,8 +42,8 @@ TABLES['random_ships_stats'] = ("""CREATE TABLE IF NOT EXISTS random_ships_stats
         battles_total INTEGER,
         battles_since_510 INTEGER,
         battles_since_512 INTEGER,
-        ship_id INTEGER,
-        account_id INTEGER,
+        ship_id BIGINT,
+        account_id BIGINT,
         main_battery_max_frags_battle INTEGER,
         main_battery_frags INTEGER,
         main_battery_hits INTEGER,
@@ -70,7 +70,7 @@ TABLES['modules'] = ("""CREATE TABLE IF NOT EXISTS modules(
         image TEXT,
         tag VARCHAR(50),
         module_id_str VARCHAR(50),
-        module_id INTEGER,
+        module_id BIGINT,
         price_credit INTEGER,
         profile TEXT,
         KEY(module_id)
@@ -84,7 +84,7 @@ TABLES['ships'] = ("""CREATE TABLE IF NOT EXISTS ships(
         price_credit INTEGER,
         price_gold INTEGER,
         ship_id_str VARCHAR(50),
-        ship_id INTEGER,
+        ship_id BIGINT,
         is_premium BOOLEAN,
         is_special BOOLEAN,
         description TEXT,
@@ -129,14 +129,14 @@ TABLES['clans'] = ("""CREATE TABLE IF NOT EXISTS clans(
         tag VARCHAR(50) UNIQUE,
         name VARCHAR(50) UNIQUE,
         members_count INTEGER,
-        leader_id INTEGER,
+        leader_id BIGINT,
         leader_name VARCHAR(50),
         creator_name VARCHAR(50),
         description TEXT,
         old_name VARCHAR(50),
         old_tag VARCHAR(50),
         renamed_at INTEGER,
-        clan_id INTEGER,
+        clan_id BIGINT,
         created_at INTEGER,
         updated_at INTEGER,
         is_clan_disbanded BOOLEAN,
@@ -146,7 +146,7 @@ TABLES['clans'] = ("""CREATE TABLE IF NOT EXISTS clans(
 
 TABLES['account_stats'] = ("""CREATE TABLE IF NOT EXISTS account_stats(
         nickname VARCHAR(50) UNIQUE,
-        account_id INTEGER,
+        account_id BIGINT,
         wins INTEGER,
         draws INTEGER,
         losses INTEGER,
@@ -206,17 +206,17 @@ TABLES['account_stats'] = ("""CREATE TABLE IF NOT EXISTS account_stats(
         torpedoes_shots INTEGER,
         aircraft_max_frags_battle INTEGER,
         aircraft_frags INTEGER,
-        clan_id INTEGER,
-        account_id_clan INTEGER,
+        clan_id BIGINT,
+        account_id_clan BIGINT,
         account_name VARCHAR(50),
         role VARCHAR(50),
         joined_at INTEGER,
         KEY (account_id)
 );""")
 
-TABLES['rank_ships_stats'] = ("""CREATE TABLE IF NOT EXISTS rank_ship_stats(
+TABLES['rank_ships_stats'] = ("""CREATE TABLE IF NOT EXISTS rank_ships_stats(
         season INTEGER,
-        ship_id INTEGER,
+        ship_id BIGINT,
         wins INTEGER,
         draws INTEGER,
         losses INTEGER,
@@ -246,7 +246,7 @@ TABLES['rank_ships_stats'] = ("""CREATE TABLE IF NOT EXISTS rank_ship_stats(
         torpedoes_shots INTEGER,
         aircraft_max_frags_battle INTEGER,
         aircraft_frags INTEGER,
-        account_id INTEGER,
+        account_id BIGINT,
         KEY (account_id,ship_id,season)
 );""")
 
@@ -286,6 +286,18 @@ TABLES['rank_account_stats'] = ("""CREATE TABLE IF NOT EXISTS rank_account_stats
         torpedoes_shots INTEGER,
         aircraft_max_frags_battle INTEGER,
         aircraft_frags INTEGER,
-        account_id INTEGER,
+        account_id BIGINT,
         KEY (account_id,season)
+);""")
+
+TABLES['consumables'] = ("""CREATE TABLE IF NOT EXISTS consumables(
+        profile TEXT,
+        name VARCHAR(50),
+        price_gold INTEGER,
+        image TEXT,
+        consumable_id BIGINT,
+        price_credit INTEGER,
+        type VARCHAR(50),
+        description TEXT,
+        KEY (consumable_id)
 );""")

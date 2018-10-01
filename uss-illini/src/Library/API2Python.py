@@ -15,6 +15,7 @@ Main Methods:
     tuple = get_account_data(application_id,account_id)
     string = get_account_id(application_id,nickname)
     string = application_id
+    tuple = get_consumables_encylopedia(application_id,consumable_id)
 
 Indexing:
     Read Details Below
@@ -112,6 +113,25 @@ def get_module_encylopedia(application_id,module_id):
         profile = data['data'][module_id]['profile'][list(data['data'][module_id]['profile'])[0]] #8 {attr:data,...}
 
         return (name,type,type_name,image,tag,module_id_str,int(module_id),price_credit,profile)
+    except:
+        return
+
+def get_consumables_encylopedia(application_id,consumable_id):
+    link = "https://api.worldofwarships.com/wows/encyclopedia/consumables/?application_id="+application_id+"&consumable_id="+consumable_id
+    resp = urllib.request.urlopen(link).read()
+    data = json.loads(resp)
+
+    try:
+        profile = data['data'][consumable_id]['profile'] #0 {attr:data,...}
+        name = data['data'][consumable_id]['name'] #1
+        price_gold = data['data'][consumable_id]['price_gold'] #2
+        image = data['data'][consumable_id]['image'] #3
+        #consumable_id = data['data'][consumable_id]['consumable_id'] #4
+        price_credit = data['data'][consumable_id]['price_credit'] #5
+        type = data['data'][consumable_id]['type'] #6
+        description = data['data'][consumable_id]['description'] #7
+
+        return (profile,name,price_gold,image,int(consumable_id),price_credit,type,description)
     except:
         return
 

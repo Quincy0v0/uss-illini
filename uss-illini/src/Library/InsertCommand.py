@@ -35,6 +35,29 @@ def insert_module(module_id):
     else:
         return ""
 
+def insert_consumables(consumable_id):
+    data = a2p.get_consumables_encylopedia(a2p.application_id,consumable_id)
+    if not isinstance(data, type(None)):
+        command = 'INSERT INTO consumables VALUES'+'('
+        for value in data:
+            if isinstance(value,str):
+                command += "'"
+                command += str(value.replace("'", ""))
+                command += "',"
+            elif isinstance(value,list) or isinstance(value,dict):
+                command += '"'
+                command += str(value).replace('"', "")
+                command += '",'
+            elif value is None:
+                command += "NULL,"
+            else:
+                command += str(value)+","
+        command = command[:-1]
+        command +=  ');'
+        return command
+    else:
+        return ""
+
 def insert_ship(ship_id):
     data =  a2p.get_ship_encyclopedia(a2p.application_id,ship_id)
     if not isinstance(data, type(None)):
