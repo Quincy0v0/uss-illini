@@ -15,7 +15,7 @@ Main Methods:
 import TableSchema
 import InsertSchema
 import Python2MySQL as p2m
-import Ship_idDict.ship_id_dict
+import Ship_idDict
 
 def create_db(DB_NAME,DB_user,DB_password):
     p2m.create_DB(DB_NAME,DB_user,DB_password)
