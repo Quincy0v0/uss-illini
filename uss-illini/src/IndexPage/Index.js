@@ -8,6 +8,7 @@ import {
     CarouselIndicators,
     CarouselCaption
 } from 'reactstrap';
+import InfoIndex from '../ShipsInfo/InfoIndex.js'
 
 const items = [
     {
@@ -30,7 +31,10 @@ const items = [
 class Index extends Component {
     constructor(props) {
         super(props);
-        this.state = { activeIndex: 0 };
+        this.state = {
+            activeIndex: 0,
+            pageIndex: 0
+        };
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
         this.goToIndex = this.goToIndex.bind(this);
@@ -63,6 +67,11 @@ class Index extends Component {
         this.setState({ activeIndex: newIndex });
     }
 
+    switchPages(pageId) {
+        // PageId: {1:MainPage, 2:InfoIndex, 3:ShipStatsIndex }
+        this.setState({ pageIndex: pageId});
+    }
+
     render() {
 
 
@@ -81,8 +90,14 @@ class Index extends Component {
             );
         });
 
-
-        return (
+        if(this.state.pageIndex === 1){
+            return (
+                <div>
+                    <InfoIndex/>
+                </div>
+            );
+        }
+        else return (
             <div>
                 <Jumbotron>
                     <h1 className="display-3">USS Illini</h1>
@@ -90,9 +105,9 @@ class Index extends Component {
                     <p>USS Illini is a website enable users to search players' and ships' data from out database.</p>
                     <p>It can measure the player's performance and enable new players to explore perimeters about new ships.</p>
                     <p className="lead">
-                        <Button color="primary" >Warships Info</Button>
+                        <Button color="primary" onClick={() => this.switchPages(1)}>Warships Info</Button>
                         {' '}
-                        <Button color="success" >Player Stats</Button>
+                        <Button color="success" onClick={() => this.switchPages(2)}>Player Stats</Button>
                     </p>
                     <Carousel
                         activeIndex={activeIndex}

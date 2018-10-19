@@ -1,23 +1,74 @@
 import React, { Component } from 'react';
 import { Jumbotron, Button } from 'reactstrap';
+import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {
+    Collapse,
+    Navbar,
+    NavbarToggler,
+    NavbarBrand,
+    Nav,
+    NavItem,
+    NavLink,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem } from 'reactstrap';
 
 class InfoIndex extends Component {
+    constructor(props) {
+        super(props);
 
+        this.toggle = this.toggle.bind(this);
+        this.state = {
+            isOpen: false
+        };
+    }
+    toggle() {
+        this.setState({
+            isOpen: !this.state.isOpen
+        });
+    }
     render() {
         return (
             <div>
-                <Jumbotron>
-                    <h1 className="display-3">USS Illini</h1>
-                    <p className="lead">This is a simple hero unit, a simple Jumbotron-style component for calling extra attention to featured content or information.</p>
-                    <hr className="my-2" />
-                    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-                    <p className="lead">
-                        <Button color="primary" >Warships Info</Button>
-                        {' '}
-                        <Button color="success" >Player Stats</Button>
-                    </p>
-                </Jumbotron>
+                <Navbar color="light" light expand="md">
+                    <NavbarBrand href="/">reactstrap</NavbarBrand>
+                    <NavbarToggler onClick={this.toggle} />
+                    <Collapse isOpen={this.state.isOpen} navbar>
+                        <Nav className="ml-auto" navbar>
+                            <NavItem>
+                                <NavLink href="/components/">Components</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+                            </NavItem>
+                            <UncontrolledDropdown nav inNavbar>
+                                <DropdownToggle nav caret>
+                                    Options
+                                </DropdownToggle>
+                                <DropdownMenu right>
+                                    <DropdownItem>
+                                        Option 1
+                                    </DropdownItem>
+                                    <DropdownItem>
+                                        Option 2
+                                    </DropdownItem>
+                                    <DropdownItem divider />
+                                    <DropdownItem>
+                                        Reset
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </UncontrolledDropdown>
+                        </Nav>
+                    </Collapse>
+                </Navbar>
+                <div class="container">
+                    <FormGroup>
+                        <Label for="exampleSearch">Search</Label>
+                        <Input type="search" name="search" id="exampleSearch" placeholder="shimakaze" />
+                    </FormGroup>
+                </div>
             </div>
         );
     }
