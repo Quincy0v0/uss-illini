@@ -23,7 +23,7 @@ class InfoIndex extends Component {
         this.state = {
             isOpen: false,
             datastr: "",
-            users: []
+            ships: []
         };
     }
 
@@ -36,7 +36,7 @@ class InfoIndex extends Component {
     componentDidMount() {
         fetch('/users/ships')
             .then(res => res.json())
-            .then(users => this.setState({ users }));
+            .then(ships => this.setState({ ships }));
     }
 
     generate_html(ship_id) {
@@ -123,7 +123,7 @@ class InfoIndex extends Component {
                         <Input type="search" name="search" id="exampleSearch" placeholder="shimakaze" />
                     </FormGroup>
                     <h1>Users</h1>
-                    {this.state.users.map(user =>
+                    {this.state.ships.map(user =>
                         <div key={user.id}>{user.username}</div>
                     )}
                 </div>
