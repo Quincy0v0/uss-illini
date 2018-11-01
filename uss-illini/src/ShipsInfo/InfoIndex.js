@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Jumbotron, Button } from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
@@ -14,18 +13,27 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 class InfoIndex extends Component {
     constructor(props) {
         super(props);
-        this.getShipStr = this.getShipStr.bind(this);
+        this.load_ships = this.load_ships.bind(this);
         this.toggle = this.toggle.bind(this);
+        this.ModalToggle = this.ModalToggle.bind(this);
         this.state = {
+            modal: false,
             isOpen: false,
             datastr: "",
             data: [],
             names: []
         };
+    }
+
+    ModalToggle() {
+        this.setState({
+            modal: !this.state.modal
+        });
     }
 
     toggle() {
@@ -35,10 +43,10 @@ class InfoIndex extends Component {
     }
 
     componentDidMount() {
-        this.getShipStr(4187894992)
+        this.load_ships(4187894992)
     }
 
-    getShipStr(ship_id) {
+    load_ships(ship_id) {
         fetch('/users/ships', {
             method: 'post',
             headers: {
@@ -72,7 +80,7 @@ class InfoIndex extends Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink href="/components/">Components</NavLink>
+                                <NavLink onClick={() => {this.ModalToggle()}}>AddShips</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink href="https://github.com/Quincy0v0/uss-illini">GitHub</NavLink>
@@ -97,23 +105,33 @@ class InfoIndex extends Component {
                         </Nav>
                     </Collapse>
                 </Navbar>
-                <FormGroup>
-                    <button className="btn-primary" onClick={() => {this.insert_ships(4187894992)}}>insert</button>
-                </FormGroup>
+
+                <Modal isOpen={this.state.modal} toggle={this.ModalToggle} className={this.props.className}>
+                    <ModalHeader toggle={this.ModalToggle}>Add a new ship to database</ModalHeader>
+                    <ModalBody>
+                        <Label for="newship">Enter a ship id below to add a new ship to the database!</Label>
+                        <Input type="text" name="newship" placeholder="Enter ship id here"></Input>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" onClick={this.ModalToggle}>Confirm</Button>{' '}
+                        <Button color="secondary" onClick={this.ModalToggle}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
+
                 <div className="container">
                     <FormGroup>
                         <Label for="exampleSearch">Search</Label>
-                        <Input type="search" name="search" id="exampleSearch" placeholder="shimakaze" />
-                        <button className="btn-primary" onClick={() => {this.getShipStr(4187894992)}}>load ships</button>
+                        <Input type="search" name="search" id="exampleSearch" placeholder="Enter a shipID here" />
+                        <button className="btn-primary" onClick={() => {this.load_ships(4182652880)}}>load ships</button>
                     </FormGroup>
                     <div>
                         <h1> {this.state.data["name"]} </h1>
                         <h2> Tier:  {this.state.data["tier"]} </h2>
                         <h2> Type:  {this.state.data["type"]} </h2>
                         <h2> Nation:  {this.state.data["nation"]} </h2>
-                        <h2> Price: 2333 </h2>
+                        <h2> Price: {this.state.data["price_credit"]} </h2>
+                        <img src={this.state.data["images_large"]}></img>
                     </div>
-                    <img src={this.state.data["images_large"]}></img>
                 </div>
             </div>
         );
