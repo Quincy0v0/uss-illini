@@ -21,12 +21,13 @@ class InfoIndex extends Component {
         this.load_ships = this.load_ships.bind(this);
         this.toggle = this.toggle.bind(this);
         this.ModalToggle = this.ModalToggle.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.state = {
             modal: false,
             isOpen: false,
             datastr: "",
             data: [],
-            names: []
+            newShipId: ""
         };
     }
 
@@ -42,8 +43,12 @@ class InfoIndex extends Component {
         });
     }
 
+    handleChange(event) {
+        this.setState({newShipId: event.target.value});
+    }
+
     componentDidMount() {
-        this.load_ships(4187894992)
+        this.load_ships(3761190896)
     }
 
     load_ships(ship_id) {
@@ -69,7 +74,10 @@ class InfoIndex extends Component {
             },
             body: JSON.stringify({ ship_id: ship_id }),
         })
+        alert("successfully added a new ship")
+        this.ModalToggle();
     }
+
 
     render() {
         return (
@@ -110,10 +118,10 @@ class InfoIndex extends Component {
                     <ModalHeader toggle={this.ModalToggle}>Add a new ship to database</ModalHeader>
                     <ModalBody>
                         <Label for="newship">Enter a ship id below to add a new ship to the database!</Label>
-                        <Input type="text" name="newship" placeholder="Enter ship id here"></Input>
+                        <Input type="text" name="newship" value={this.state.newShipId} placeholder="Enter ship id here" onChange={this.handleChange}></Input>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.ModalToggle}>Confirm</Button>{' '}
+                        <Button color="primary" onClick={() => this.insert_ships(this.state.newShipId)}>Confirm</Button>{' '}
                         <Button color="secondary" onClick={this.ModalToggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
