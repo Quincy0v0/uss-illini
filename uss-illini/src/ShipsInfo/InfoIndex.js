@@ -18,12 +18,13 @@ import {
 class InfoIndex extends Component {
     constructor(props) {
         super(props);
-        this.generate_html = this.generate_html.bind(this);
+        this.getShipStr = this.getShipStr.bind(this);
         this.toggle = this.toggle.bind(this);
         this.state = {
             isOpen: false,
             datastr: "",
-            ships: []
+            data: [],
+            names: []
         };
     }
 
@@ -34,60 +35,39 @@ class InfoIndex extends Component {
     }
 
     componentDidMount() {
-        fetch('/users/ships')
-            .then(res => res.json())
-            .then(ships => this.setState({ ships }));
+        this.getShipStr(4187894992)
     }
 
-    generate_html(ship_id) {
-        var mysql = require('mysql');
+    getShipStr(ship_id) {
+        fetch('/users/ships', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ship_id: ship_id }),
+        })
+            .then(res => res.json())
+            .then(res => this.setState({ data: res[0] }))
+            .then(console.log(this.state.data))
+    }
 
-        var con = mysql.createConnection({
-            host: "localhost",
-            user: "ussillini_erikaze",
-            password: "219749ajfcg",
-            database: "ussillini_ussillini"
-        });
-
-        con.connect(function(err) {
-            if (err) throw err;
-            console.log("Connected!");
-            var command = "SELECT * FROM ships WHERE ship_id = '" + ship_id + "';"
-            con.query(command, function(err, result) {
-                if (err) throw err;
-                var data = result[0];
-                var datastr = "";
-                var price = 0;
-                if (!(data["price_gold"] === null)) {
-                    price = data["price_gold"];
-                } else {
-                    price = data["price_credit"];
-                }
-                var maincontainerstr = "<div class='main'>" +
-                    "<h1>" + data["name"] + "</h1>" +
-                    "<h2> Tier: " + data["tier"] + "</h2>" +
-                    "<h2> Type: " + data["type"] + "</h2>" +
-                    "<h2> Nation: " + data["nation"] + "</h2>" +
-                    "<h2> Price: " + price + "</h2>" +
-                    "</div>";
-                var imagestr = "<div class='main'>" +
-                    "<img src=" + data["images_large"] + "></img>" +
-                    "</div>";
-                datastr += maincontainerstr + imagestr;
-                var webstr = "";
-                this.setState({
-                    datastr: datastr
-                });
-            });
+    insert_ships(ship_id) {
+        fetch('/users/insert', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ship_id: ship_id }),
         })
     }
 
     render() {
-        //this.generate_html("4292818736")
         return (
             <div>
-                <Navbar color="light" light expand="md">
-                    <NavbarBrand href="/">reactstrap</NavbarBrand>
+                <Navbar color="dark" className="navbar-dark navbar-expand-sm" light expand="md">
+                    <NavbarBrand href="/">USS illini</NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
@@ -117,15 +97,23 @@ class InfoIndex extends Component {
                         </Nav>
                     </Collapse>
                 </Navbar>
+                <FormGroup>
+                    <button className="btn-primary" onClick={() => {this.insert_ships(4187894992)}}>insert</button>
+                </FormGroup>
                 <div className="container">
                     <FormGroup>
                         <Label for="exampleSearch">Search</Label>
                         <Input type="search" name="search" id="exampleSearch" placeholder="shimakaze" />
+                        <button className="btn-primary" onClick={() => {this.getShipStr(4187894992)}}>load ships</button>
                     </FormGroup>
-                    <h1>Users</h1>
-                    {this.state.ships.map(user =>
-                        <div key={user.id}>{user.username}</div>
-                    )}
+                    <div>
+                        <h1> {this.state.data["name"]} </h1>
+                        <h2> Tier:  {this.state.data["tier"]} </h2>
+                        <h2> Type:  {this.state.data["type"]} </h2>
+                        <h2> Nation:  {this.state.data["nation"]} </h2>
+                        <h2> Price: 2333 </h2>
+                    </div>
+                    <img src={this.state.data["images_large"]}></img>
                 </div>
             </div>
         );
