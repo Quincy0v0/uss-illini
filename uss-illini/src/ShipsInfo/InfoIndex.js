@@ -78,20 +78,6 @@ class InfoIndex extends Component {
         this.ModalToggle();
     }
 
-    update_ships(ship_id) {
-        fetch('/users/update', {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ ship_id: ship_id }),
-        })
-        alert("successfully update an old ship")
-        this.ModalToggle();
-    }
-
-
     render() {
         return (
             <div>
@@ -102,9 +88,6 @@ class InfoIndex extends Component {
                         <Nav className="ml-auto" navbar>
                             <NavItem>
                                 <NavLink onClick={() => {this.ModalToggle()}}>AddShips</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink onClick={() => {this.ModalToggle()}}>UpdateShips</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink href="https://github.com/Quincy0v0/uss-illini">GitHub</NavLink>
@@ -138,18 +121,6 @@ class InfoIndex extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" onClick={() => this.insert_ships(this.state.newShipId)}>Confirm</Button>{' '}
-                        <Button color="secondary" onClick={this.ModalToggle}>Cancel</Button>
-                    </ModalFooter>
-                </Modal>
-
-                <Modal isOpen={this.state.modal} toggle={this.ModalToggle} className={this.props.className}>
-                    <ModalHeader toggle={this.ModalToggle}>Update an old ship to database</ModalHeader>
-                    <ModalBody>
-                        <Label for="oldship">Enter a ship id below to update an old ship to the database!</Label>
-                        <Input type="text" name="oldship" value={this.state.newShipId} placeholder="Enter ship id here" onChange={this.handleChange}></Input>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={() => this.update_ships(this.state.newShipId)}>Confirm</Button>{' '}
                         <Button color="secondary" onClick={this.ModalToggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
