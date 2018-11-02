@@ -158,6 +158,9 @@ class InfoIndex extends Component {
                                     <DropdownItem disabled>
                                         Delete a ship
                                     </DropdownItem>
+                                    <DropdownItem disabled>
+                                        Update a ship
+                                    </DropdownItem>
                                     <DropdownItem divider />
                                     <DropdownItem disabled>
                                         Reset
