@@ -277,7 +277,7 @@ router.post('/update_val',function(req,res){
 
 
     var command = "UPDATE ships SET " + colname + " = '" + colval + "' WHERE ship_id = '" + ship_id + "' ;";
-    con.query(command, function(err, result,fields) {
+    pool.query(command, function(err, result,fields) {
         if(error) throw error;
         var data = results[0];
         res.json([data]);
