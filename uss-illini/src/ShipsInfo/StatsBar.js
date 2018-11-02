@@ -74,6 +74,10 @@ class StatsBar extends Component {
                     <div className="col-9 text-left">Concealment</div>
                 </div>
                 <Progress value={concealment}>{concealment}</Progress>
+                <div className="row">
+                <div className="col-9 text-left">Aircrafts</div>
+                </div>
+                <Progress value={aircraft}>{aircraft}</Progress>
             </div>
         );
     };
