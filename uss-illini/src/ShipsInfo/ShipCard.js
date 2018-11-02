@@ -24,7 +24,7 @@ class ShipCard extends Component {
             <div>
                 <Row>
                 <Col sm="6">
-                    <Card body outline color="secondary">
+                    <Card>
                         <CardBody>
                             <CardTitle>
                                 <h1> {this.props.data["name"]} </h1>
