@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Form, FormGroup, Label, Input, FormText, InputGroup, InputGroupAddon } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
     Collapse,
@@ -25,9 +25,9 @@ class InfoIndex extends Component {
         this.state = {
             modal: false,
             isOpen: false,
-            datastr: "",
             data: [],
-            newShipId: ""
+            newShipId: "",
+            loadShipId: ""
         };
     }
 
@@ -44,7 +44,7 @@ class InfoIndex extends Component {
     }
 
     handleChange(event) {
-        this.setState({newShipId: event.target.value});
+        this.setState({[event.target.name]: event.target.value});
     }
 
     componentDidMount() {
@@ -87,8 +87,13 @@ class InfoIndex extends Component {
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
-                            <NavItem>
-                                <NavLink onClick={() => {this.ModalToggle()}}>AddShips</NavLink>
+                            <NavItem left>
+                                <InputGroup>
+                                    <Input type="search" name="loadShipId" id="loadShipId" value={this.state.loadShipId} placeholder="Enter a ship name here"/>
+                                    <InputGroupAddon addonType="append">
+                                        <Button  color="info" onClick={() => {this.load_ships(4182652880)}}>search</Button>
+                                    </InputGroupAddon>
+                                </InputGroup>
                             </NavItem>
                             <NavItem>
                                 <NavLink href="https://github.com/Quincy0v0/uss-illini">GitHub</NavLink>
@@ -98,14 +103,14 @@ class InfoIndex extends Component {
                                     Options
                                 </DropdownToggle>
                                 <DropdownMenu right>
-                                    <DropdownItem>
-                                        Option 1
+                                    <DropdownItem onClick={() => {this.ModalToggle()}}>
+                                        Add a new ship
                                     </DropdownItem>
-                                    <DropdownItem>
-                                        Option 2
+                                    <DropdownItem disabled>
+                                        Delete a ship
                                     </DropdownItem>
                                     <DropdownItem divider />
-                                    <DropdownItem>
+                                    <DropdownItem disabled>
                                         Reset
                                     </DropdownItem>
                                 </DropdownMenu>
@@ -117,8 +122,8 @@ class InfoIndex extends Component {
                 <Modal isOpen={this.state.modal} toggle={this.ModalToggle} className={this.props.className}>
                     <ModalHeader toggle={this.ModalToggle}>Add a new ship to database</ModalHeader>
                     <ModalBody>
-                        <Label for="newship">Enter a ship id below to add a new ship to the database!</Label>
-                        <Input type="text" name="newship" value={this.state.newShipId} placeholder="Enter ship id here" onChange={this.handleChange}></Input>
+                        <Label for="newShipId">Enter a ship id below to add a new ship to the database!</Label>
+                        <Input type="text" name="newShipId" value={this.state.newShipId} placeholder="Enter ship id here" onChange={this.handleChange}/>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" onClick={() => this.insert_ships(this.state.newShipId)}>Confirm</Button>{' '}
@@ -127,18 +132,14 @@ class InfoIndex extends Component {
                 </Modal>
 
                 <div className="container">
-                    <FormGroup>
-                        <Label for="exampleSearch">Search</Label>
-                        <Input type="search" name="search" id="exampleSearch" placeholder="Enter a shipID here" />
-                        <button className="btn-primary" onClick={() => {this.load_ships(4182652880)}}>load ships</button>
-                    </FormGroup>
+
                     <div>
                         <h1> {this.state.data["name"]} </h1>
                         <h2> Tier:  {this.state.data["tier"]} </h2>
                         <h2> Type:  {this.state.data["type"]} </h2>
                         <h2> Nation:  {this.state.data["nation"]} </h2>
                         <h2> Price: {this.state.data["price_credit"]} </h2>
-                        <img src={this.state.data["images_large"]}></img>
+                        <img src={this.state.data["images_large"]}/>
                     </div>
                 </div>
             </div>
