@@ -30,7 +30,7 @@ router.post('/ships', function(req, res) {
 });
 
 /* Query ship information by name. */
-router.post('/ships', function(req, res) {
+router.post('/name', function(req, res) {
     ship_name = req.body.name;
     var mysql = require('mysql');
     var pool = mysql.createPool({
