@@ -153,6 +153,7 @@ class InfoIndex extends Component {
         });
         alert("successfully deleted a new ship");
         this.DeleteModalToggle();
+        window.location.reload();
     }
 
     insert_ships(ship_id) {
@@ -166,6 +167,7 @@ class InfoIndex extends Component {
         });
         alert("successfully added a new ship");
         this.AddModalToggle();
+        window.location.reload();
     }
 
     update_ships(ship_id) {
@@ -179,6 +181,7 @@ class InfoIndex extends Component {
         });
         alert("successfully updated a new ship");
         this.UpdateModalToggle();
+        window.location.reload();
     }
 
     update_val_ships(colname,colval) {
@@ -197,6 +200,7 @@ class InfoIndex extends Component {
         });
         alert("successfully updated a new ship");
         this.UpdateValModalToggle();
+        window.location.reload();
     }
 
     render() {
