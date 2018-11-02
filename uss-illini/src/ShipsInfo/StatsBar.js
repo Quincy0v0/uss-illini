@@ -10,7 +10,6 @@ class StatsBar extends Component {
 
     render() {
         var data = this.props.data;
-
         var concealment = 0;
         var mobility = 0;
         var armour = 0;
@@ -53,34 +52,28 @@ class StatsBar extends Component {
             <div>
                 <div className="row">
                     <div className="col-9 text-left">Survivability</div>
-                    <div className="col-3 text-right" >{armour}</div>
                 </div>
                 <Progress value={armour}>{armour}</Progress>
                 <div className="row">
                     <div className="col-9 text-left">Artillery</div>
-                    <div className="col-3 text-right" >{artillery}</div>
                 </div>
-                <Progress value={artillery}/>
+                <Progress value={artillery}>{artillery}</Progress>
                 <div className="row">
                     <div className="col-9 text-left">Torpedoes</div>
-                    <div className="col-3 text-right" >{torpedoes}</div>
                 </div>
-                <Progress value={torpedoes}/>
+                <Progress value={torpedoes}>{torpedoes}</Progress>
                 <div className="row">
                     <div className="col-9 text-left">AA Defense</div>
-                    <div className="col-3 text-right" >{anti_aircraft}</div>
                 </div>
-                <Progress value={anti_aircraft}/>
+                <Progress value={anti_aircraft}>{anti_aircraft}</Progress>
                 <div className="row">
                     <div className="col-9 text-left">Maneuverability</div>
-                    <div className="col-3 text-right" >{mobility}</div>
                 </div>
-                <Progress value={mobility}/>
+                <Progress value={mobility}>{mobility}</Progress>
                 <div className="row">
                     <div className="col-9 text-left">Concealment</div>
-                    <div className="col-3 text-right" >{concealment}</div>
                 </div>
-                <Progress value={concealment}/>
+                <Progress value={concealment}>{concealment}</Progress>
             </div>
         );
     };

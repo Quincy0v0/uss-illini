@@ -294,10 +294,10 @@ router.post('/update_val',function(req,res){
     });
 
 
-    var command = "UPDATE ships SET " + colname + " = '" + colval + "' WHERE ship_id = '" + ship_id + "' ;";
-    pool.query(command, function(err, result,fields) {
+    var command = "UPDATE ships SET name ='" + colval + "' WHERE ship_id = '" + ship_id + "' ;";
+    pool.query(command, function(error,result,fields) {
         if(error) throw error;
-        var data = results[0];
+        var data = result[0];
         res.json([data]);
     });
 });

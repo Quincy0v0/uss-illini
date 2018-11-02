@@ -9,15 +9,22 @@ class ShipCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            HitPoint : 0,
         };
     }
 
     render() {
+        var data = this.props.data;
+        if (data != undefined && data.length != 0){
+            console.log(data)
+            var hull = data.default_profile_hull;
+            console.log(typeof hull)
+        }
         return (
             <div>
                 <Row>
                 <Col sm="6">
-                    <Card>
+                    <Card body outline color="secondary">
                         <CardBody>
                             <CardTitle>
                                 <h1> {this.props.data["name"]} </h1>
@@ -32,7 +39,7 @@ class ShipCard extends Component {
                         </CardBody>
                     </Card>
                 </Col>
-                    <Col>
+                    <Col sm="6">
                         <CardColumns>
                             <Col>
                                 <Card>
@@ -44,21 +51,139 @@ class ShipCard extends Component {
                             </Col>
                             <Col>
                                 <Card>
-                                    <CardHeader>Header</CardHeader>
+                                    <CardHeader>Ship Info</CardHeader>
                                     <CardBody>
-                                        <CardTitle>Special Title Treatment</CardTitle>
-                                        <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                                        <Button>Go somewhere</Button>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Tier :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{this.props.data["tier"]}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Nation :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{this.props.data["nation"]}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Type :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{this.props.data["type"]}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Price :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{this.props.data["price_credit"]}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Mod Slots :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{this.props.data["mod_slots"]}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col">
+                                                <CardText className="text-left">Battle Tier :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{this.props.data["default_profile_battle_level_range_min"]} - {this.props.data["default_profile_battle_level_range_max"]}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col">
+                                                <CardText className="text-left">ship id :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{this.props.data["ship_id"]}</CardText>
+                                            </div>
+                                        </div>
                                     </CardBody>
                                 </Card>
                             </Col>
                             <Col>
                                 <Card>
-                                    <CardHeader>Header</CardHeader>
+                                    <CardHeader>Advanced Info</CardHeader>
                                     <CardBody>
-                                        <CardTitle>Special Title Treatment</CardTitle>
-                                        <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                                        <Button>Go somewhere</Button>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Hit points :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{hull}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Nation :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{this.props.data["nation"]}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Type :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{this.props.data["type"]}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Price :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{this.props.data["price_credit"]}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Mod Slots :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{this.props.data["mod_slots"]}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col">
+                                                <CardText className="text-left">Battle Tier :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{this.props.data["default_profile_battle_level_range_min"]} - {this.props.data["default_profile_battle_level_range_max"]}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col">
+                                                <CardText className="text-left">ship id :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{this.props.data["ship_id"]}</CardText>
+                                            </div>
+                                        </div>
                                     </CardBody>
                                 </Card>
                             </Col>

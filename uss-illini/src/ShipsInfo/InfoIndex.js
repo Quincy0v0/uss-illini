@@ -38,6 +38,7 @@ class InfoIndex extends Component {
             DeleteShipId: "",
             UpdateShipId: "",
             UpdateValShipId: "",
+            UpdateValShipName: "",
             loadShipName: "",
             shipList: {},
         };
@@ -180,7 +181,11 @@ class InfoIndex extends Component {
         this.UpdateModalToggle();
     }
 
-    update_val_ships(ship_id,colname,colval) {
+    update_val_ships(colname,colval) {
+        var ship_name = colname[0].toUpperCase() + colname.substring(1);
+        var ship_id = this.state.shipList[ship_name];
+        colname = ship_name;
+        console.log(ship_id, colname, colval,);
         fetch('/users/update_val', {
             method: 'post',
             headers: {
@@ -192,7 +197,6 @@ class InfoIndex extends Component {
         alert("successfully updated a new ship");
         this.UpdateValModalToggle();
     }
-
 
     render() {
         return (
@@ -274,22 +278,22 @@ class InfoIndex extends Component {
                 </Modal>
 
                 <Modal isOpen={this.state.UpdateValModal} toggle={this.UpdateValModalToggle} className={this.props.className}>
-                    <ModalHeader toggle={this.UpdateValModalToggle}>Add a new ship to database</ModalHeader>
+                    <ModalHeader toggle={this.UpdateValModalToggle}>Update the name of an existing ship Manually</ModalHeader>
                     <ModalBody>
-                        <Label for="UpdateValShipId">Enter a ship id below to add a new ship to the database!</Label>
-                        <Input type="text" name="UpdateValShipId" value={this.state.UpdateValShipId} placeholder="Enter ship id here" onChange={this.handleChange}/>
+                        <Label for="UpdateValShipId">Enter the name of the ship you want to update</Label>
+                        <Input type="text" name="UpdateValShipId" value={this.state.UpdateValShipId} placeholder="Enter old ship Name here" onChange={this.handleChange}/>
+                        <Label for="UpdateValShipName">Enter a new name for the ship below!</Label>
+                        <Input type="text" name="UpdateValShipName" value={this.state.UpdateValShipName} placeholder="Enter new ship NAME here" onChange={this.handleChange}/>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="info" onClick={() => this.update_val_ships(this.state.UpdateValShipId)}>Confirm</Button>{' '}
+                        <Button color="danger" onClick={() => this.update_val_ships(this.state.UpdateValShipId, this.state.UpdateValShipName)}>Confirm</Button>{' '}
                         <Button color="secondary" onClick={this.UpdateValModalToggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
-
                 <p/>
                 <Container fluid>
                     <ShipCard data={this.state.data}/>
                 </Container>
-
             </div>
         );
     }
