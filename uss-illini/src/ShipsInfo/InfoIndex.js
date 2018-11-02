@@ -183,6 +183,7 @@ class InfoIndex extends Component {
 
     update_val_ships(colname,colval) {
         var ship_name = colname[0].toUpperCase() + colname.substring(1);
+        colval = colval[0].toUpperCase() + colval.substring(1);
         var ship_id = this.state.shipList[ship_name];
         colname = ship_name;
         console.log(ship_id, colname, colval,);
