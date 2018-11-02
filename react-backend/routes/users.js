@@ -29,8 +29,8 @@ router.post('/ships', function(req, res) {
     });
 });
 
-router.post('/insert',function(req,res){
-        var ship_id = String(req.body.ship_id);
+router.post('/insert',function(req, res){
+    var ship_id = String(req.body.ship_id);
     const application_id = "b2f122ce4941da951c7b0cafa659608e";
     var request = require("request");
     request({
@@ -284,5 +284,37 @@ router.post('/update_val',function(req,res){
     });
 });
 
+
+router.post('/delete', function(req, res){
+    console.log("hello");
+    var ship_id = String(req.body.ship_id);
+    var command = "DELETE FROM ships WHERE ship_id = '" + ship_id + "';"
+    // var request = require("request");
+    // request({
+    //     url: "https://api.worldofwarships.com/wows/encyclopedia/ships/?application_id=" + application_id + "&ship_id=" + ship_id,
+    //     json: true
+    // }, function(error, response, data) {
+        var mysql = require('mysql');
+
+        var pool = mysql.createPool({
+            connectionLimit :100,
+            host: "localhost",
+            user: "ussillini_erikaze",
+            password: "219749ajfcg",
+            database: "ussillini_ussillini"
+        });
+
+
+        pool.query(command, function(error, results, fields) {
+            if(error) throw error;
+            var data = results[0];
+            res.json([data]);
+        });
+
+    // })
+
+
+
+});
 
 module.exports = router;
