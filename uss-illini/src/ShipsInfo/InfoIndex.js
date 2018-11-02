@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Label, Input, FormText, InputGroup, InputGroupAddon } from 'reactstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container } from 'reactstrap';
 import {
     Collapse,
     Navbar,
@@ -14,6 +14,7 @@ import {
     DropdownMenu,
     DropdownItem } from 'reactstrap';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import ShipCard from './ShipCard.js';
 
 class InfoIndex extends Component {
     constructor(props) {
@@ -91,13 +92,7 @@ class InfoIndex extends Component {
 
     load_ships_by_name(ship_name) {
         ship_name = ship_name[0].toUpperCase() + ship_name.substring(1);
-        var ship_id = '';
-        for(var i = 0; i < this.state.shipList.length; i++){
-            if (ship_name === this.state.shipList[i]['name']){
-                ship_id = this.state.shipList[i]['ship_id'];
-                break;
-            }
-        }
+        var ship_id = this.state.shipList[ship_name];
         console.log(this.state.shipList);
         console.log(ship_id);
         fetch('/users/ships', {
@@ -134,7 +129,6 @@ class InfoIndex extends Component {
 
 
     render() {
-
         return (
             <div>
                 <Navbar color="dark" className="navbar-dark navbar-expand-sm" light expand="md">
@@ -185,18 +179,11 @@ class InfoIndex extends Component {
                         <Button color="secondary" onClick={this.ModalToggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
+                <p/>
+                <Container fluid>
+                    <ShipCard data={this.state.data}/>
+                </Container>
 
-                <div className="container">
-
-                    <div>
-                        <h1> {this.state.data["name"]} </h1>
-                        <h2> Tier:  {this.state.data["tier"]} </h2>
-                        <h2> Type:  {this.state.data["type"]} </h2>
-                        <h2> Nation:  {this.state.data["nation"]} </h2>
-                        <h2> Price: {this.state.data["price_credit"]} </h2>
-                        <img src={this.state.data["images_large"]}/>
-                    </div>
-                </div>
             </div>
         );
     }
