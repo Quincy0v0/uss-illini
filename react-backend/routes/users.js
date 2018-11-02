@@ -260,5 +260,29 @@ router.post('/update',function(req,res){
    })
 });
 
+router.post('/update_val',function(req,res){
+    var ship_id = String(req.body.ship_id);
+    var colname = String(req.body.colname);
+    var colval  = String(req.body.colval);
+
+    var mysql = require('mysql');
+
+    var pool = mysql.createPool({
+        connectionLimit :100,
+        host: "localhost",
+        user: "ussillini_erikaze",
+        password: "219749ajfcg",
+        database: "ussillini_ussillini"
+    });
+
+
+    var command = "UPDATE ships SET " + colname + " = '" + colval + "' WHERE ship_id = '" + ship_id + "' ;";
+    con.query(command, function(err, result,fields) {
+        if(error) throw error;
+        var data = results[0];
+        res.json([data]);
+    });
+});
+
 
 module.exports = router;
