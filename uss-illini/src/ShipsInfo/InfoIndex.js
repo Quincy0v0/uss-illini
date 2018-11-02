@@ -22,21 +22,48 @@ class InfoIndex extends Component {
         this.load_ships = this.load_ships.bind(this);
         this.load_ships_by_name = this.load_ships_by_name.bind(this);
         this.toggle = this.toggle.bind(this);
-        this.ModalToggle = this.ModalToggle.bind(this);
+        this.AddModalToggle = this.AddModalToggle.bind(this);
+        this.DeleteModalToggle = this.DeleteModalToggle.bind(this);
+        this.UpdateModalToggle = this.UpdateModalToggle.bind(this);
+        this.UpdateValModalToggle = this.UpdateValModalToggle.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
-            modal: false,
+            AddModal: false,
+            DeleteModal: false,
+            UpdateModal: false,
+            UpdateValModal: false,
             isOpen: false,
             data: [],
             newShipId: "",
+            DeleteShipId: "",
+            UpdateShipId: "",
+            UpdateValShipId: "",
             loadShipName: "",
             shipList: {},
         };
     }
 
-    ModalToggle() {
+    AddModalToggle() {
         this.setState({
-            modal: !this.state.modal
+            AddModal: !this.state.AddModal
+        });
+    }
+
+    DeleteModalToggle() {
+        this.setState({
+            DeleteModal: !this.state.DeleteModal
+        });
+    }
+
+    UpdateModalToggle() {
+        this.setState({
+            UpdateModal: !this.state.UpdateModal
+        });
+    }
+
+    UpdateValModalToggle() {
+        this.setState({
+            UpdateValModal: !this.state.UpdateValModal
         });
     }
 
@@ -114,6 +141,19 @@ class InfoIndex extends Component {
             })
     }
 
+    delete_ships(ship_id) {
+        fetch('/users/delete', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ship_id: ship_id }),
+        });
+        alert("successfully deleted a new ship");
+        this.DeleteModalToggle();
+    }
+
     insert_ships(ship_id) {
         fetch('/users/insert', {
             method: 'post',
@@ -124,7 +164,33 @@ class InfoIndex extends Component {
             body: JSON.stringify({ ship_id: ship_id }),
         });
         alert("successfully added a new ship");
-        this.ModalToggle();
+        this.AddModalToggle();
+    }
+
+    update_ships(ship_id) {
+        fetch('/users/update', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ship_id: ship_id }),
+        });
+        alert("successfully updated a new ship");
+        this.UpdateModalToggle();
+    }
+
+    update_val_ships(ship_id,colname,colval) {
+        fetch('/users/update_val', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ship_id: ship_id, colname: colname, colval: colval }),
+        });
+        alert("successfully updated a new ship");
+        this.UpdateValModalToggle();
     }
 
 
@@ -152,18 +218,18 @@ class InfoIndex extends Component {
                                     Options
                                 </DropdownToggle>
                                 <DropdownMenu right>
-                                    <DropdownItem onClick={() => {this.ModalToggle()}}>
+                                    <DropdownItem onClick={() => {this.AddModalToggle()}}>
                                         Add a new ship
                                     </DropdownItem>
-                                    <DropdownItem disabled>
+                                    <DropdownItem onClick={() => {this.DeleteModalToggle()}}>
                                         Delete a ship
                                     </DropdownItem>
-                                    <DropdownItem disabled>
+                                    <DropdownItem onClick={() => {this.UpdateModalToggle()}}>
                                         Update a ship
                                     </DropdownItem>
                                     <DropdownItem divider />
-                                    <DropdownItem disabled>
-                                        Reset
+                                    <DropdownItem onClick={() => {this.UpdateValModalToggle()}}>
+                                        Update a ship manually
                                     </DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
@@ -171,17 +237,54 @@ class InfoIndex extends Component {
                     </Collapse>
                 </Navbar>
 
-                <Modal isOpen={this.state.modal} toggle={this.ModalToggle} className={this.props.className}>
-                    <ModalHeader toggle={this.ModalToggle}>Add a new ship to database</ModalHeader>
+                <Modal isOpen={this.state.AddModal} toggle={this.AddModalToggle} className={this.props.className}>
+                    <ModalHeader toggle={this.AddModalToggle}>Add a new ship to database</ModalHeader>
                     <ModalBody>
                         <Label for="newShipId">Enter a ship id below to add a new ship to the database!</Label>
                         <Input type="text" name="newShipId" value={this.state.newShipId} placeholder="Enter ship id here" onChange={this.handleChange}/>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" onClick={() => this.insert_ships(this.state.newShipId)}>Confirm</Button>{' '}
-                        <Button color="secondary" onClick={this.ModalToggle}>Cancel</Button>
+                        <Button color="secondary" onClick={this.AddModalToggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
+
+                <Modal isOpen={this.state.DeleteModal} toggle={this.DeleteModalToggle} className={this.props.className}>
+                    <ModalHeader toggle={this.DeleteModalToggle}>Delete a ship from database</ModalHeader>
+                    <ModalBody>
+                        <Label for="DeleteShipId">Enter a ship id below to delete the corresponding ship!</Label>
+                        <Input type="text" name="DeleteShipId" value={this.state.DeleteShipId} placeholder="Enter ship id here" onChange={this.handleChange}/>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="warning" onClick={() => this.delete_ships(this.state.DeleteShipId)}>Confirm</Button>{' '}
+                        <Button color="secondary" onClick={this.DeleteModalToggle}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
+
+                <Modal isOpen={this.state.UpdateModal} toggle={this.UpdateModalToggle} className={this.props.className}>
+                    <ModalHeader toggle={this.UpdateModalToggle}>Update the info of an existing ship</ModalHeader>
+                    <ModalBody>
+                        <Label for="UpdateShipId">Enter a ship id below to update the corresponding ship info!</Label>
+                        <Input type="text" name="UpdateShipId" value={this.state.UpdateShipId} placeholder="Enter ship id here" onChange={this.handleChange}/>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="info" onClick={() => this.update_ships(this.state.UpdateShipId)}>Confirm</Button>{' '}
+                        <Button color="secondary" onClick={this.UpdateModalToggle}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
+
+                <Modal isOpen={this.state.UpdateValModal} toggle={this.UpdateValModalToggle} className={this.props.className}>
+                    <ModalHeader toggle={this.UpdateValModalToggle}>Add a new ship to database</ModalHeader>
+                    <ModalBody>
+                        <Label for="UpdateValShipId">Enter a ship id below to add a new ship to the database!</Label>
+                        <Input type="text" name="UpdateValShipId" value={this.state.UpdateValShipId} placeholder="Enter ship id here" onChange={this.handleChange}/>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="info" onClick={() => this.update_val_ships(this.state.UpdateValShipId)}>Confirm</Button>{' '}
+                        <Button color="secondary" onClick={this.UpdateValModalToggle}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
+
                 <p/>
                 <Container fluid>
                     <ShipCard data={this.state.data}/>

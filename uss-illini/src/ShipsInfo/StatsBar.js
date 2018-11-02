@@ -55,7 +55,7 @@ class StatsBar extends Component {
                     <div className="col-9 text-left">Survivability</div>
                     <div className="col-3 text-right" >{armour}</div>
                 </div>
-                <Progress value={armour}/>
+                <Progress value={armour}>{armour}</Progress>
                 <div className="row">
                     <div className="col-9 text-left">Artillery</div>
                     <div className="col-3 text-right" >{artillery}</div>
