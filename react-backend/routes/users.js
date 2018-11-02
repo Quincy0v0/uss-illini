@@ -324,7 +324,6 @@ router.post('/delete', function(req, res){
     });
 });
 
-
 router.post('/listAllShips', function(req, res) {
     // ship_id = req.body.ship_id;
     var mysql = require('mysql');
@@ -337,8 +336,9 @@ router.post('/listAllShips', function(req, res) {
     });
     pool.query("SELECT name, ship_id FROM ships;",function(error,results,fields) {
         if(error) throw error;
-        var data = results[0];
-        res.json([data]);
+        var data = results;
+        console.log(data);
+        res.json(data);
     });
 });
 

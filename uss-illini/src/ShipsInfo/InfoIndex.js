@@ -19,6 +19,7 @@ class InfoIndex extends Component {
     constructor(props) {
         super(props);
         this.load_ships = this.load_ships.bind(this);
+        this.load_ships_by_name = this.load_ships_by_name.bind(this);
         this.toggle = this.toggle.bind(this);
         this.ModalToggle = this.ModalToggle.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -27,7 +28,8 @@ class InfoIndex extends Component {
             isOpen: false,
             data: [],
             newShipId: "",
-            loadShipId: ""
+            loadShipName: "",
+            shipList: {},
         };
     }
 
@@ -48,7 +50,23 @@ class InfoIndex extends Component {
     }
 
     componentDidMount() {
-        this.load_ships(3761190896)
+        this.load_ships(3761190896);
+
+        fetch('/users/listAllShips', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                this.setState({ shipList: res })
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     load_ships(ship_id) {
@@ -61,8 +79,44 @@ class InfoIndex extends Component {
             body: JSON.stringify({ ship_id: ship_id }),
         })
             .then(res => res.json())
-            .then(res => this.setState({ data: res[0] }))
-            .then(console.log(this.state.data))
+            .then(res => {
+                if (res[0]){
+                    this.setState({ data: res[0] });
+                }
+                else{
+                    alert("No such ship found!");
+                }
+            })
+    }
+
+    load_ships_by_name(ship_name) {
+        ship_name = ship_name[0].toUpperCase() + ship_name.substring(1);
+        var ship_id = '';
+        for(var i = 0; i < this.state.shipList.length; i++){
+            if (ship_name === this.state.shipList[i]['name']){
+                ship_id = this.state.shipList[i]['ship_id'];
+                break;
+            }
+        }
+        console.log(this.state.shipList);
+        console.log(ship_id);
+        fetch('/users/ships', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ship_id: ship_id }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res[0]){
+                    this.setState({ data: res[0] });
+                }
+                else{
+                    alert("No such ship named "+ship_name+" found!");
+                }
+            })
     }
 
     insert_ships(ship_id) {
@@ -73,13 +127,14 @@ class InfoIndex extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ ship_id: ship_id }),
-        })
-        alert("successfully added a new ship")
+        });
+        alert("successfully added a new ship");
         this.ModalToggle();
     }
 
 
     render() {
+
         return (
             <div>
                 <Navbar color="dark" className="navbar-dark navbar-expand-sm" light expand="md">
@@ -87,11 +142,11 @@ class InfoIndex extends Component {
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
-                            <NavItem left>
+                            <NavItem>
                                 <InputGroup>
-                                    <Input type="search" name="loadShipId" id="loadShipId" value={this.state.loadShipId} placeholder="Enter a ship name here"/>
+                                    <Input type="search" name="loadShipName" id="loadShipName" value={this.state.loadShipName} placeholder="Enter a ship name here" onChange={this.handleChange} onSubmit={() => {this.load_ships_by_name(this.state.loadShipName)}}/>
                                     <InputGroupAddon addonType="append">
-                                        <Button  color="info" onClick={() => {this.load_ships(4182652880)}}>search</Button>
+                                        <Button  color="info" onClick={() => {this.load_ships_by_name(this.state.loadShipName)}}>search</Button>
                                     </InputGroupAddon>
                                 </InputGroup>
                             </NavItem>
