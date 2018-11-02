@@ -48,7 +48,7 @@ class InfoIndex extends Component {
     }
 
     componentDidMount() {
-        this.load_ships(4187894992)
+        this.load_ships(3761190896)
     }
 
     load_ships(ship_id) {
@@ -77,6 +77,7 @@ class InfoIndex extends Component {
         alert("successfully added a new ship")
         this.ModalToggle();
     }
+
 
     render() {
         return (
