@@ -289,32 +289,39 @@ router.post('/delete', function(req, res){
     console.log("hello");
     var ship_id = String(req.body.ship_id);
     var command = "DELETE FROM ships WHERE ship_id = '" + ship_id + "';"
-    // var request = require("request");
-    // request({
-    //     url: "https://api.worldofwarships.com/wows/encyclopedia/ships/?application_id=" + application_id + "&ship_id=" + ship_id,
-    //     json: true
-    // }, function(error, response, data) {
-        var mysql = require('mysql');
+    var mysql = require('mysql');
 
-        var pool = mysql.createPool({
-            connectionLimit :100,
-            host: "localhost",
-            user: "ussillini_erikaze",
-            password: "219749ajfcg",
-            database: "ussillini_ussillini"
-        });
+    var pool = mysql.createPool({
+        connectionLimit :100,
+        host: "localhost",
+        user: "ussillini_erikaze",
+        password: "219749ajfcg",
+        database: "ussillini_ussillini"
+    });
 
-
-        pool.query(command, function(error, results, fields) {
-            if(error) throw error;
-            var data = results[0];
-            res.json([data]);
-        });
-
-    // })
+    pool.query(command, function(error, results, fields) {
+        if(error) throw error;
+        var data = results[0];
+        res.json([data]);
+    });
+});
 
 
-
+router.post('/listAllShips', function(req, res) {
+    // ship_id = req.body.ship_id;
+    var mysql = require('mysql');
+    var pool = mysql.createPool({
+        connectionLimit :100,
+        host: "localhost",
+        user: "ussillini_erikaze",
+        password: "219749ajfcg",
+        database: "ussillini_ussillini"
+    });
+    pool.query("SELECT name, ship_id FROM ships;",function(error,results,fields) {
+        if(error) throw error;
+        var data = results[0];
+        res.json([data]);
+    });
 });
 
 module.exports = router;
