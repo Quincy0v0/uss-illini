@@ -109,7 +109,7 @@ class InfoIndex extends Component {
                     this.setState({ data: res[0] });
                 }
                 else{
-                    alert("No such ship named "+ship_name+" found!");
+                    alert("No such ship named "+ship_name+" has been found!");
                 }
             })
     }

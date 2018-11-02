@@ -38,7 +38,7 @@ class ShipCard extends Component {
                                 <Card>
                                     <CardHeader>Ship Statistics</CardHeader>
                                     <CardBody>
-                                        <StatsBar/>
+                                        <StatsBar data={this.props.data}/>
                                     </CardBody>
                                 </Card>
                             </Col>
