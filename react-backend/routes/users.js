@@ -29,6 +29,24 @@ router.post('/ships', function(req, res) {
     });
 });
 
+/* Query ship information by name. */
+router.post('/ships', function(req, res) {
+    ship_name = req.body.name;
+    var mysql = require('mysql');
+    var pool = mysql.createPool({
+        connectionLimit :100,
+        host: "localhost",
+        user: "ussillini_erikaze",
+        password: "219749ajfcg",
+        database: "ussillini_ussillini"
+    });
+    pool.query("SELECT * FROM ships WHERE ship_name = '" + ship_name + "';",function(error,results,fields) {
+        if(error) throw error;
+        var data = results[0];
+        res.json([data]);
+    });
+});
+
 router.post('/insert',function(req, res){
     var ship_id = String(req.body.ship_id);
     const application_id = "b2f122ce4941da951c7b0cafa659608e";
