@@ -84,13 +84,3 @@ npm start
 Y
 (React start at PORT3001)
 ```
-```
-npm run build
-//You will see a 'build' folder which contains the static files for the project.
-//You have to modify the 'index.js', remove the extra '/' according to the link below: 
-//https://stackoverflow.com/questions/44371052/why-wont-react-production-build-run-on-the-browser
-//After doing so, open index.js using browser and you should be able to view the site.
-//To deploy the site, Copy the contents from 'build' to 'public_html' in the cPanel directory, 
-//and you should be able to see it at http://ussillini.web.illinois.edu
-```
-
