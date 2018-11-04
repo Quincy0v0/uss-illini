@@ -257,7 +257,7 @@ router.post('/update',function(req,res){
 
                 connection.query("DELETE FROM ships WHERE ship_id = '" + ship_id + "';", function(err, result) {
                     if (err) throw err;
-                    connection.release();
+                    //connection.release();
                     console.log("1 record updated");
                 });
 
