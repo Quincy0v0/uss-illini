@@ -49,12 +49,42 @@ cd uss-illini/src         // our codes are located there
 
 ## To deploy the site:
 ```
-npm run build
-//You will see a 'build' folder which contains the static files for the project.
-//You have to modify the 'index.js', remove the extra '/' according to the link below: 
-//https://stackoverflow.com/questions/44371052/why-wont-react-production-build-run-on-the-browser
-//After doing so, open index.js using browser and you should be able to view the site.
-//To deploy the site, Copy the contents from 'build' to 'public_html' in the cPanel directory, 
-//and you should be able to see it at http://ussillini.web.illinois.edu
-```
+To use cPanel hosting this app:
+
+1.
+Install nodejs using SSH on cPanel
+
+2.
+Type the following:
+RewriteEngine On
+RewriteRule ^$ http://127.0.0.1:3001/ [P,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ http://127.0.0.1:3001/$1 [P,L]
+in:
+/home/ussillini/public_html/.htacess
+(You need to go to filemanager -> setting -> tick "Show Hidden Files (dotfiles)" if havn't)
+
+reference link: https://www.a2hosting.com/kb/installable-applications/manual-installations/installing-node-js-on-managed-hosting-accounts
+
+3.
+In uss-illini/package.json:
+{
+...
+"proxy": "http://localhost:3000"
+}
+
+4.
+Terminal #1:
+cd react-backend
+npm start 
+(Express start at PORT3000)
+
+Terminal #2:
+cd uss-illini 
+npm start 
+Y
+(React start at PORT3001)
+
+
 
