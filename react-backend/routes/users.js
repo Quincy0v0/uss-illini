@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
-
 var mysql = require('mysql');
+
 var cors = require("cors");
 
+var pool = require('./MysqlPool');
 
 var con = mysql.createConnection({
     host: "localhost",
@@ -15,36 +16,34 @@ var con = mysql.createConnection({
 /* GET users listing. */
 router.post('/ships', function(req, res) {
     ship_id = req.body.ship_id;
-    var mysql = require('mysql');
-    var pool = mysql.createPool({
-        connectionLimit :100,
-        host: "localhost",
-        user: "ussillini_erikaze",
-        password: "219749ajfcg",
-        database: "ussillini_ussillini"
-    });
-    pool.query("SELECT * FROM ships WHERE ship_id = '" + ship_id + "';",function(error,results,fields) {
-        if(error) throw error;
-        var data = results[0];
-        res.json([data]);
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        connection.query("SELECT * FROM ships WHERE ship_id = '" + ship_id + "';",function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            var data = results[0];
+            res.json([data]);
+        });
     });
 });
 
 /* Query ship information by name. */
 router.post('/name', function(req, res) {
     ship_name = req.body.name;
-    var mysql = require('mysql');
-    var pool = mysql.createPool({
-        connectionLimit :100,
-        host: "localhost",
-        user: "ussillini_erikaze",
-        password: "219749ajfcg",
-        database: "ussillini_ussillini"
-    });
-    pool.query("SELECT * FROM ships WHERE ship_name = '" + ship_name + "';",function(error,results,fields) {
-        if(error) throw error;
-        var data = results[0];
-        res.json([data]);
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        connection.query("SELECT * FROM ships WHERE ship_name = '" + ship_name + "';",function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            var data = results[0];
+            res.json([data]);
+        });
     });
 });
 
@@ -140,20 +139,18 @@ router.post('/insert',function(req, res){
             command = command.slice(0, -1);
             command += ");";
 
-            var mysql = require('mysql');
+            pool.getConnection(function(error, connection){
+                if (error){
+                    connection.release();
+                    throw error;
+                }
 
-            var pool = mysql.createPool({
-                connectionLimit :100,
-                host: "localhost",
-                user: "ussillini_erikaze",
-                password: "219749ajfcg",
-                database: "ussillini_ussillini"
-            });
-
-            pool.query(command,function(error,results,fields) {
-                if(error) throw error;
-                var data = results[0];
-                res.json([data]);
+                connection.query(command,function(error,results,fields) {
+                    connection.release();
+                    if(error) throw error;
+                    var data = results[0];
+                    res.json([data]);
+                });
             });
         }else{
             console.log(error);
@@ -253,26 +250,24 @@ router.post('/update',function(req,res){
            command = command.slice(0, -1);
            command += ");";
 
-           var mysql = require('mysql');
+            pool.getConnection(function(error, connection){
+                if (error){
+                    throw error;
+                }
 
-           var pool = mysql.createPool({
-               connectionLimit :100,
-               host: "localhost",
-               user: "ussillini_erikaze",
-               password: "219749ajfcg",
-               database: "ussillini_ussillini"
-           });
+                connection.query("DELETE FROM ships WHERE ship_id = '" + ship_id + "';", function(err, result) {
+                    if (err) throw err;
+                    connection.release();
+                    console.log("1 record updated");
+                });
 
-           pool.query("DELETE FROM ships WHERE ship_id = '" + ship_id + "';", function(err, result) {
-             if (err) throw err;
-             console.log("1 record updated");
-           });
-
-           pool.query(command,function(error,results,fields) {
-               if(error) throw error;
-               var data = results[0];
-               res.json([data]);
-           });
+                connection.query(command,function(error,results,fields) {
+                    connection.release();
+                    if(error) throw error;
+                    var data = results[0];
+                    res.json([data]);
+                });
+            });
        }else{
            console.log(error);
        }
@@ -284,68 +279,61 @@ router.post('/update_val',function(req,res){
     var colname = String(req.body.colname);
     var colval  = String(req.body.colval);
 
-    var mysql = require('mysql');
-
-    var pool = mysql.createPool({
-        connectionLimit :100,
-        host: "localhost",
-        user: "ussillini_erikaze",
-        password: "219749ajfcg",
-        database: "ussillini_ussillini"
+    pool.getConnection(function(error, connection){
+        if (error){
+            throw error;
+        }
+        var command = "UPDATE ships SET name ='" + colval + "' WHERE ship_id = '" + ship_id + "' ;";
+        connection.query(command, function(error,result,fields) {
+            connection.release();
+            if(error) throw error;
+            var data = result[0];
+            res.json([data]);
+        });
     });
 
-
-    var command = "UPDATE ships SET name ='" + colval + "' WHERE ship_id = '" + ship_id + "' ;";
-    pool.query(command, function(error,result,fields) {
-        if(error) throw error;
-        var data = result[0];
-        res.json([data]);
-    });
 });
 
 
 router.post('/delete', function(req, res){
     console.log("hello");
     var ship_id = String(req.body.ship_id);
-    var command = "DELETE FROM ships WHERE ship_id = '" + ship_id + "';"
-    var mysql = require('mysql');
 
-    var pool = mysql.createPool({
-        connectionLimit :100,
-        host: "localhost",
-        user: "ussillini_erikaze",
-        password: "219749ajfcg",
-        database: "ussillini_ussillini"
+    pool.getConnection(function(error, connection){
+        if (error){
+            throw error;
+        }
+        var command = "DELETE FROM ships WHERE ship_id = '" + ship_id + "';";
+        connection.query(command, function(error, results, fields) {
+            if(error) throw error;
+            connection.release();
+            var data = results[0];
+            res.json([data]);
+        });
     });
 
-    pool.query(command, function(error, results, fields) {
-        if(error) throw error;
-        var data = results[0];
-        res.json([data]);
-    });
 });
 
 
 router.post('/listAllShips', function(req, res) {
     // ship_id = req.body.ship_id;
-    var mysql = require('mysql');
-    var pool = mysql.createPool({
-        connectionLimit :100,
-        host: "localhost",
-        user: "ussillini_erikaze",
-        password: "219749ajfcg",
-        database: "ussillini_ussillini"
-    });
-    pool.query("SELECT name, ship_id FROM ships;",function(error,results,fields) {
-        if(error) throw error;
-        var data = results;
-        var ret = {};
-        for(var i = 0; i < data.length; i++)
-        {
-            ret[data[i]["name"]] = data[i]["ship_id"];
+    pool.getConnection(function(error, connection){
+        if (error){
+            throw error;
         }
-        res.json(ret);
+        connection.query("SELECT name, ship_id FROM ships;",function(error,results,fields) {
+            if(error) throw error;
+            connection.release();
+            var data = results;
+            var ret = {};
+            for(var i = 0; i < data.length; i++)
+            {
+                ret[data[i]["name"]] = data[i]["ship_id"];
+            }
+            res.json(ret);
+        });
     });
+
 });
 
 module.exports = router;
