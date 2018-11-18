@@ -9,6 +9,7 @@ import {
     CarouselCaption
 } from 'reactstrap';
 import InfoIndex from '../ShipsInfo/InfoIndex.js'
+import Graph from '../Graph/Graph.js'
 
 const items = [
     {
@@ -68,7 +69,7 @@ class Index extends Component {
     }
 
     switchPages(pageId) {
-        // PageId: {1:MainPage, 2:InfoIndex, 3:ShipStatsIndex }
+        // PageId: {0:MainPage, 1:InfoIndex, 2:Player(Graph) }
         this.setState({ pageIndex: pageId});
     }
 
@@ -97,7 +98,13 @@ class Index extends Component {
                 </div>
             );
         }
-        else return (
+        else if(this.state.pageIndex === 2){
+          return (
+              <div>
+                    <Graph/>
+              </div>
+          );
+        }else return (
             <div>
                 <Jumbotron>
                     <h1 className="display-3">USS Illini</h1>

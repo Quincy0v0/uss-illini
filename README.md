@@ -49,8 +49,6 @@ cd uss-illini/src         // our codes are located there
 
 ## To deploy the site:
 ```
-To use cPanel hosting this app:
-
 1.
 Install nodejs using SSH on cPanel
 
@@ -66,6 +64,7 @@ in:
 (You need to go to filemanager -> setting -> tick "Show Hidden Files (dotfiles)" if havn't)
 
 reference link: https://www.a2hosting.com/kb/installable-applications/manual-installations/installing-node-js-on-managed-hosting-accounts
+
 
 3.
 In uss-illini/package.json:
@@ -85,6 +84,4 @@ cd uss-illini
 npm start 
 Y
 (React start at PORT3001)
-
-
-
+```
