@@ -8,7 +8,7 @@ var pool = require('./MysqlPool');
 
 var con = mysql.createConnection({
     host: "localhost",
-    user: "ussillini_erikaze",
+    user: "ussillini_usserikaze",
     password: "219749ajfcg",
     database: "ussillini_ussillini"
 });
@@ -331,6 +331,25 @@ router.post('/listAllShips', function(req, res) {
                 ret[data[i]["name"]] = data[i]["ship_id"];
             }
             res.json(ret);
+        });
+    });
+
+});
+
+
+router.post('/radar', function(req, res){
+    var account_id = String(req.body.account_id);
+    pool.getConnection(function(error, connection){
+        if (error){
+            throw error;
+        }
+        var command = "SELECT avg((meKills-totalKills)/(stdtotalKills)) AS Kills, avg((meSurvival-totalSurvival)/(stdtotalSurvival)) AS Survival, avg((meWins-totalWins)/(stdtotalWins)) AS Wins, avg((meDamage-totalDamage)/(stdtotalDamage)) AS Damage, avg((meObjective-totalObjective)/(stdtotalObjective)) AS Objective FROM (SELECT ship_id, avg(frags/battles) AS meKills, avg(survived_battles/battles) AS meSurvival, avg(wins/battles) AS meWins, avg(damage_dealt/battles) AS meDamage, avg(capture_points/battles) AS meObjective FROM random_ships_stats WHERE account_id = '"+account_id+"' GROUP BY ship_id) AS me INNER JOIN (SELECT ship_id, avg(frags/battles) AS totalKills, avg(survived_battles/battles) AS totalSurvival, avg(wins/battles) AS totalWins, avg(damage_dealt/battles) AS totalDamage, avg(capture_points/battles) AS totalObjective, std(frags/battles) AS stdtotalKills, std(survived_battles/battles) AS stdtotalSurvival, std(wins/battles) AS stdtotalWins, std(damage_dealt/battles) AS stdtotalDamage, std(capture_points/battles) AS stdtotalObjective FROM random_ships_stats GROUP BY ship_id) AS total ON me.ship_id = total.ship_id;";
+        connection.query(command, function(error, results, fields) {
+            if(error) throw error;
+            connection.release();
+            console.log(results)
+            var data = results[0];
+            res.json([data]);
         });
     });
 
