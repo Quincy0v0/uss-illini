@@ -4,6 +4,8 @@ import { Card, Button, CardHeader, CardFooter, CardBody, CardSubtitle,CardColumn
 import { Container, Row, Col } from 'reactstrap';
 import StatsBar from './StatsBar.js'
 import AutoSuggest from './AutoSuggest.js'
+import parseJson from './parseJson.js'
+
 
 class ShipCard extends Component {
     constructor(props) {
@@ -18,7 +20,7 @@ class ShipCard extends Component {
         if (data != undefined && data.length != 0){
             console.log(data)
             var hull = data.default_profile_hull;
-            console.log(typeof hull)
+            console.log(parseJson(hull))
         }
         return (
             <div>

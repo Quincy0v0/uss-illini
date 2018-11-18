@@ -53,21 +53,24 @@ class Graphs extends Component {
         };
     }
 
-    radar(account_id,ship_id){
+    radar(account_id){
         fetch('/users/radar', {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({account_id: account_id, ship_id: ship_id }),
+            body: JSON.stringify({account_id: account_id}),
         })
         .then(res => res.json())
         .then(res => {
             if (res[0]){
                 var result = [res[0]['Kills'],res[0]['Survival'],res[0]['Wins'],res[0]['Damage'],res[0]['Objective']];
                 var newData = this.state.data;
+                console.log(newData)
                 newData[0]['r'] = result;
+                console.log(newData)
+                console.log(this.state.data)
                 this.setState({
                   data : newData,
                 });
@@ -87,14 +90,14 @@ class Graphs extends Component {
                     <FormGroup>
                     <Input type="text" name="account_id" id="account_id" value={this.state.account_id} onChange={this.account_idChange} placeholder="account_id"/>
                     </FormGroup>
-                    <Button onClick={() => {this.radar(this.account_id,this.ship_id)}}>
+                    <Button onClick={() => {this.radar(this.state.account_id)}}>
                         Update
                     </Button>
                     <Plot
                       data = {this.state.data}
                       layout = {this.state.layout}
-                      options = {this.state.option}
-                      defaultPlotlyConfiguration = {this.state.defaultPlotlyConfiguration}
+                      //options = {this.state.option}
+                      //defaultPlotlyConfiguration = {this.state.defaultPlotlyConfiguration}
                     />
                 </div>
             </div>
