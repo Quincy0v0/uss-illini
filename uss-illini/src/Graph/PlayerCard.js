@@ -18,7 +18,7 @@ class PlayerCard extends Component {
         return (
             <div>
                 <Row>
-                    <Col sm="12">
+                    <Col md="12">
                         <CardColumns>
                             <Col>
                                 <Card>
@@ -65,7 +65,7 @@ class PlayerCard extends Component {
                                                 <CardText className="text-left">Personal Rating :</CardText>
                                             </div>
                                             <div className="col-6">
-                                                <CardText className="text-left">{Math.round((this.props.score[0]+this.props.score[1]+this.props.score[2]+this.props.score[3]+this.props.score[4])*1000/5)+3000}</CardText>
+                                                <CardText className="text-left">{Math.round((this.props.score[0]*1000+this.props.score[1]*1000+this.props.score[2]*1000+this.props.score[3]*1000+this.props.score[4]*1000)/5)+3000}</CardText>
                                             </div>
                                         </div>
 
@@ -213,6 +213,74 @@ class PlayerCard extends Component {
                                             </div>
                                             <div className="col">
                                                 <CardText className="text-left">{this.props.data["max_xp"]} </CardText>
+                                            </div>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                            <Col>
+                                <Card>
+                                    <CardHeader>Player's Weapon</CardHeader>
+                                    <CardBody>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Main Battery Accuracy :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{Math.round(this.props.data["main_battery_hits"]/this.props.data["main_battery_shots"]*100)}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Max Main Battery Kills :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{this.props.data["main_battery_max_frags_battle"]}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Max Secondary Kills :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{this.props.data["second_battery_max_frags_battle"]}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Torpedo Accuracy :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{Math.round(this.props.data["torpedoes_hits"]/this.props.data["torpedoes_shots"]*100)}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Max Torpedo Kills :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{this.props.data["torpedoes_max_frags_battle"]}</CardText>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Max Aircraft Kills :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{this.props.data["aircraft_max_frags_battle"]}</CardText>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Ramming Kills :</CardText>
+                                            </div>
+                                            <div className="col-6">
+                                                <CardText className="text-left">{this.props.data["ramming_frags"]}</CardText>
                                             </div>
                                         </div>
                                     </CardBody>
