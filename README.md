@@ -84,4 +84,9 @@ cd uss-illini
 npm start 
 Y
 (React start at PORT3001)
+
+Front end：
+npm i react-plotly.js plotly.js react-bootstrap-table
+Back end：
+npm i mysql
 ```
