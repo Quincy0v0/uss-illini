@@ -405,7 +405,7 @@ router.post('/playerShip', function(req, res) {
             connection.release();
             throw error;
         }
-        connection.query("SELECT * FROM random_ships_stats WHERE account_id = '" + account_id + "';",function(error,results,fields) {
+        connection.query("SELECT DISTINCT * FROM random_ships_stats WHERE account_id = '" + account_id + "';",function(error,results,fields) {
             connection.release();
             if(error) throw error;
             res.json(results);
@@ -465,6 +465,7 @@ router.post('/playerShipScore', function(req, res) {
             "AS stdtotalDamage, std(capture_points/battles) " +
             "AS stdtotalObjective " +
             "FROM random_ships_stats " +
+            "WHERE ship_id = '"  + ship_id + "' "+
             "GROUP BY ship_id) AS total " +
             "ON me.ship_id = total.ship_id;";
         connection.query(command,function(error,results,fields) {
@@ -473,6 +474,26 @@ router.post('/playerShipScore', function(req, res) {
             res.json([results[0]]);
         });
     });
+});
+
+router.post('/listAllAccounts', function(req, res) {
+    pool.getConnection(function(error, connection){
+        if (error){
+            throw error;
+        }
+        connection.query("SELECT nickname, account_id FROM account_stats;",function(error,results,fields) {
+            if(error) throw error;
+            connection.release();
+            var data = results;
+            var ret = {};
+            for(var i = 0; i < data.length; i++)
+            {
+                ret[data[i]["nickname"]] = data[i]["account_id"];
+            }
+            res.json(ret);
+        });
+    });
+
 });
 
 module.exports = router;

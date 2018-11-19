@@ -30,6 +30,8 @@ const nationOption = {
   germany: 'germany',
   uk: 'uk',
   france: 'france',
+  pan_asia : 'pan_asia',
+  ussr : 'ussr',
 };
 
 function enumFormatter(cell, row, enumObject) {
@@ -46,18 +48,17 @@ export default class ScrollTable extends React.Component {
     var data = this.props.data;
     var ships = this.props.ships;
     var score = this.props.score;
-    var combineddata = Array(data.length);
-
-    for(var i = 0; i < ships.length ; i++){
+    var combineddata = [];
+    for(var i = 0; i < data.length ; i++){
       if (ships[i] && score[i]) {
-          combineddata[i] = {
+          combineddata.push({
               ship : ships[i]['name'],
               tier : ships[i]['tier'],
               type : ships[i]['type'],
               nation : ships[i]['nation'],
               battles : data[i]['battles'],
               winrate : Math.round((data[i]['wins'] / data[i]['battles'])*100)/100,
-              rating : Math.round((score[i]['Kills']+score[i]['Survival']+score[i]['Wins']+score[i]['Damage']+score[i]['Objective'])*1000)+3000,
+              rating : Math.round((score[i]['Kills']*1000+score[i]['Survival']*1000+score[i]['Wins']*1000+score[i]['Damage']*1000+score[i]['Objective']*1000)/5)+3000,
               averagedamage : Math.round((data[i]['damage_dealt'] / data[i]['battles'])*100)/100,
               averagekills :  Math.round((data[i]['frags'] / data[i]['battles'])*100)/100,
               averageplanekills : Math.round((data[i]['planes_killed'] / data[i]['battles'])*100)/100,
@@ -66,7 +67,7 @@ export default class ScrollTable extends React.Component {
               maxkills :  data[i]['max_frags_battle'],
               maxplanekills : data[i]['max_planes_killed'],
               maxxp : data[i]['max_xp'],
-          }
+          });
       }
     }
     return (

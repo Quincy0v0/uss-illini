@@ -28,11 +28,13 @@ class Graphs extends Component {
         this.load_allShipPlayer = this.load_allShipPlayer.bind(this);
         this.load_player_ship = this.load_player_ship.bind(this);
         this.load_player_score = this.load_player_score.bind(this);
+        this.list_all_accounts = this.list_all_accounts.bind(this);
         this.state = {
+          all_account : {},
           playerships:[],
           playerscore:[],
           account_data : [],
-          account_id : '1002942466',
+          account_id : '1019218342',
           allShipData : [],
           layout : {
             polar: {
@@ -53,7 +55,10 @@ class Graphs extends Component {
     }
 
     componentDidMount() {
-        this.load_player(1024488643);
+        this.list_all_accounts();
+        this.radar(this.state.account_id);
+        this.load_player(this.state.account_id);
+        this.load_allShipPlayer(this.state.account_id);
     }
 
     load_player(account_id) {
@@ -88,7 +93,7 @@ class Graphs extends Component {
             .then(res => res.json())
             .then(res => {
                 if (res[0]){
-                    this.setState({ allShipData: res,playerships:[],playerscore:[],});
+                    this.setState({allShipData: res});
                 }
                 else{
                     alert("No such player found!");
@@ -96,9 +101,11 @@ class Graphs extends Component {
             })
             .then(res =>{
                 for(var i = 0; i < this.state.allShipData.length ; i++){
+                    this.setState({playerships:[],playerscore:[]});
                     this.load_player_ship(this.state.allShipData[i]['ship_id']);
                     this.load_player_score(this.state.allShipData[i]['account_id'],this.state.allShipData[i]['ship_id']);
                 }
+                //console.log(this.state.playerships);
             })
     }
 
@@ -115,8 +122,15 @@ class Graphs extends Component {
         .then(res => {
             if (res[0]){
                 var result = [res[0]['Kills'],res[0]['Survival'],res[0]['Wins'],res[0]['Damage'],res[0]['Objective']];
-                var newData = this.state.data;
-                newData[0]['r'] = result;
+                var dict = {};
+                for (var key in this.state.data[0]) {
+                    if(key == 'r'){
+                        dict[key] = result;
+                    }else{
+                        dict[key] = this.state.data[0][key];
+                    }
+                }
+                var newData = [dict]; 
                 this.setState({
                   data : newData,
                 });
@@ -149,6 +163,26 @@ class Graphs extends Component {
             })
     }
 
+    list_all_accounts() {
+        fetch('/users/listAllAccounts', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res){
+                    this.setState({all_account: res});
+                }
+                else{
+                    //alert("No such player found!");
+                }
+            })
+    }
+
     load_player_score(account_id,ship_id) {
         fetch('/users/playerShipScore', {
             method: 'post',
@@ -172,7 +206,7 @@ class Graphs extends Component {
     }
 
     account_idChange(event){
-        this.setState({account_id: event.target.value});
+        this.setState({account_id: this.state.all_account[event.target.value]});
     }
 
     render() {
@@ -185,7 +219,7 @@ class Graphs extends Component {
                         <Nav className="ml-auto" navbar>
                             <NavItem>
                                 <InputGroup>
-                                    <Input type="text" name="account_id" id="account_id" value={this.state.account_id} onChange={this.account_idChange} placeholder="account_id"/>
+                                    <Input type="text" name="account_id" id="account_id" value={this.state.all_account[this.state.account_id]} onChange={this.account_idChange} placeholder="nickname"/>
                                     <Button onClick={() => {this.radar(this.state.account_id),this.load_player(this.state.account_id),this.load_allShipPlayer(this.state.account_id)}}>
                                         Search
                                     </Button>
