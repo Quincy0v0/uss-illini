@@ -11,7 +11,7 @@ class App extends Component {
           <img src={require('./kraken.png')} alt="logo" />
           <h1 className="App-title">Welcome Aboard, Commander!</h1>
         </header>
-          <Index/>
+      <Index/>
       </div>
     );
   }

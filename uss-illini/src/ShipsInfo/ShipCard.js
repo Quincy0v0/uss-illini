@@ -12,16 +12,29 @@ class ShipCard extends Component {
         super(props);
         this.state = {
             HitPoint : 0,
+            hull: {}
         };
+
     }
 
     render() {
         var data = this.props.data;
+        var range = {min: 0, max: 1}
+        var hull_dict = {};
+        var artillery = {};
+        var maneuverability = {};
+        var concealment = {};
+        var atbas = {};
         if (data != undefined && data.length != 0){
-            console.log(data)
-            var hull = data.default_profile_hull;
-            console.log(parseJson(hull))
+            hull_dict = parseJson(data.default_profile_hull);
+            artillery = parseJson(data.default_profile_artillery);
+            maneuverability =  parseJson(data.default_profile_mobility);
+            concealment = parseJson(data.default_profile_concealment);
+            atbas = parseJson(data.default_profile_atbas);
         }
+        console.log(data)
+        console.log(atbas)
+        range = hull_dict.range;
         return (
             <div>
                 <Row>
@@ -122,68 +135,227 @@ class ShipCard extends Component {
                             </Col>
                             <Col>
                                 <Card>
-                                    <CardHeader>Advanced Info</CardHeader>
+                                    <CardHeader>Hull  Info</CardHeader>
                                     <CardBody>
                                         <div className="row">
                                             <div className="col-6">
                                                 <CardText className="text-left">Hit points :</CardText>
                                             </div>
                                             <div className="col">
-                                                <CardText className="text-left">{hull}</CardText>
+                                                <CardText className="text-left">{hull_dict.health}</CardText>
                                             </div>
                                         </div>
 
                                         <div className="row">
                                             <div className="col-6">
-                                                <CardText className="text-left">Nation :</CardText>
+                                                <CardText className="text-left">AA mounts :</CardText>
                                             </div>
                                             <div className="col-6">
-                                                <CardText className="text-left">{this.props.data["nation"]}</CardText>
+                                                <CardText className="text-left">{hull_dict.anti_aircraft_barrels}</CardText>
                                             </div>
                                         </div>
 
                                         <div className="row">
                                             <div className="col-6">
-                                                <CardText className="text-left">Type :</CardText>
+                                                <CardText className="text-left">Secondaries :</CardText>
                                             </div>
                                             <div className="col-6">
-                                                <CardText className="text-left">{this.props.data["type"]}</CardText>
+                                                <CardText className="text-left">{hull_dict.atba_barrels}</CardText>
                                             </div>
                                         </div>
 
                                         <div className="row">
                                             <div className="col-6">
-                                                <CardText className="text-left">Price :</CardText>
+                                                <CardText className="text-left">Torpedoes :</CardText>
                                             </div>
                                             <div className="col-6">
-                                                <CardText className="text-left">{this.props.data["price_credit"]}</CardText>
+                                                <CardText className="text-left">{hull_dict.torpedoes_barrels}</CardText>
                                             </div>
                                         </div>
 
                                         <div className="row">
                                             <div className="col-6">
-                                                <CardText className="text-left">Mod Slots :</CardText>
+                                                <CardText className="text-left">Planes :</CardText>
                                             </div>
                                             <div className="col-6">
-                                                <CardText className="text-left">{this.props.data["mod_slots"]}</CardText>
-                                            </div>
-                                        </div>
-
-                                        <div className="row">
-                                            <div className="col">
-                                                <CardText className="text-left">Battle Tier :</CardText>
-                                            </div>
-                                            <div className="col">
-                                                <CardText className="text-left">{this.props.data["default_profile_battle_level_range_min"]} - {this.props.data["default_profile_battle_level_range_max"]}</CardText>
+                                                <CardText className="text-left">{hull_dict.planes_amount}</CardText>
                                             </div>
                                         </div>
 
                                         <div className="row">
                                             <div className="col">
-                                                <CardText className="text-left">ship id :</CardText>
+                                                <CardText className="text-left">hull id :</CardText>
                                             </div>
                                             <div className="col">
-                                                <CardText className="text-left">{this.props.data["ship_id"]}</CardText>
+                                                <CardText className="text-left">{hull_dict.hull_id}</CardText>
+                                            </div>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                                <Card>
+                                    <CardHeader>Artillery Info</CardHeader>
+                                    <CardBody>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Firing range :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{artillery.distance} km</CardText>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Firing rate :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{artillery.gun_rate} / min</CardText>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Dispersion :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{artillery.max_dispersion} m</CardText>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Rotation:</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{artillery.rotation_time} s / 180° </CardText>                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Reload :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{artillery.shot_delay} s</CardText>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Slot :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{} m</CardText>
+                                            </div>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                                <Card>
+                                    <CardHeader>Maneuverability</CardHeader>
+                                    <CardBody>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Max speed :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{maneuverability.max_speed} kts</CardText>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Rudder shift :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{maneuverability.rudder_time} s</CardText>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">Turn radius:</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{maneuverability.turning_radius} m</CardText>
+                                            </div>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                                <Card>
+                                    <CardHeader>Detection distance</CardHeader>
+                                    <CardBody>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">By ship :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{concealment.detect_distance_by_ship} km</CardText>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">By plane :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{concealment.detect_distance_by_plane} km</CardText>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">After fire :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{concealment.total} km</CardText>
+                                            </div>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                                <Card>
+                                    <CardHeader>Secondary guns</CardHeader>
+                                    <CardBody>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">By ship :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{concealment.detect_distance_by_ship} km</CardText>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">By plane :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{concealment.detect_distance_by_plane} km</CardText>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">After fire :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{concealment.total} km</CardText>
+                                            </div>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                                <Card>
+                                    <CardHeader>Torpedoes</CardHeader>
+                                    <CardBody>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">By ship :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{concealment.detect_distance_by_ship} km</CardText>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">By plane :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{concealment.detect_distance_by_plane} km</CardText>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <CardText className="text-left">After fire :</CardText>
+                                            </div>
+                                            <div className="col">
+                                                <CardText className="text-left">{concealment.total} km</CardText>
                                             </div>
                                         </div>
                                     </CardBody>
