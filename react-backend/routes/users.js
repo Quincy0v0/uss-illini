@@ -296,7 +296,6 @@ router.post('/update_val',function(req,res){
 
 
 router.post('/delete', function(req, res){
-    console.log("hello");
     var ship_id = String(req.body.ship_id);
 
     pool.getConnection(function(error, connection){
@@ -343,7 +342,6 @@ router.post('/radar', function(req, res){
         if (error){
             throw error;
         }
-        console.log(account_id);
         var command = "SELECT avg((meKills-totalKills)/(stdtotalKills)) AS Kills, " +
             "avg((meSurvival-totalSurvival)/(stdtotalSurvival)) " +
             "AS Survival, avg((meWins-totalWins)/(stdtotalWins)) " +
@@ -377,12 +375,104 @@ router.post('/radar', function(req, res){
         connection.query(command, function(error, results, fields) {
             if(error) throw error;
             connection.release();
-            console.log(results)
             var data = results[0];
             res.json([data]);
         });
     });
 
+});
+
+router.post('/player', function(req, res) {
+    account_id = req.body.account_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        connection.query("SELECT * FROM account_stats WHERE account_id = '" + account_id + "';",function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            var data = results[0];
+            res.json([data]);
+        });
+    });
+});
+
+router.post('/playerShip', function(req, res) {
+    account_id = req.body.account_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        connection.query("SELECT * FROM random_ships_stats WHERE account_id = '" + account_id + "';",function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            res.json(results);
+        });
+    });
+});
+
+router.post('/playerShipInfo', function(req, res) {
+    ship_id = req.body.ship_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        connection.query("SELECT * FROM ships WHERE ship_id = '" + ship_id + "';",function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            res.json([results[0]]);
+        });
+    });
+});
+
+router.post('/playerShipScore', function(req, res) {
+    account_id = req.body.account_id;
+    ship_id = req.body.ship_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        command = "SELECT avg((meKills-totalKills)/(stdtotalKills)) AS Kills, " +
+            "avg((meSurvival-totalSurvival)/(stdtotalSurvival)) " +
+            "AS Survival, avg((meWins-totalWins)/(stdtotalWins)) " +
+            "AS Wins, avg((meDamage-totalDamage)/(stdtotalDamage)) " +
+            "AS Damage, avg((meObjective-totalObjective)/(stdtotalObjective)) " +
+            "AS Objective FROM (SELECT ship_id, avg(frags/battles) " +
+            "AS meKills, avg(survived_battles/battles) " +
+            "AS meSurvival, avg(wins/battles) " +
+            "AS meWins, avg(damage_dealt/battles) " +
+            "AS meDamage, avg(capture_points/battles) " +
+            "AS meObjective " +
+            "FROM random_ships_stats " +
+            "WHERE account_id = '"+account_id+"' AND " +
+            "ship_id = '" + ship_id +
+            "' GROUP BY ship_id) " +
+            "AS me " +
+            "INNER JOIN " +
+            "(SELECT ship_id, avg(frags/battles) " +
+            "AS totalKills, avg(survived_battles/battles) " +
+            "AS totalSurvival, avg(wins/battles) " +
+            "AS totalWins, avg(damage_dealt/battles) " +
+            "AS totalDamage, avg(capture_points/battles) " +
+            "AS totalObjective, std(frags/battles) " +
+            "AS stdtotalKills, std(survived_battles/battles) " +
+            "AS stdtotalSurvival, std(wins/battles) " +
+            "AS stdtotalWins, std(damage_dealt/battles) " +
+            "AS stdtotalDamage, std(capture_points/battles) " +
+            "AS stdtotalObjective " +
+            "FROM random_ships_stats " +
+            "GROUP BY ship_id) AS total " +
+            "ON me.ship_id = total.ship_id;";
+        connection.query(command,function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            res.json([results[0]]);
+        });
+    });
 });
 
 module.exports = router;
