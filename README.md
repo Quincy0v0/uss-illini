@@ -40,6 +40,10 @@ https://www.jetbrains.com/webstorm/
 ```
 cd uss-illini             // enter the project directory
 npm i                     // install the modules required for our Web App
+frontend：
+npm i react-plotly.js plotly.js react-bootstrap-table
+backend：
+npm i mysql
 npm start                 // you can view the site at http://localhost:3000/
 ```
 ## To write new pages:                
