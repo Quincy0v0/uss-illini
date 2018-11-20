@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Label, Input, FormText, InputGroup, InputGroupAddon} from 'reactstrap';
 import { Container, Row, Col } from 'reactstrap';
-import Plot from 'react-plotly.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import {
@@ -364,15 +363,8 @@ class Graphs extends Component {
                 </Navbar>
                 <p/>
                 <Container fluid>
-                    <PlayerCard data={this.state.account_data} score={this.state.data[0]['r']}/>
+                    <PlayerCard data={this.state.account_data} score={this.state.data[0]['r']} plot_data={this.state.data} layout={this.state.layout}/>
                 </Container>
-
-                <div className="container">
-                    <Plot
-                      data = {this.state.data}
-                      layout = {this.state.layout}
-                    />
-                </div>
 
                 <Container fluid>
                     <Button onClick={() => {this.loadTable()}}>

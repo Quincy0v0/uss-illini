@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Button, CardHeader, CardFooter, CardBody, CardSubtitle,CardColumns,
     CardTitle, CardText } from 'reactstrap';
+import Plot from 'react-plotly.js';
 import { Container, Row, Col } from 'reactstrap';
 
 class PlayerCard extends Component {
@@ -283,6 +284,17 @@ class PlayerCard extends Component {
                                                 <CardText className="text-left">{this.props.data["ramming_frags"]}</CardText>
                                             </div>
                                         </div>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                            <Col>
+                                <Card>
+                                    <CardHeader>Player's Weapon</CardHeader>
+                                    <CardBody>
+                                        <Plot
+                                            data = {this.props.plot_data}
+                                            layout = {this.props.layout}
+                                        />
                                     </CardBody>
                                 </Card>
                             </Col>
