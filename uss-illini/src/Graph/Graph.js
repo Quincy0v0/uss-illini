@@ -46,7 +46,7 @@ class Graphs extends Component {
             polar: {
               radialaxis: {
                 visible: true,
-                range: [-3, 3]
+                range: [-1.5, 1.5]
               }
             },
               margin: {
