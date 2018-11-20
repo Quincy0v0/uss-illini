@@ -413,6 +413,22 @@ router.post('/playerShip', function(req, res) {
     });
 });
 
+router.post('/playerShips', function(req, res) {
+    account_id = req.body.account_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        command = "SELECT * FROM (SELECT DISTINCT * FROM random_ships_stats AS t1 INNER JOIN (SELECT DISTINCT ship_id AS ship_id_key, name, tier, nation, type, images_small, images_medium, images_large, images_contour FROM ships) AS t2 ON t1.ship_id = t2.ship_id_key WHERE account_id = '"+ account_id +"') AS t3 INNER JOIN (SELECT me.ship_id, avg((meKills-totalKills)/(stdtotalKills)) AS Kills, avg((meSurvival-totalSurvival)/(stdtotalSurvival)) AS Survival, avg((meWins-totalWins)/(stdtotalWins)) AS Wins, avg((meDamage-totalDamage)/(stdtotalDamage)) AS Damage, avg((meObjective-totalObjective)/(stdtotalObjective)) AS Objective FROM (SELECT ship_id, avg(frags/battles) AS meKills, avg(survived_battles/battles) AS meSurvival, avg(wins/battles) AS meWins, avg(damage_dealt/battles) AS meDamage, avg(capture_points/battles) AS meObjective FROM random_ships_stats WHERE account_id = '"+ account_id +"' GROUP BY ship_id) AS me INNER JOIN (SELECT ship_id, avg(frags/battles) AS totalKills, avg(survived_battles/battles) AS totalSurvival, avg(wins/battles) AS totalWins, avg(damage_dealt/battles) AS totalDamage, avg(capture_points/battles) AS totalObjective, std(frags/battles) AS stdtotalKills, std(survived_battles/battles) AS stdtotalSurvival, std(wins/battles) AS stdtotalWins, std(damage_dealt/battles) AS stdtotalDamage, std(capture_points/battles) AS stdtotalObjective FROM random_ships_stats GROUP BY ship_id) AS total ON me.ship_id = total.ship_id GROUP BY ship_id) AS t4 ON t3.ship_id = t4.ship_id;"
+        connection.query(command,function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            res.json(results);
+        });
+    });
+});
+
 router.post('/playerShipInfo', function(req, res) {
     ship_id = req.body.ship_id;
     pool.getConnection(function(error, connection){
