@@ -231,6 +231,7 @@ class Graphs extends Component {
                         </Nav>
                     </Collapse>
                 </Navbar>
+                <p/>
                 <Container fluid>
                     <PlayerCard data={this.state.account_data} score={this.state.data[0]['r']}/>
                 </Container>
