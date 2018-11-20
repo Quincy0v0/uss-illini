@@ -286,20 +286,23 @@ class Graphs extends Component {
                             <NavItem>
                                 <NavLink href="https://github.com/Quincy0v0/uss-illini">GitHub</NavLink>
                             </NavItem>
-                            <NavItem>
-                                <Button onClick={() => {this.addToAccountList()}}>
-                                    Add To Comparison
-                                </Button>
-                                <Button onClick={() => {this.removeFromAccountList()}}>
-                                    Removed From Comparison
-                                </Button>
-                                <Button onClick={() => {this.toggle(),this.load_account_list_data()}}>
-                                    Start Comparison
-                                </Button>
-                                <Button onClick={() => {this.setState({account_list : []}), alert("Success");}}>
-                                    Reset Comparison
-                                </Button>
-                            </NavItem>
+                            <UncontrolledDropdown nav inNavbar>
+                                <DropdownToggle nav caret>
+                                    Compare Players
+                                </DropdownToggle>
+                                <DropdownMenu right>
+                                    <DropdownItem onClick={() => {this.addToAccountList()}}>
+                                        Add To Comparison
+                                    </DropdownItem>
+                                    <DropdownItem onClick={() => {this.removeFromAccountList()}}>
+                                        Remove From Comparison
+                                    </DropdownItem>
+                                    <DropdownItem divider />
+                                    <DropdownItem onClick={() => {this.toggle(),this.load_account_list_data()}}>
+                                        Show Comparison Results
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </UncontrolledDropdown>
                         </Nav>
                     </Collapse>
                 </Navbar>
@@ -307,6 +310,7 @@ class Graphs extends Component {
                 <Container fluid>
                     <PlayerCard data={this.state.account_data} score={this.state.data[0]['r']} plot_data={this.state.data} layout={this.state.layout}/>
                 </Container>
+
 
                 <Container fluid>
                     <PlayerTable data={this.state.allShipData}/>
@@ -319,6 +323,7 @@ class Graphs extends Component {
                   </ModalBody>
                   <ModalFooter>
                     <Button color="secondary" onClick={this.toggle}>Close</Button>
+                      <Button color="warning" onClick={() => {this.setState({account_list : []}), alert("Success");}}>Reset</Button>
                   </ModalFooter>
                 </Modal>
               </div>
