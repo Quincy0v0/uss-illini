@@ -60,8 +60,8 @@ class Graphs extends Component {
           },
           data : [{
             type: 'scatterpolar',
-            r: [-3, -3, -3, -3, -3],
-            theta: ['Kills','Survival','Wins','Damage','Objective'],
+            r: [-1, -1, -1, -1, -1, -1],
+            theta: ['Kills','Survival','Wins','Damage','Objective','Kills'],
             fill: 'toself'
           }],
         };
@@ -126,7 +126,7 @@ class Graphs extends Component {
         .then(res => res.json())
         .then(res => {
             if (res[0]){
-                var result = [res[0]['Kills'],res[0]['Survival'],res[0]['Wins'],res[0]['Damage'],res[0]['Objective']];
+                var result = [res[0]['Kills'],res[0]['Survival'],res[0]['Wins'],res[0]['Damage'],res[0]['Objective'],res[0]['Kills']];
                 var dict = {};
                 for (var key in this.state.data[0]) {
                     if(key == 'r'){
@@ -326,7 +326,7 @@ class Graphs extends Component {
                   </ModalBody>
                   <ModalFooter>
                     <Button color="secondary" onClick={this.toggle}>Close</Button>
-                      <Button color="warning" onClick={() => {this.setState({account_list : [], account_list_data : [], account_list_score : [],});}}>Reset</Button>
+                      <Button color="warning" onClick={() => {this.setState({account_list : [], account_list_data : [], account_list_score : [],}); }}>Reset</Button>
                   </ModalFooter>
                 </Modal>
               </div>
