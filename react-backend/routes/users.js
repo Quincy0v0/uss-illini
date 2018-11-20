@@ -496,4 +496,28 @@ router.post('/listAllAccounts', function(req, res) {
 
 });
 
+router.post('/players', function(req, res) {
+    account_ids = req.body.account_ids;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        var command = "SELECT * FROM account_stats WHERE False";
+        if (account_ids.length > 0){
+            command = "SELECT * FROM account_stats WHERE ";
+            for(var i = 0; i < account_ids.length ; i++){
+                command += "account_id = '"  + account_ids[i] + "' OR ";
+            }
+            command = command.substring(0, command.length - 4);
+            command += ";";
+        }
+        connection.query(command,function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            res.json(results);
+        });
+    });
+});
+
 module.exports = router;

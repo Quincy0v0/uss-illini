@@ -38,6 +38,10 @@ function enumFormatter(cell, row, enumObject) {
   return enumObject[cell];
 }
 
+function imageFormatter(cell, row){
+  return "<img src='"+cell+"'"+' style="width:100%;" />' ;
+}
+
 export default class ScrollTable extends React.Component {
   constructor(props) {
       super(props);
@@ -49,10 +53,13 @@ export default class ScrollTable extends React.Component {
     var ships = this.props.ships;
     var score = this.props.score;
     var combineddata = [];
+    var set = new Set();
     for(var i = 0; i < data.length ; i++){
-      if (ships[i] && score[i]) {
+      if (data[i] && ships[i] && score[i] && !set.has(ships[i]['name'])) {
+          set.add(ships[i]['name']);
           combineddata.push({
               ship : ships[i]['name'],
+              image: ships[i]['images_small'],
               tier : ships[i]['tier'],
               type : ships[i]['type'],
               nation : ships[i]['nation'],
@@ -70,9 +77,32 @@ export default class ScrollTable extends React.Component {
           });
       }
     }
+    const options = {
+        page: 1,  // which page you want to show as default
+        sizePerPageList: [ {
+          text: '5', value: 5
+        }, {
+          text: '10', value: 10
+        }, {
+          text: 'All', value: combineddata.length
+        } ], // you can change the dropdown list for size per page
+        sizePerPage: 15,  // which size per page you want to locate as default
+        pageStartIndex: 1, // where to start counting the pages
+        paginationSize: 10,  // the pagination bar size.
+        prePage: 'Prev', // Previous page button text
+        nextPage: 'Next', // Next page button text
+        firstPage: 'First', // First page button text
+        lastPage: 'Last', // Last page button text
+        paginationShowsTotal: this.renderShowsTotal,  // Accept bool or function
+        paginationPosition: 'top',  // default is bottom, top and both is all available
+        hideSizePerPage: true //> You can hide the dropdown for sizePerPage
+        // alwaysShowAllBtns: true // Always show next and previous button
+        // withFirstAndLast: false > Hide the going to First and Last page button
+    };
     return (
-      <BootstrapTable data={combineddata} height='1080' scrollTop={ 'Bottom' }>
+      <BootstrapTable data={combineddata} pagination={ true } options={ options }>
           <TableHeaderColumn dataField='ship' isKey filter={ { type: 'TextFilter', delay: 1000 } }>Ships</TableHeaderColumn>
+          <TableHeaderColumn dataField='image' dataFormat={imageFormatter}></TableHeaderColumn>
           <TableHeaderColumn dataField='tier' filterFormatted dataFormat={ enumFormatter } formatExtraData={ tierOption }
           filter={ { type: 'SelectFilter', options: tierOption } }>Tier</TableHeaderColumn>
           <TableHeaderColumn dataField='type' filterFormatted dataFormat={ enumFormatter } formatExtraData={ typeOption }
