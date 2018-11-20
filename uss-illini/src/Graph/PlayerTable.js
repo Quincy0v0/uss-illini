@@ -50,22 +50,20 @@ export default class ScrollTable extends React.Component {
   }
   render() {
     var data = this.props.data;
-    var ships = this.props.ships;
-    var score = this.props.score;
     var combineddata = [];
     var set = new Set();
     for(var i = 0; i < data.length ; i++){
-      if (data[i] && ships[i] && score[i] && !set.has(ships[i]['name'])) {
-          set.add(ships[i]['name']);
+      if (data[i]  && !set.has(data[i]['name'])) {
+          set.add(data[i]['name']);
           combineddata.push({
-              ship : ships[i]['name'],
-              image: ships[i]['images_small'],
-              tier : ships[i]['tier'],
-              type : ships[i]['type'],
-              nation : ships[i]['nation'],
+              ship : data[i]['name'],
+              image: data[i]['images_small'],
+              tier : data[i]['tier'],
+              type : data[i]['type'],
+              nation : data[i]['nation'],
               battles : data[i]['battles'],
               winrate : Math.round((data[i]['wins'] / data[i]['battles'])*100)/100,
-              rating : Math.round((score[i]['Kills']*1000+score[i]['Survival']*1000+score[i]['Wins']*1000+score[i]['Damage']*1000+score[i]['Objective']*1000)/5)+3000,
+              rating : Math.round((data[i]['Kills']*1000+data[i]['Survival']*1000+data[i]['Wins']*1000+data[i]['Damage']*1000+data[i]['Objective']*1000)/5)+3000,
               averagedamage : Math.round((data[i]['damage_dealt'] / data[i]['battles'])*100)/100,
               averagekills :  Math.round((data[i]['frags'] / data[i]['battles'])*100)/100,
               averageplanekills : Math.round((data[i]['planes_killed'] / data[i]['battles'])*100)/100,

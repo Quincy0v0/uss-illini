@@ -28,22 +28,17 @@ class Graphs extends Component {
         this.account_idChange = this.account_idChange.bind(this);
         this.load_player = this.load_player.bind(this);
         this.load_allShipPlayer = this.load_allShipPlayer.bind(this);
-        this.load_player_ship = this.load_player_ship.bind(this);
-        this.load_player_score = this.load_player_score.bind(this);
         this.list_all_accounts = this.list_all_accounts.bind(this);
         this.addToAccountList = this.addToAccountList.bind(this);
         this.removeFromAccountList = this.removeFromAccountList.bind(this);
         this.load_account_list_data = this.load_account_list_data.bind(this);
         this.toggle = this.toggle.bind(this);
-        this.loadTable = this.loadTable.bind(this);
         this.state = {
           show : false,
           account_list : [],
           account_list_data : [],
           account_list_score : [],
           all_account : {},
-          playerships:[],
-          playerscore:[],
           account_data : [],
           account_id : '1009061145',
           allShipData : [],
@@ -93,7 +88,7 @@ class Graphs extends Component {
     }
 
     load_allShipPlayer(account_id) {
-        fetch('/users/playerShip', {
+        fetch('/users/playerShips', {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
@@ -103,21 +98,12 @@ class Graphs extends Component {
         })
             .then(res => res.json())
             .then(res => {
-                if (res[0]){
+                if (res){
                     this.setState({allShipData: res});
                 }
                 else{
                     //alert("No such player found!");
                 }
-            })
-            .then(res =>{
-                this.setState({playerships:[],playerscore:[]});
-                /*
-                for(var i = 0; i < this.state.allShipData.length ; i++){
-                    this.setState({playerships:[],playerscore:[]});
-                    this.load_player_ship(this.state.allShipData[i]['ship_id']);
-                    this.load_player_score(this.state.allShipData[i]['account_id'],this.state.allShipData[i]['ship_id']);
-                }*/
             })
     }
 
@@ -153,28 +139,6 @@ class Graphs extends Component {
         })
     }
 
-    load_player_ship(ship_id) {
-        fetch('/users/playerShipInfo', {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ship_id:ship_id }),
-        })
-            .then(res => res.json())
-            .then(res => {
-                if (res[0]){
-                    var newships = this.state.playerships;
-                    newships.push(res[0]);
-                    this.setState({playerships: newships});
-                }
-                else{
-                    //alert("No such player found!");
-                }
-            })
-    }
-
     list_all_accounts() {
         fetch('/users/listAllAccounts', {
             method: 'post',
@@ -188,28 +152,6 @@ class Graphs extends Component {
             .then(res => {
                 if (res){
                     this.setState({all_account: res});
-                }
-                else{
-                    //alert("No such player found!");
-                }
-            })
-    }
-
-    load_player_score(account_id,ship_id) {
-        fetch('/users/playerShipScore', {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ account_id: account_id, ship_id:ship_id }),
-        })
-            .then(res => res.json())
-            .then(res => {
-                if (res[0]){
-                    var newscore = this.state.playerscore;
-                    newscore.push(res[0]);
-                    this.setState({ playerscore: newscore});
                 }
                 else{
                     //alert("No such player found!");
@@ -318,14 +260,6 @@ class Graphs extends Component {
 
     }
 
-    loadTable(){
-      for(var i = 0; i < this.state.allShipData.length ; i++){
-          this.setState({playerships:[],playerscore:[]});
-          this.load_player_ship(this.state.allShipData[i]['ship_id']);
-          this.load_player_score(this.state.allShipData[i]['account_id'],this.state.allShipData[i]['ship_id']);
-      }
-    }
-
     render() {
         return (
             <div>
@@ -375,10 +309,7 @@ class Graphs extends Component {
                 </div>
 
                 <Container fluid>
-                    <Button onClick={() => {this.loadTable()}}>
-                        Load Table
-                    </Button>
-                    <PlayerTable data={this.state.allShipData} ships={this.state.playerships} score={this.state.playerscore}/>
+                    <PlayerTable data={this.state.allShipData}/>
                 </Container>
 
                 <Modal isOpen={this.state.show} toggle={this.toggle} className={this.props.className} className="Modal">
