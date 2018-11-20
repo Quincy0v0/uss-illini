@@ -289,11 +289,13 @@ class PlayerCard extends Component {
                             </Col>
                             <Col>
                                 <Card>
-                                    <CardHeader>Player's Weapon</CardHeader>
+                                    <CardHeader>Player's Statistics based on STD</CardHeader>
                                     <CardBody>
                                         <Plot
                                             data = {this.props.plot_data}
                                             layout = {this.props.layout}
+                                            config = {{displayModeBar: false}}
+                                            style={{ width: "100%", height: "400px" }}
                                         />
                                     </CardBody>
                                 </Card>

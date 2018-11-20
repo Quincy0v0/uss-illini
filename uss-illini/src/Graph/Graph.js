@@ -42,12 +42,20 @@ class Graphs extends Component {
           account_id : '1009061145',
           allShipData : [],
           layout : {
+              autosize :true,
             polar: {
               radialaxis: {
                 visible: true,
                 range: [-3, 3]
               }
             },
+              margin: {
+                  l: 0,
+                  r: 20,
+                  b: 20,
+                  t: 20,
+                  pad: 20
+              },
             showlegend: false
           },
           data : [{
