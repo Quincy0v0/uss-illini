@@ -206,6 +206,10 @@ class Graphs extends Component {
         this.setState({account_list : newaccount_list});
     }
 
+    resetModal(){
+
+    }
+
     toggle() {
       this.setState({ show: !this.state.show });
     }
@@ -311,7 +315,6 @@ class Graphs extends Component {
                     <PlayerCard data={this.state.account_data} score={this.state.data[0]['r']} plot_data={this.state.data} layout={this.state.layout}/>
                 </Container>
 
-
                 <Container fluid>
                     <PlayerTable data={this.state.allShipData}/>
                 </Container>
@@ -323,7 +326,7 @@ class Graphs extends Component {
                   </ModalBody>
                   <ModalFooter>
                     <Button color="secondary" onClick={this.toggle}>Close</Button>
-                      <Button color="warning" onClick={() => {this.setState({account_list : []}), alert("Success");}}>Reset</Button>
+                      <Button color="warning" onClick={() => {this.setState({account_list : [], account_list_data : [], account_list_score : [],});}}>Reset</Button>
                   </ModalFooter>
                 </Modal>
               </div>
