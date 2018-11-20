@@ -19,6 +19,8 @@ import {
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import PlayerCard from './PlayerCard.js';
 import PlayerTable from './PlayerTable.js';
+import ComparisonTable from './ComparisonTable.js';
+import './modal.css';
 class Graphs extends Component {
     constructor(props) {
         super(props);
@@ -29,12 +31,21 @@ class Graphs extends Component {
         this.load_player_ship = this.load_player_ship.bind(this);
         this.load_player_score = this.load_player_score.bind(this);
         this.list_all_accounts = this.list_all_accounts.bind(this);
+        this.addToAccountList = this.addToAccountList.bind(this);
+        this.removeFromAccountList = this.removeFromAccountList.bind(this);
+        this.load_account_list_data = this.load_account_list_data.bind(this);
+        this.toggle = this.toggle.bind(this);
+        this.loadTable = this.loadTable.bind(this);
         this.state = {
+          show : false,
+          account_list : [],
+          account_list_data : [],
+          account_list_score : [],
           all_account : {},
           playerships:[],
           playerscore:[],
           account_data : [],
-          account_id : '1019218342',
+          account_id : '1009061145',
           allShipData : [],
           layout : {
             polar: {
@@ -96,16 +107,17 @@ class Graphs extends Component {
                     this.setState({allShipData: res});
                 }
                 else{
-                    alert("No such player found!");
+                    //alert("No such player found!");
                 }
             })
             .then(res =>{
+                this.setState({playerships:[],playerscore:[]});
+                /*
                 for(var i = 0; i < this.state.allShipData.length ; i++){
                     this.setState({playerships:[],playerscore:[]});
                     this.load_player_ship(this.state.allShipData[i]['ship_id']);
                     this.load_player_score(this.state.allShipData[i]['account_id'],this.state.allShipData[i]['ship_id']);
-                }
-                //console.log(this.state.playerships);
+                }*/
             })
     }
 
@@ -130,13 +142,13 @@ class Graphs extends Component {
                         dict[key] = this.state.data[0][key];
                     }
                 }
-                var newData = [dict]; 
+                var newData = [dict];
                 this.setState({
                   data : newData,
                 });
             }
             else{
-                alert("No such player/ship found!");
+                //alert("No such player/ship found!");
             }
         })
     }
@@ -209,6 +221,111 @@ class Graphs extends Component {
         this.setState({account_id: this.state.all_account[event.target.value]});
     }
 
+    addToAccountList(){
+        var newaccount_list = [];
+        var flag = false;
+        for (var i = 0; i < this.state.account_list.length ; i++){
+            if (this.state.account_list[i] == String(this.state.account_id)){
+              flag = true;
+            }
+            newaccount_list.push(this.state.account_list[i]);
+        }
+        if (flag == false){
+            newaccount_list.push(String(this.state.account_id));
+            alert("Success");
+        }else{
+            alert("Error! Account Already Exists");
+        }
+        this.setState({account_list : newaccount_list});
+    }
+
+    removeFromAccountList(){
+        var newaccount_list = [];
+        var flag = false;
+        for (var i = 0; i < this.state.account_list.length ; i++){
+            if (this.state.account_list[i] != String(this.state.account_id)){
+                newaccount_list.push(this.state.account_list[i]);
+            }else{
+                flag = true;
+            }
+        }
+        if (flag == true){
+            alert("Success");
+        }else{
+            alert("Fail! Account Doesn't Exist");
+        }
+        this.setState({account_list : newaccount_list});
+    }
+
+    toggle() {
+      this.setState({ show: !this.state.show });
+    }
+
+
+    load_account_list_data(){
+        this.setState({
+           account_list_score : [],
+           account_list_data : [],
+        });
+        for(var j = 0 ; j < this.state.account_list.length ; j++){
+          var account_id = this.state.account_list[j];
+          fetch('/users/radar', {
+              method: 'post',
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({account_id: account_id}),
+          })
+          .then(res => res.json())
+          .then(res => {
+              if (res[0]){
+                  var score = Math.round(res[0]['Kills']*1000+res[0]['Survival']*1000+res[0]['Wins']*1000+res[0]['Damage']*1000+res[0]['Objective']*1000)/5+3000;
+                  var newData = [];
+                  for(var i = 0; i < this.state.account_list_score.length ; i++){
+                      newData.push(this.state.account_list_score[i]);
+                  }
+                  newData.push(score);
+                  this.setState({
+                     account_list_score : newData,
+                  });
+              }
+              else{
+                  //alert("No such player/ship found!");
+              }
+          })
+        }
+
+        fetch('/users/players', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ account_ids: this.state.account_list }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res){
+                    this.setState({
+                       account_list_data : res,
+                    });
+                }
+                else{
+                    //alert("No such player found!");
+                }
+            })
+
+    }
+
+    loadTable(){
+      for(var i = 0; i < this.state.allShipData.length ; i++){
+          this.setState({playerships:[],playerscore:[]});
+          this.load_player_ship(this.state.allShipData[i]['ship_id']);
+          this.load_player_score(this.state.allShipData[i]['account_id'],this.state.allShipData[i]['ship_id']);
+      }
+    }
+
     render() {
         return (
             <div>
@@ -228,6 +345,20 @@ class Graphs extends Component {
                             <NavItem>
                                 <NavLink href="https://github.com/Quincy0v0/uss-illini">GitHub</NavLink>
                             </NavItem>
+                            <NavItem>
+                                <Button onClick={() => {this.addToAccountList()}}>
+                                    Add To Comparison
+                                </Button>
+                                <Button onClick={() => {this.removeFromAccountList()}}>
+                                    Removed From Comparison
+                                </Button>
+                                <Button onClick={() => {this.toggle(),this.load_account_list_data()}}>
+                                    Start Comparison
+                                </Button>
+                                <Button onClick={() => {this.setState({account_list : []}), alert("Success");}}>
+                                    Reset Comparison
+                                </Button>
+                            </NavItem>
                         </Nav>
                     </Collapse>
                 </Navbar>
@@ -244,9 +375,22 @@ class Graphs extends Component {
                 </div>
 
                 <Container fluid>
+                    <Button onClick={() => {this.loadTable()}}>
+                        Load Table
+                    </Button>
                     <PlayerTable data={this.state.allShipData} ships={this.state.playerships} score={this.state.playerscore}/>
                 </Container>
-            </div>
+
+                <Modal isOpen={this.state.show} toggle={this.toggle} className={this.props.className} className="Modal">
+                  <ModalHeader toggle={this.toggle}>Player Comparison</ModalHeader>
+                  <ModalBody>
+                        <ComparisonTable data = {this.state.account_list_data} score = {this.state.account_list_score}/>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="secondary" onClick={this.toggle}>Close</Button>
+                  </ModalFooter>
+                </Modal>
+              </div>
         );
     }
 }
