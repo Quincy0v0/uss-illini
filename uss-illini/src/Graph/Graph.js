@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Label, Input, FormText, InputGroup, InputGroupAddon} from 'reactstrap';
 import { Container, Row, Col } from 'reactstrap';
+import { TabContent, TabPane, Card,  CardTitle, CardText } from 'reactstrap';
+import classnames from 'classnames';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import {
@@ -37,7 +39,9 @@ class Graphs extends Component {
         this.load_account_list_data = this.load_account_list_data.bind(this);
         this.load_behavior = this.load_behavior.bind(this);
         this.toggle = this.toggle.bind(this);
+        this.toggle_tab = this.toggle_tab.bind(this);
         this.state = {
+            activeTab: '1',
           behavior : [],
           behavior1 : [],
           behavior2 : [],
@@ -87,6 +91,14 @@ class Graphs extends Component {
         this.load_player(this.state.account_id);
         this.load_allShipPlayer(this.state.account_id);
         this.load_behavior(this.state.account_id);
+    }
+
+    toggle_tab(tab) {
+        if (this.state.activeTab !== tab) {
+            this.setState({
+                activeTab: tab
+            });
+        }
     }
 
     load_player(account_id) {
@@ -480,18 +492,63 @@ class Graphs extends Component {
                         </Nav>
                     </Collapse>
                 </Navbar>
-                <p/>
-                <Container fluid>
-                    <PlayerCard data={this.state.account_data} score={this.state.data[0]['r']} plot_data={this.state.data} layout={this.state.layout}/>
-                </Container>
+
+                <Nav tabs>
+                    <NavItem>
+                        <NavLink
+                            className={classnames({ active: this.state.activeTab === '1' })}
+                            onClick={() => { this.toggle_tab('1'); }}
+                        >
+                            Player summery
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink
+                            className={classnames({ active: this.state.activeTab === '2' })}
+                            onClick={() => { this.toggle_tab('2'); }}
+                        >
+                            Behavior Analysis
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink
+                            className={classnames({ active: this.state.activeTab === '3' })}
+                            onClick={() => { this.toggle_tab('3'); }}
+                        >
+                            All Ship Stats
+                        </NavLink>
+                    </NavItem>
+                </Nav>
 
                 <Container fluid>
-                    <PlayerPredict data={this.state.behavior} data1={this.state.behavior1} data2={this.state.behavior2} data3={this.state.behavior3} data4={this.state.behavior4} data5={this.state.behavior5} data6={this.state.behavior6}/>
+                    <TabContent activeTab={this.state.activeTab}>
+                        <TabPane tabId="1">
+                            <p/>
+                            <Row>
+                                <Container fluid>
+                                    <PlayerCard data={this.state.account_data} score={this.state.data[0]['r']} plot_data={this.state.data} layout={this.state.layout}/>
+                                </Container>
+                            </Row>
+                        </TabPane>
+                        <TabPane tabId="2">
+                            <p/>
+                            <Row>
+                                <Container fluid>
+                                    <PlayerPredict data={this.state.behavior} data1={this.state.behavior1} data2={this.state.behavior2} data3={this.state.behavior3} data4={this.state.behavior4} data5={this.state.behavior5} data6={this.state.behavior6}/>
+                                </Container>
+                            </Row>
+                        </TabPane>
+                        <TabPane tabId="3">
+                            <p/>
+                            <Row>
+                                <Container fluid>
+                                    <PlayerTable data={this.state.allShipData}/>
+                                </Container>
+                            </Row>
+                        </TabPane>
+                    </TabContent>
                 </Container>
 
-                <Container fluid>
-                    <PlayerTable data={this.state.allShipData}/>
-                </Container>
 
                 <Modal isOpen={this.state.show} toggle={this.toggle} className={this.props.className} className="Modal">
                   <ModalHeader toggle={this.toggle}>Player Comparison</ModalHeader>

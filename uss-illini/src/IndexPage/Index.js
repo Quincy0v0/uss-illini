@@ -122,7 +122,7 @@ class Index extends Component {
                         {' '}
                         <Button color="success" onClick={() => this.switchPages(2)}>Player Stats</Button>
                         {' '}
-                        <Button color="white" onClick={() => this.switchPages(-1)}>Simulator</Button>
+                        <Button color="info" onClick={() => this.switchPages(-1)}>Main Battery Simulator</Button>
                     </p>
                     <Carousel
                         activeIndex={activeIndex}
