@@ -94,6 +94,14 @@ Cpanel:
 install nodejs and bind npm -> npm i forever
 Front end：
 npm i react-plotly.js plotly.js react-bootstrap-table react-bootstrap-typeahead
+```
+
+## Install React Component Libs (Important)
+```
+Front end：
+npm i react-plotly.js plotly.js react-bootstrap-table react-bootstrap-typeahead
+
 Back end：
 npm i mysql
+
 ```
