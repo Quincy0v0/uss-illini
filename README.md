@@ -90,11 +90,11 @@ Y
 (React start at PORT3001)
 ```
 
-## install react component libs
+## Install React Component Libs (Important)
 ```
-
 Front end：
 npm i react-plotly.js plotly.js react-bootstrap-table react-bootstrap-typeahead
+
 Back end：
 npm i mysql
 
