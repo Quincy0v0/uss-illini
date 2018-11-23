@@ -17,9 +17,12 @@ import {
     DropdownItem } from 'reactstrap';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import PlayerCard from './PlayerCard.js';
+import PlayerPredict from './PlayerPredict.js';
 import PlayerTable from './PlayerTable.js';
 import ComparisonTable from './ComparisonTable.js';
 import './modal.css';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+import {Typeahead} from 'react-bootstrap-typeahead';
 class Graphs extends Component {
     constructor(props) {
         super(props);
@@ -28,12 +31,22 @@ class Graphs extends Component {
         this.load_player = this.load_player.bind(this);
         this.load_allShipPlayer = this.load_allShipPlayer.bind(this);
         this.list_all_accounts = this.list_all_accounts.bind(this);
+        this.list_all_name = this.list_all_name.bind(this);
         this.addToAccountList = this.addToAccountList.bind(this);
         this.removeFromAccountList = this.removeFromAccountList.bind(this);
         this.load_account_list_data = this.load_account_list_data.bind(this);
+        this.load_behavior = this.load_behavior.bind(this);
         this.toggle = this.toggle.bind(this);
         this.state = {
+          behavior : [],
+          behavior1 : [],
+          behavior2 : [],
+          behavior3 : [],
+          behavior4 : [],
+          behavior5 : [],
+          behavior6 : [],
           show : false,
+          all_name: ["ericsama","Quincy_0v0"],
           account_list : [],
           account_list_data : [],
           account_list_score : [],
@@ -69,9 +82,11 @@ class Graphs extends Component {
 
     componentDidMount() {
         this.list_all_accounts();
+        this.list_all_name();
         this.radar(this.state.account_id);
         this.load_player(this.state.account_id);
         this.load_allShipPlayer(this.state.account_id);
+        this.load_behavior(this.state.account_id);
     }
 
     load_player(account_id) {
@@ -159,6 +174,26 @@ class Graphs extends Component {
             .then(res => {
                 if (res){
                     this.setState({all_account: res});
+                }
+                else{
+                    //alert("No such player found!");
+                }
+            })
+    }
+
+    list_all_name() {
+        fetch('/users/listAllName', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res){
+                    this.setState({all_name: res});
                 }
                 else{
                     //alert("No such player found!");
@@ -271,6 +306,134 @@ class Graphs extends Component {
 
     }
 
+    load_behavior(account_id){
+      this.setState({behavior : [],behavior1 : [],behavior2 : [],behavior3 : [],behavior4 : [],behavior5 : [],behavior6 : []})
+      /*
+      var newbehavior = [];
+      for (var i = 1; i <= 6 ; i++){
+        fetch('/users/behavior' + String(i), {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ account_id: account_id }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res){
+                    newbehavior.push(res);
+                }
+                else{
+                    //alert("No such player found!");
+                }
+            })
+      }
+      this.setState({behavior : newbehavior,})*/
+      fetch('/users/behavior1', {
+          method: 'post',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ account_id: account_id }),
+      })
+          .then(res => res.json())
+          .then(res => {
+              if (res){
+                  this.setState({behavior1 : res});
+              }
+              else{
+                  //alert("No such player found!");
+              }
+          })
+      fetch('/users/behavior2', {
+              method: 'post',
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ account_id: account_id }),
+          })
+              .then(res => res.json())
+              .then(res => {
+                  if (res){
+                      this.setState({behavior2 : res});
+                  }
+                  else{
+                      //alert("No such player found!");
+                  }
+              })
+      fetch('/users/behavior3', {
+          method: 'post',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ account_id: account_id }),
+      })
+          .then(res => res.json())
+          .then(res => {
+              if (res){
+                  this.setState({behavior3 : res});
+              }
+              else{
+                  //alert("No such player found!");
+              }
+          })
+      fetch('/users/behavior4', {
+              method: 'post',
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ account_id: account_id }),
+          })
+              .then(res => res.json())
+              .then(res => {
+                  if (res){
+                      this.setState({behavior4 : res});
+                  }
+                  else{
+                      //alert("No such player found!");
+                  }
+              })
+    fetch('/users/behavior5', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ account_id: account_id }),
+    })
+        .then(res => res.json())
+        .then(res => {
+            if (res){
+                this.setState({behavior5 : res});
+            }
+            else{
+                //alert("No such player found!");
+            }
+        })
+    fetch('/users/behavior6', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ account_id: account_id }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res){
+                    this.setState({behavior6 : res});
+                }
+                else{
+                    //alert("No such player found!");
+                }
+            })
+          }
+  //<Input type="text" name="account_id" id="account_id" value={this.state.all_account[this.state.account_id]} onChange={this.account_idChange} placeholder="nickname"/>
     render() {
         return (
             <div>
@@ -281,8 +444,15 @@ class Graphs extends Component {
                         <Nav className="ml-auto" navbar>
                             <NavItem>
                                 <InputGroup>
-                                    <Input type="text" name="account_id" id="account_id" value={this.state.all_account[this.state.account_id]} onChange={this.account_idChange} placeholder="nickname"/>
-                                    <Button onClick={() => {this.radar(this.state.account_id),this.load_player(this.state.account_id),this.load_allShipPlayer(this.state.account_id)}}>
+                                    <Typeahead
+                                      labelKey="name"
+                                      multiple={false}
+                                      options={this.state.all_name}
+                                      minLength={2}
+                                      onChange = {(selected) => this.setState({account_id: this.state.all_account[selected]})}
+                                      placeholder="Enter username"
+                                    />
+                                    <Button onClick={() => {this.radar(this.state.account_id),this.load_player(this.state.account_id),this.load_allShipPlayer(this.state.account_id),this.load_behavior(this.state.account_id)}}>
                                         Search
                                     </Button>
                                 </InputGroup>
@@ -313,6 +483,10 @@ class Graphs extends Component {
                 <p/>
                 <Container fluid>
                     <PlayerCard data={this.state.account_data} score={this.state.data[0]['r']} plot_data={this.state.data} layout={this.state.layout}/>
+                </Container>
+
+                <Container fluid>
+                    <PlayerPredict data={this.state.behavior} data1={this.state.behavior1} data2={this.state.behavior2} data3={this.state.behavior3} data4={this.state.behavior4} data5={this.state.behavior5} data6={this.state.behavior6}/>
                 </Container>
 
                 <Container fluid>

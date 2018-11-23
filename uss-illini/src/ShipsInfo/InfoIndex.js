@@ -15,7 +15,6 @@ import {
     DropdownItem } from 'reactstrap';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import ShipCard from './ShipCard.js';
-
 class InfoIndex extends Component {
     constructor(props) {
         super(props);
