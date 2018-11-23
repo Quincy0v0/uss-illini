@@ -88,15 +88,18 @@ cd uss-illini
 forever start -c "npm start" ./
 (React start at PORT3001)
 
-To stop: forever stop 0
+To stop: 
+forever stop 0
 
-Cpanel:
-install nodejs and bind npm -> npm i forever
-Front end：
-npm i react-plotly.js plotly.js react-bootstrap-table react-bootstrap-typeahead
+To clear the ports:
+$ ps aux | grep "ussillini"
+for all <pid> in the 2nd col listed:
+$ kill <pid>
+
+
 ```
 
-## Install React Component Libs (Important)
+## Install Libraries (Important)
 ```
 Front end：
 npm i react-plotly.js plotly.js react-bootstrap-table react-bootstrap-typeahead
@@ -104,4 +107,6 @@ npm i react-plotly.js plotly.js react-bootstrap-table react-bootstrap-typeahead
 Back end：
 npm i mysql
 
+Cpanel:
+install nodejs and bind npm -> npm i forever
 ```
