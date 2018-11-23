@@ -30,7 +30,7 @@ class ShipCard extends Component {
             artillery = parseJson(data.default_profile_artillery);
             maneuverability =  parseJson(data.default_profile_mobility);
             concealment = parseJson(data.default_profile_concealment);
-            atbas = parseJson(data.default_profile_atbas);
+            //atbas = parseJson(data.default_profile_atbas); # bug here!
         }
         console.log(data)
         console.log(atbas)
@@ -224,7 +224,8 @@ class ShipCard extends Component {
                                                 <CardText className="text-left">Rotation:</CardText>
                                             </div>
                                             <div className="col">
-                                                <CardText className="text-left">{artillery.rotation_time} s / 180° </CardText>                                            </div>
+                                                <CardText className="text-left">{artillery.rotation_time} s / 180° </CardText>
+                                            </div>
                                         </div>
                                         <div className="row">
                                             <div className="col-6">

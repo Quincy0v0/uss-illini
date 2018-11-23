@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Label, Input, FormText, InputGroup, InputGroupAddon } from 'reactstrap';
 import { Container } from 'reactstrap';
+import { Typeahead } from 'react-bootstrap-typeahead';
 import {
     Collapse,
     Navbar,
@@ -19,7 +20,6 @@ class InfoIndex extends Component {
     constructor(props) {
         super(props);
         this.load_ships = this.load_ships.bind(this);
-        this.load_ships_by_name = this.load_ships_by_name.bind(this);
         this.toggle = this.toggle.bind(this);
         this.AddModalToggle = this.AddModalToggle.bind(this);
         this.DeleteModalToggle = this.DeleteModalToggle.bind(this);
@@ -40,6 +40,7 @@ class InfoIndex extends Component {
             UpdateValShipName: "",
             loadShipName: "",
             shipList: {},
+            all_name: [],
         };
     }
 
@@ -90,7 +91,9 @@ class InfoIndex extends Component {
             .then(res => res.json())
             .then(res => {
                 console.log(res);
-                this.setState({ shipList: res })
+                var names = Object.keys(res);
+                this.setState({ shipList: res });
+                this.setState({ all_name: names });
             })
             .catch(error => {
                 console.log(error);
@@ -113,30 +116,6 @@ class InfoIndex extends Component {
                 }
                 else{
                     alert("No such ship found!");
-                }
-            })
-    }
-
-    load_ships_by_name(ship_name) {
-        ship_name = ship_name[0].toUpperCase() + ship_name.substring(1);
-        var ship_id = this.state.shipList[ship_name];
-        console.log(this.state.shipList);
-        console.log(ship_id);
-        fetch('/users/ships', {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ ship_id: ship_id }),
-        })
-            .then(res => res.json())
-            .then(res => {
-                if (res[0]){
-                    this.setState({ data: res[0] });
-                }
-                else{
-                    alert("No such ship named "+ship_name+" has been found!");
                 }
             })
     }
@@ -212,9 +191,16 @@ class InfoIndex extends Component {
                         <Nav className="ml-auto" navbar>
                             <NavItem>
                                 <InputGroup>
-                                    <Input type="search" name="loadShipName" id="loadShipName" value={this.state.loadShipName} placeholder="Enter a ship name here" onChange={this.handleChange} onSubmit={() => {this.load_ships_by_name(this.state.loadShipName)}}/>
+                                    <Typeahead
+                                        labelKey="name"
+                                        multiple={false}
+                                        options={this.state.all_name}
+                                        minLength={2}
+                                        onChange = {(selected) => {this.setState({ loadShipName: selected[0] });}}
+                                        placeholder="Enter ship name here"
+                                    />
                                     <InputGroupAddon addonType="append">
-                                        <Button  color="info" onClick={() => {this.load_ships_by_name(this.state.loadShipName)}}>search</Button>
+                                        <Button  color="info" onClick={() => {this.load_ships(this.state.shipList[this.state.loadShipName])}}>search</Button>
                                     </InputGroupAddon>
                                 </InputGroup>
                             </NavItem>

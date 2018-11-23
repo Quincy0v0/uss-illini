@@ -24,7 +24,7 @@ import PlayerTable from './PlayerTable.js';
 import ComparisonTable from './ComparisonTable.js';
 import './modal.css';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import {Typeahead} from 'react-bootstrap-typeahead';
+import { Typeahead } from 'react-bootstrap-typeahead';
 class Graphs extends Component {
     constructor(props) {
         super(props);
@@ -464,9 +464,11 @@ class Graphs extends Component {
                                       onChange = {(selected) => this.setState({account_id: this.state.all_account[selected]})}
                                       placeholder="Enter username"
                                     />
-                                    <Button onClick={() => {this.radar(this.state.account_id),this.load_player(this.state.account_id),this.load_allShipPlayer(this.state.account_id),this.load_behavior(this.state.account_id)}}>
-                                        Search
-                                    </Button>
+                                    <InputGroupAddon addonType="append">
+                                        <Button  color="info" onClick={() => {this.radar(this.state.account_id),this.load_player(this.state.account_id),this.load_allShipPlayer(this.state.account_id),this.load_behavior(this.state.account_id)}}>
+                                            Search
+                                        </Button>
+                                    </InputGroupAddon>
                                 </InputGroup>
                             </NavItem>
                             <NavItem>
