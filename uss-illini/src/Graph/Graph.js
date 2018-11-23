@@ -56,7 +56,7 @@ class Graphs extends Component {
           account_list_score : [],
           all_account : {},
           account_data : [],
-          account_id : '1009061145',
+          account_id : '1019218342',
           allShipData : [],
           layout : {
               autosize :true,
