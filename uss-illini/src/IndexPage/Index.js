@@ -115,7 +115,7 @@ class Index extends Component {
                 <Jumbotron>
                     <h1 className="display-3">USS Illini</h1>
                     <hr className="my-2" />
-                    <p>USS Illini is a website enable users to search players' and ships' data from out database.</p>
+                    <p>USS Illini is a website enabling users to search players' and ships' data from our database.</p>
                     <p>It can measure the player's performance and enable new players to explore perimeters about new ships.</p>
                     <p className="lead">
                         <Button color="primary" onClick={() => this.switchPages(1)}>Warships Info</Button>

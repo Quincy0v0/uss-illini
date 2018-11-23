@@ -93,7 +93,7 @@ class PlayerCard extends Component {
                                                 <CardText className="text-left">Clan :</CardText>
                                             </div>
                                             <div className="col-6">
-                                                <CardText className="text-left">{this.props.data["account_id_clan"]}</CardText>
+                                                <CardText className="text-left">{this.props.data["name"]}</CardText>
                                             </div>
                                         </div>
                                     </CardBody>

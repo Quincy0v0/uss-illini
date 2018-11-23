@@ -389,7 +389,7 @@ router.post('/player', function(req, res) {
             connection.release();
             throw error;
         }
-        connection.query("SELECT * FROM account_stats WHERE account_id = '" + account_id + "';",function(error,results,fields) {
+        connection.query("SELECT * FROM account_stats INNER JOIN clans on account_stats.clan_id = clans.clan_id WHERE account_id = '" + account_id + "';",function(error,results,fields) {
             connection.release();
             if(error) throw error;
             var data = results[0];
