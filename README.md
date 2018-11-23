@@ -88,9 +88,14 @@ cd uss-illini
 npm start 
 Y
 (React start at PORT3001)
+```
 
+## Install React Component Libs (Important)
+```
 Front end：
-npm i react-plotly.js plotly.js react-bootstrap-table
+npm i react-plotly.js plotly.js react-bootstrap-table react-bootstrap-typeahead
+
 Back end：
 npm i mysql
+
 ```
