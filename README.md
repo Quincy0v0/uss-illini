@@ -40,10 +40,6 @@ https://www.jetbrains.com/webstorm/
 ```
 cd uss-illini             // enter the project directory
 npm i                     // install the modules required for our Web App
-frontend：
-npm i react-plotly.js plotly.js react-bootstrap-table react-bootstrap-typeahead
-backend：
-npm i mysql
 npm start                 // you can view the site at http://localhost:3000/
 ```
 ## To write new pages:                
@@ -74,20 +70,30 @@ reference link: https://www.a2hosting.com/kb/installable-applications/manual-ins
 In uss-illini/package.json:
 {
 ...
+  "scripts": {
+    "start": "set PORT=3001 && PORT=3001 react-scripts start || react-scripts start",
+    ...
+  },
 "proxy": "http://localhost:3000"
 }
 
 4.
 Terminal #1:
 cd react-backend
-npm start 
+forever start -c "npm start" ./
 (Express start at PORT3000)
 
 Terminal #2:
 cd uss-illini 
-npm start 
-Y
+forever start -c "npm start" ./
 (React start at PORT3001)
+
+To stop: forever stop 0
+
+Cpanel:
+install nodejs and bind npm -> npm i forever
+Front end：
+npm i react-plotly.js plotly.js react-bootstrap-table react-bootstrap-typeahead
 ```
 
 ## Install React Component Libs (Important)
