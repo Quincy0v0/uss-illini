@@ -73,7 +73,6 @@ class Graphs extends Component {
                   t: 20,
                   pad: 20
               },
-            showlegend: false
           },
           data : [{
             type: 'scatterpolar',
@@ -555,7 +554,7 @@ class Graphs extends Component {
                 <Modal isOpen={this.state.show} toggle={this.toggle} className={this.props.className} className="Modal">
                   <ModalHeader toggle={this.toggle}>Player Comparison</ModalHeader>
                   <ModalBody>
-                        <ComparisonTable data = {this.state.account_list_data} score = {this.state.account_list_score}/>
+                        <ComparisonTable data = {this.state.account_list_data} score = {this.state.account_list_score} plot_data={this.state.data} layout={this.state.layout}/>
                   </ModalBody>
                   <ModalFooter>
                     <Button color="secondary" onClick={this.toggle}>Close</Button>
