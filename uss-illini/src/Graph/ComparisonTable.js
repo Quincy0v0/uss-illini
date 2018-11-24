@@ -25,6 +25,12 @@ export default class ComparisonTable extends React.Component {
               theta: ['Kills','Survival','Wins','Damage','Objective','Kills'],
               name: 'ilan',
           }],
+          data2 : [{
+              type: 'scatterpolar',
+              r: [-1, -1, -1, -1, -1, -1],
+              theta: ['Win Rate','Damage','XP','Plane Kills','Ship Kills','Win Rate'],
+              name: 'ilan',
+          }],
           combineddata : [],
           called : 0,
           data_arr : [],
