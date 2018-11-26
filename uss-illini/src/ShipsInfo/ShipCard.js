@@ -59,10 +59,64 @@ class ShipCard extends Component {
                 defense: "N/A",
                 slots: []
             },
+            fighters: {
+                count_in_squadron: {
+                    max: "N/A",
+                    min: "N/A",
+                },
+                avg_damage: "N/A",
+                cruise_speed: "N/A",
+                max_ammo: "N/A",
+                max_health: "N/A",
+                name: "N/A",
+                plane_level: "N/A",
+                prepare_time: "N/A",
+            },
+            dive_bomber: {
+                count_in_squadron: {
+                    max: "N/A",
+                    min: "N/A",
+                },
+                accuracy: {
+                    max: "N/A",
+                    min: "N/A",
+                },
+                bomb_burn_probability: "N/A",
+                bomb_bullet_mass: "N/A",
+                cruise_speed: "N/A",
+                max_damage: "N/A",
+                gunner_damage: "N/A",
+                max_health: "N/A",
+                name: "N/A",
+                plane_level: "N/A",
+                prepare_time: "N/A",
+                bomb_name: "N/A",
+            },
+            torpedo_bomber: {
+                count_in_squadron: {
+                    max: "N/A",
+                    min: "N/A",
+                },
+                cruise_speed: "N/A",
+                max_damage: "N/A",
+                max_health: "N/A",
+                name: "N/A",
+                gunner_damage: "N/A",
+                plane_level: "N/A",
+                prepare_time: "N/A",
+                torpedo_distance: "N/A",
+                torpedo_max_speed: "N/A",
+                torpedo_name: "N/A",
+            },
+            flight_control: {
+                bomber_squadrons: "N/A",
+                fighter_squadrons: "N/A",
+                torpedo_squadrons: "N/A",
+            },
             range : {min: 0, max: 1},
             type: '',
             price_credit: '',
-            price_gold: ''
+            price_gold: '',
         };
     }
 
@@ -239,12 +293,231 @@ class ShipCard extends Component {
                     </div>
                 )
                 }
-            )
+            );
             return (
                 <Card>
                     <CardHeader>Main Guns Shells</CardHeader>
                     <CardBody>
                         {guns}
+                    </CardBody>
+                </Card>
+            )
+        }
+    }
+
+    flight_control_card(){
+        if (this.state.flight_control != undefined){
+            return (
+                <Card>
+                    <CardHeader>Default Flight Control</CardHeader>
+                    <CardBody>
+                        <div className="row">
+                            <div className="col-9">
+                                <CardText className="text-left">Bomber Squadrons :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText
+                                    className="text-left">{this.state.flight_control.bomber_squadrons}</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-9">
+                                <CardText className="text-left">Fighter Squadrons :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText className="text-left">{this.state.flight_control.fighter_squadrons}</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-9">
+                                <CardText className="text-left">Torpedo Squadrons :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText className="text-left">{this.state.flight_control.torpedo_squadrons}</CardText>
+                            </div>
+                        </div>
+                    </CardBody>
+                </Card>
+            )
+        }
+    }
+
+    fighters_card(){
+        if (this.state.fighters != undefined){
+            return (
+                <Card>
+                    <CardHeader>Fighters</CardHeader>
+                    <CardBody>
+                        <CardSubtitle>{this.state.fighters.name}, Tier {this.state.fighters.plane_level}</CardSubtitle>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Avg Damage :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText
+                                    className="text-left">{this.state.fighters.avg_damage}</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Cruise Speed :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText className="text-left">{this.state.fighters.cruise_speed} kts</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Ammo :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText className="text-left">{this.state.fighters.max_ammo}</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Health :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText className="text-left">{this.state.fighters.max_health}</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Prepare Time :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText className="text-left">{this.state.fighters.prepare_time} s</CardText>
+                            </div>
+                        </div>
+                    </CardBody>
+                </Card>
+            )
+        }
+    }
+
+    bombers_card(){
+        if (this.state.dive_bomber != undefined){
+            return (
+                <Card>
+                    <CardHeader>Dive Bombers</CardHeader>
+                    <CardBody>
+                        <CardSubtitle>{this.state.dive_bomber.name}, Tier {this.state.dive_bomber.plane_level}</CardSubtitle>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Bomb Damage :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText
+                                    className="text-left">{this.state.dive_bomber.max_damage}</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Burn Chance :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText
+                                    className="text-left">{this.state.dive_bomber.bomb_burn_probability*100} %</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Bomb Mass :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText
+                                    className="text-left">{this.state.dive_bomber.bomb_bullet_mass} lbs</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Cruise Speed :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText className="text-left">{this.state.dive_bomber.cruise_speed} kts</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Health :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText className="text-left">{this.state.dive_bomber.max_health}</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Prepare Time :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText className="text-left">{this.state.dive_bomber.prepare_time} s</CardText>
+                            </div>
+                        </div>
+                    </CardBody>
+                </Card>
+            )
+        }
+    }
+
+    torp_bombers_card(){
+        if (this.state.torpedo_bomber != undefined){
+            return (
+                <Card>
+                    <CardHeader>Torpedo Bombers</CardHeader>
+                    <CardBody>
+                        <CardSubtitle>{this.state.torpedo_bomber.name}, Tier {this.state.torpedo_bomber.plane_level}</CardSubtitle>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Torpedo Dmg :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText
+                                    className="text-left">{this.state.torpedo_bomber.max_damage}</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Torpedo Range :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText
+                                    className="text-left">{this.state.torpedo_bomber.torpedo_distance}</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Torpedo Speed :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText
+                                    className="text-left">{this.state.torpedo_bomber.torpedo_max_speed}</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Cruise Speed :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText className="text-left">{this.state.torpedo_bomber.cruise_speed} kts</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Health :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText className="text-left">{this.state.torpedo_bomber.max_health}</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <CardText className="text-left">Prepare Time :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText className="text-left">{this.state.torpedo_bomber.prepare_time} s</CardText>
+                            </div>
+                        </div>
                     </CardBody>
                 </Card>
             )
@@ -306,10 +579,17 @@ class ShipCard extends Component {
             this.setState({maneuverability : parseJson(data.default_profile_mobility)});
             this.setState({concealment : parseJson(data.default_profile_concealment)});
             this.setState({torpedoes : parseJson(data.default_profile_torpedoes)});
+            this.setState({fighters : parseJson(data.default_profile_fighters)});
+            this.setState({dive_bomber : parseJson(data.default_profile_dive_bomber)});
+            this.setState({torpedo_bomber : parseJson(data.default_profile_torpedo_bomber)});
+            this.setState({flight_control : parseJson(data.default_profile_flight_control)});
             this.setState({price_credit : data.price_credit});
             this.setState({price_gold : data.price_gold});
         }
-        console.log(this.state.AA);
+        console.log(this.state.dive_bomber);
+        console.log(this.state.fighters);
+        console.log(this.state.torpedo_bomber);
+        console.log(this.state.flight_control);
         console.log(data);
     }
 
@@ -510,6 +790,10 @@ class ShipCard extends Component {
                                 </Card>
                                 {this.shell_card()}
                                 {this.torp_card()}
+                                {this.flight_control_card()}
+                                {this.fighters_card()}
+                                {this.bombers_card()}
+                                {this.torp_bombers_card()}
                             </Col>
                         </CardColumns>
                     </Col>
