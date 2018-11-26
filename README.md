@@ -80,12 +80,12 @@ In uss-illini/package.json:
 4.
 Terminal #1:
 cd react-backend
-chmod +x node_modules/.bin/react-scripts
 forever start -c "npm start" ./
 (Express start at PORT3000)
 
 Terminal #2:
 cd uss-illini 
+chmod +x node_modules/.bin/react-scripts
 forever start -c "npm start" ./
 (React start at PORT3001)
 
