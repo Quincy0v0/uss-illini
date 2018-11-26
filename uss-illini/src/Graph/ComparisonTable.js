@@ -91,6 +91,8 @@ export default class ComparisonTable extends React.Component {
       var score = this.props.score;
       var set = new Set();
       var combineddata = [];
+      var bardata = [];
+      var maxdata = [0,0,0,0];
       for(var i = 0; i < data.length ; i++){
           if (data[i] && score[i] && !set.has(data[i]['nickname'])){
               set.add(data[i]['nickname']);
@@ -108,7 +110,31 @@ export default class ComparisonTable extends React.Component {
                   maxplanekills: data[i]['max_planes_killed'],
                   maxxp:  data[i]['max_xp'],
               });
+              if(combineddata[i]['battles'] > maxdata[0]){
+                  maxdata[0] = combineddata[i]['battles'];
+              }
+              if(combineddata[i]['winrate'] > maxdata[1]){
+                  maxdata[1] = combineddata[i]['winrate'];
+              }
+              if(combineddata[i]['averagedamage'] > maxdata[2]){
+                  maxdata[2] = combineddata[i]['averagedamage'];
+              }
+              if(combineddata[i]['averagekills'] > maxdata[3]){
+                  maxdata[3] = combineddata[i]['averagekills'];
+              }
           }
+      }
+      set = new Set();
+      for(var i = 0; i < data.length ; i++){
+        if (data[i] && score[i] && !set.has(data[i]['nickname'])){
+            set.add(data[i]['nickname']);
+            bardata.push({
+               x: ['battles','winrate','ave dmg','ave kills'],
+               y: [combineddata[i]['battles']/maxdata[0],combineddata[i]['winrate']/maxdata[1],combineddata[i]['averagedamage']/maxdata[2],combineddata[i]['averagekills']/maxdata[3]],
+               name: data[i]['nickname'],
+               type: 'bar',
+            });
+        }
       }
     return (
         <div>
@@ -137,8 +163,8 @@ export default class ComparisonTable extends React.Component {
                 </Col>
                 <Col>
                     <Plot
-                        data = {this.state.data_arr}
-                        layout = {this.props.layout}
+                        data = {bardata}
+                        layout = {{barmode: 'group'}}
                         config = {{displayModeBar: false}}
                         style={{ width: "100%", height: "400px" }}
                     />
