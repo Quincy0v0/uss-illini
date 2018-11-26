@@ -200,7 +200,7 @@ class InfoIndex extends Component {
                                         placeholder="Enter ship name here"
                                     />
                                     <InputGroupAddon addonType="append">
-                                        <Button  color="info" onClick={() => {this.load_ships(this.state.shipList[this.state.loadShipName])}}>search</Button>
+                                        <Button  color="info" onClick={() => {this.load_ships(this.state.shipList[this.state.loadShipName]), this.load_ships(this.state.shipList[this.state.loadShipName])}}>search</Button>
                                     </InputGroupAddon>
                                 </InputGroup>
                             </NavItem>

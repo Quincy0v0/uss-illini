@@ -1,4 +1,7 @@
 export default function parseJson(str){
+  if (str == undefined){
+    return str;
+  }
   str = strParseJson(str,"")
   var retstr = "";
   for(var i = 0; i < str.length - 1; i++){
