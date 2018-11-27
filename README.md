@@ -90,7 +90,7 @@ forever start -c "npm start" ./
 (React start at PORT3001)
 
 To stop: 
-forever stop 0
+forever stopall
 
 To clear the ports:
 $ ps aux | grep "ussillini"
