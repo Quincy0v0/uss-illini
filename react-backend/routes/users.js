@@ -1,12 +1,14 @@
 var express = require('express');
 var router = express.Router();
-
 var mysql = require('mysql');
+
 var cors = require("cors");
+
+var pool = require('./MysqlPool');
 
 var con = mysql.createConnection({
     host: "localhost",
-    user: "ussillini_erikaze",
+    user: "ussillini_usserikaze",
     password: "219749ajfcg",
     database: "ussillini_ussillini"
 });
@@ -14,18 +16,34 @@ var con = mysql.createConnection({
 /* GET users listing. */
 router.post('/ships', function(req, res) {
     ship_id = req.body.ship_id;
-    var mysql = require('mysql');
-    var pool = mysql.createPool({
-        connectionLimit :100,
-        host: "localhost",
-        user: "ussillini_erikaze",
-        password: "219749ajfcg",
-        database: "ussillini_ussillini"
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        connection.query("SELECT * FROM ships WHERE ship_id = '" + ship_id + "';",function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            var data = results[0];
+            res.json([data]);
+        });
     });
-    pool.query("SELECT * FROM ships WHERE ship_id = '" + ship_id + "';",function(error,results,fields) {
-        if(error) throw error;
-        var data = results[0];
-        res.json([data]);
+});
+
+/* Query ship information by name. */
+router.post('/name', function(req, res) {
+    ship_name = req.body.name;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        connection.query("SELECT * FROM ships WHERE ship_name = '" + ship_name + "';",function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            var data = results[0];
+            res.json([data]);
+        });
     });
 });
 
@@ -121,20 +139,18 @@ router.post('/insert',function(req, res){
             command = command.slice(0, -1);
             command += ");";
 
-            var mysql = require('mysql');
+            pool.getConnection(function(error, connection){
+                if (error){
+                    connection.release();
+                    throw error;
+                }
 
-            var pool = mysql.createPool({
-                connectionLimit :100,
-                host: "localhost",
-                user: "ussillini_erikaze",
-                password: "219749ajfcg",
-                database: "ussillini_ussillini"
-            });
-
-            pool.query(command,function(error,results,fields) {
-                if(error) throw error;
-                var data = results[0];
-                res.json([data]);
+                connection.query(command,function(error,results,fields) {
+                    connection.release();
+                    if(error) throw error;
+                    var data = results[0];
+                    res.json([data]);
+                });
             });
         }else{
             console.log(error);
@@ -234,26 +250,24 @@ router.post('/update',function(req,res){
            command = command.slice(0, -1);
            command += ");";
 
-           var mysql = require('mysql');
+            pool.getConnection(function(error, connection){
+                if (error){
+                    throw error;
+                }
 
-           var pool = mysql.createPool({
-               connectionLimit :100,
-               host: "localhost",
-               user: "ussillini_erikaze",
-               password: "219749ajfcg",
-               database: "ussillini_ussillini"
-           });
+                connection.query("DELETE FROM ships WHERE ship_id = '" + ship_id + "';", function(err, result) {
+                    if (err) throw err;
+                    //connection.release();
+                    console.log("1 record updated");
+                });
 
-           pool.query("DELETE FROM ships WHERE ship_id = '" + ship_id + "';", function(err, result) {
-             if (err) throw err;
-             console.log("1 record updated");
-           });
-
-           pool.query(command,function(error,results,fields) {
-               if(error) throw error;
-               var data = results[0];
-               res.json([data]);
-           });
+                connection.query(command,function(error,results,fields) {
+                    connection.release();
+                    if(error) throw error;
+                    var data = results[0];
+                    res.json([data]);
+                });
+            });
        }else{
            console.log(error);
        }
@@ -265,63 +279,380 @@ router.post('/update_val',function(req,res){
     var colname = String(req.body.colname);
     var colval  = String(req.body.colval);
 
-    var mysql = require('mysql');
-
-    var pool = mysql.createPool({
-        connectionLimit :100,
-        host: "localhost",
-        user: "ussillini_erikaze",
-        password: "219749ajfcg",
-        database: "ussillini_ussillini"
+    pool.getConnection(function(error, connection){
+        if (error){
+            throw error;
+        }
+        var command = "UPDATE ships SET name ='" + colval + "' WHERE ship_id = '" + ship_id + "' ;";
+        connection.query(command, function(error,result,fields) {
+            connection.release();
+            if(error) throw error;
+            var data = result[0];
+            res.json([data]);
+        });
     });
 
-
-    var command = "UPDATE ships SET " + colname + " = '" + colval + "' WHERE ship_id = '" + ship_id + "' ;";
-    con.query(command, function(err, result,fields) {
-        if(error) throw error;
-        var data = results[0];
-        res.json([data]);
-    });
 });
 
 
 router.post('/delete', function(req, res){
-    console.log("hello");
     var ship_id = String(req.body.ship_id);
-    var command = "DELETE FROM ships WHERE ship_id = '" + ship_id + "';"
-    var mysql = require('mysql');
 
-    var pool = mysql.createPool({
-        connectionLimit :100,
-        host: "localhost",
-        user: "ussillini_erikaze",
-        password: "219749ajfcg",
-        database: "ussillini_ussillini"
+    pool.getConnection(function(error, connection){
+        if (error){
+            throw error;
+        }
+        var command = "DELETE FROM ships WHERE ship_id = '" + ship_id + "';";
+        connection.query(command, function(error, results, fields) {
+            if(error) throw error;
+            connection.release();
+            var data = results[0];
+            res.json([data]);
+        });
     });
 
-    pool.query(command, function(error, results, fields) {
-        if(error) throw error;
-        var data = results[0];
-        res.json([data]);
-    });
 });
 
 
 router.post('/listAllShips', function(req, res) {
     // ship_id = req.body.ship_id;
-    var mysql = require('mysql');
-    var pool = mysql.createPool({
-        connectionLimit :100,
-        host: "localhost",
-        user: "ussillini_erikaze",
-        password: "219749ajfcg",
-        database: "ussillini_ussillini"
+    pool.getConnection(function(error, connection){
+        if (error){
+            throw error;
+        }
+        connection.query("SELECT name, ship_id FROM ships;",function(error,results,fields) {
+            if(error) throw error;
+            connection.release();
+            var data = results;
+            var ret = {};
+            for(var i = 0; i < data.length; i++)
+            {
+                ret[data[i]["name"]] = data[i]["ship_id"];
+            }
+            res.json(ret);
+        });
     });
-    pool.query("SELECT name, ship_id FROM ships;",function(error,results,fields) {
-        if(error) throw error;
-        var data = results[0];
-        res.json([data]);
+
+});
+
+
+router.post('/radar', function(req, res){
+    var account_id = String(req.body.account_id);
+    pool.getConnection(function(error, connection){
+        if (error){
+            throw error;
+        }
+        var command = "SELECT avg((meKills-totalKills)/(stdtotalKills)) AS Kills, " +
+            "avg((meSurvival-totalSurvival)/(stdtotalSurvival)) " +
+            "AS Survival, avg((meWins-totalWins)/(stdtotalWins)) " +
+            "AS Wins, avg((meDamage-totalDamage)/(stdtotalDamage)) " +
+            "AS Damage, avg((meObjective-totalObjective)/(stdtotalObjective)) " +
+            "AS Objective FROM (SELECT ship_id, avg(frags/battles) " +
+            "AS meKills, avg(survived_battles/battles) " +
+            "AS meSurvival, avg(wins/battles) " +
+            "AS meWins, avg(damage_dealt/battles) " +
+            "AS meDamage, avg(capture_points/battles) " +
+            "AS meObjective " +
+            "FROM random_ships_stats " +
+            "WHERE account_id = '"+account_id+"' " +
+            "GROUP BY ship_id) " +
+            "AS me " +
+            "INNER JOIN " +
+            "(SELECT ship_id, avg(frags/battles) " +
+            "AS totalKills, avg(survived_battles/battles) " +
+            "AS totalSurvival, avg(wins/battles) " +
+            "AS totalWins, avg(damage_dealt/battles) " +
+            "AS totalDamage, avg(capture_points/battles) " +
+            "AS totalObjective, std(frags/battles) " +
+            "AS stdtotalKills, std(survived_battles/battles) " +
+            "AS stdtotalSurvival, std(wins/battles) " +
+            "AS stdtotalWins, std(damage_dealt/battles) " +
+            "AS stdtotalDamage, std(capture_points/battles) " +
+            "AS stdtotalObjective " +
+            "FROM random_ships_stats " +
+            "GROUP BY ship_id) AS total " +
+            "ON me.ship_id = total.ship_id;";
+        connection.query(command, function(error, results, fields) {
+            if(error) throw error;
+            connection.release();
+            var data = results[0];
+            res.json([data]);
+        });
+    });
+
+});
+
+router.post('/player', function(req, res) {
+    var account_id = req.body.account_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        connection.query("SELECT * FROM account_stats INNER JOIN clans on account_stats.clan_id = clans.clan_id WHERE account_id = '" + account_id + "';",function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            var data = results[0];
+            res.json([data]);
+        });
     });
 });
+
+router.post('/playerShip', function(req, res) {
+    var account_id = req.body.account_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        connection.query("SELECT DISTINCT * FROM random_ships_stats WHERE account_id = '" + account_id + "';",function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            res.json(results);
+        });
+    });
+});
+
+router.post('/playerShips', function(req, res) {
+    var account_id = req.body.account_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        command = "SELECT * FROM (SELECT DISTINCT * FROM random_ships_stats AS t1 INNER JOIN (SELECT DISTINCT ship_id AS ship_id_key, name, tier, nation, type, images_small, images_medium, images_large, images_contour FROM ships) AS t2 ON t1.ship_id = t2.ship_id_key WHERE account_id = '"+ account_id +"') AS t3 INNER JOIN (SELECT me.ship_id, avg((meKills-totalKills)/(stdtotalKills)) AS Kills, avg((meSurvival-totalSurvival)/(stdtotalSurvival)) AS Survival, avg((meWins-totalWins)/(stdtotalWins)) AS Wins, avg((meDamage-totalDamage)/(stdtotalDamage)) AS Damage, avg((meObjective-totalObjective)/(stdtotalObjective)) AS Objective FROM (SELECT ship_id, avg(frags/battles) AS meKills, avg(survived_battles/battles) AS meSurvival, avg(wins/battles) AS meWins, avg(damage_dealt/battles) AS meDamage, avg(capture_points/battles) AS meObjective FROM random_ships_stats WHERE account_id = '"+ account_id +"' GROUP BY ship_id) AS me INNER JOIN (SELECT ship_id, avg(frags/battles) AS totalKills, avg(survived_battles/battles) AS totalSurvival, avg(wins/battles) AS totalWins, avg(damage_dealt/battles) AS totalDamage, avg(capture_points/battles) AS totalObjective, std(frags/battles) AS stdtotalKills, std(survived_battles/battles) AS stdtotalSurvival, std(wins/battles) AS stdtotalWins, std(damage_dealt/battles) AS stdtotalDamage, std(capture_points/battles) AS stdtotalObjective FROM random_ships_stats GROUP BY ship_id) AS total ON me.ship_id = total.ship_id GROUP BY ship_id) AS t4 ON t3.ship_id = t4.ship_id;"
+        connection.query(command,function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            res.json(results);
+        });
+    });
+});
+
+router.post('/playerShipInfo', function(req, res) {
+    var ship_id = req.body.ship_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        connection.query("SELECT * FROM ships WHERE ship_id = '" + ship_id + "';",function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            res.json([results[0]]);
+        });
+    });
+});
+
+router.post('/playerShipScore', function(req, res) {
+    var account_id = req.body.account_id;
+    var ship_id = req.body.ship_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        command = "SELECT avg((meKills-totalKills)/(stdtotalKills)) AS Kills, " +
+            "avg((meSurvival-totalSurvival)/(stdtotalSurvival)) " +
+            "AS Survival, avg((meWins-totalWins)/(stdtotalWins)) " +
+            "AS Wins, avg((meDamage-totalDamage)/(stdtotalDamage)) " +
+            "AS Damage, avg((meObjective-totalObjective)/(stdtotalObjective)) " +
+            "AS Objective FROM (SELECT ship_id, avg(frags/battles) " +
+            "AS meKills, avg(survived_battles/battles) " +
+            "AS meSurvival, avg(wins/battles) " +
+            "AS meWins, avg(damage_dealt/battles) " +
+            "AS meDamage, avg(capture_points/battles) " +
+            "AS meObjective " +
+            "FROM random_ships_stats " +
+            "WHERE account_id = '"+account_id+"' AND " +
+            "ship_id = '" + ship_id +
+            "' GROUP BY ship_id) " +
+            "AS me " +
+            "INNER JOIN " +
+            "(SELECT ship_id, avg(frags/battles) " +
+            "AS totalKills, avg(survived_battles/battles) " +
+            "AS totalSurvival, avg(wins/battles) " +
+            "AS totalWins, avg(damage_dealt/battles) " +
+            "AS totalDamage, avg(capture_points/battles) " +
+            "AS totalObjective, std(frags/battles) " +
+            "AS stdtotalKills, std(survived_battles/battles) " +
+            "AS stdtotalSurvival, std(wins/battles) " +
+            "AS stdtotalWins, std(damage_dealt/battles) " +
+            "AS stdtotalDamage, std(capture_points/battles) " +
+            "AS stdtotalObjective " +
+            "FROM random_ships_stats " +
+            "WHERE ship_id = '"  + ship_id + "' "+
+            "GROUP BY ship_id) AS total " +
+            "ON me.ship_id = total.ship_id;";
+        connection.query(command,function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            res.json([results[0]]);
+        });
+    });
+});
+
+router.post('/listAllAccounts', function(req, res) {
+    pool.getConnection(function(error, connection){
+        if (error){
+            throw error;
+        }
+        connection.query("SELECT nickname, account_id FROM account_stats;",function(error,results,fields) {
+            if(error) throw error;
+            connection.release();
+            var data = results;
+            var ret = {};
+            for(var i = 0; i < data.length; i++)
+            {
+                ret[data[i]["nickname"]] = data[i]["account_id"];
+            }
+            res.json(ret);
+        });
+    });
+
+});
+
+router.post('/listAllName', function(req, res) {
+    pool.getConnection(function(error, connection){
+        if (error){
+            throw error;
+        }
+        connection.query("SELECT nickname FROM account_stats ORDER BY nickname;",function(error,results,fields) {
+            if(error) throw error;
+            connection.release();
+            var ret = [];
+            for(var i = 0; i < results.length ; i++){
+                ret.push(results[i]['nickname']);
+            }
+            res.json(ret);
+        });
+    });
+
+});
+
+router.post('/players', function(req, res) {
+    var account_ids = req.body.account_ids;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        var command = "SELECT * FROM account_stats WHERE False";
+        if (account_ids.length > 0){
+            command = "SELECT * FROM account_stats WHERE ";
+            for(var i = 0; i < account_ids.length ; i++){
+                command += "account_id = '"  + account_ids[i] + "' OR ";
+            }
+            command = command.substring(0, command.length - 4);
+            command += ";";
+        }
+        connection.query(command,function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            res.json(results);
+        });
+    });
+});
+
+router.post('/behavior1', function(req, res) {
+    var account_id = req.body.account_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        var command = "select sum(battles) as battles, nation from random_ships_stats inner join ships on random_ships_stats.ship_id = ships.ship_id where account_id = '" + account_id + "' group by nation;";
+        connection.query(command,function(error,results,fields) {
+            connection.release();
+
+            if(error) throw error;
+            res.json(results);
+        });
+    });
+});
+
+router.post('/behavior2', function(req, res) {
+    var account_id = req.body.account_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        var command = "select sum(battles) as battles,type from random_ships_stats inner join ships on random_ships_stats.ship_id = ships.ship_id where account_id = '" + account_id + "' group by type;";
+        connection.query(command,function(error,results,fields) {
+            connection.release();
+
+            if(error) throw error;
+            res.json(results);
+        });
+    });
+});
+router.post('/behavior3', function(req, res) {
+    var account_id = req.body.account_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        var command = "select sum(battles) as battles,nation,type from random_ships_stats inner join ships on random_ships_stats.ship_id = ships.ship_id where account_id = '" + account_id + "' group by nation,type;";
+        connection.query(command,function(error,results,fields) {
+            connection.release();
+
+            if(error) throw error;
+            res.json(results);
+        });
+    });
+});
+router.post('/behavior4', function(req, res) {
+    var account_id = req.body.account_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        var command = "select ROUND(avg(survived_battles/battles),2) as survival,nation from random_ships_stats inner join ships on random_ships_stats.ship_id = ships.ship_id where account_id = '" + account_id + "' group by nation;";
+        connection.query(command,function(error,results,fields) {
+            connection.release();
+
+            if(error) throw error;
+            res.json(results);
+        });
+    });
+});
+router.post('/behavior5', function(req, res) {
+    var account_id = req.body.account_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        var command = "select ROUND(avg(survived_battles/battles),2) as survival,type from random_ships_stats inner join ships on random_ships_stats.ship_id = ships.ship_id where account_id = '" + account_id + "' group by type;";
+        connection.query(command,function(error,results,fields) {
+            connection.release();
+
+            if(error) throw error;
+            res.json(results);
+        });
+    });
+});
+router.post('/behavior6', function(req, res) {
+    var account_id = req.body.account_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        var command = "select ROUND(avg(survived_battles/battles),2) as survival,nation,type from random_ships_stats inner join ships on random_ships_stats.ship_id = ships.ship_id where account_id = '" + account_id + "' group by nation,type;";
+        connection.query(command,function(error,results,fields) {
+            connection.release();
+
+            if(error) throw error;
+            res.json(results);
+        });
+    });
+});
+
+
+
 
 module.exports = router;

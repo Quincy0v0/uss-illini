@@ -9,22 +9,23 @@ import {
     CarouselCaption
 } from 'reactstrap';
 import InfoIndex from '../ShipsInfo/InfoIndex.js'
-
+import Graph from '../Graph/Graph.js'
+import Simulator from '../Simulator/Simulator.js'
 const items = [
     {
         src: 'https://wowsp-wows-na.wgcdn.co/dcont/fb/image/tmb/f0c5e3ec-64e8-11e8-a157-d89d6715223c_1200x.jpg',
-        altText: 'Slide 1',
-        caption: 'Slide 1'
+        altText: '',
+        caption: ''
     },
     {
         src: 'https://wowsp-wows-na.wgcdn.co/dcont/fb/image/tmb/3d9fb018-084a-11e8-9ad1-d89d6715223c_1200x.jpg',
-        altText: 'Slide 2',
-        caption: 'Slide 2'
+        altText: '',
+        caption: ''
     },
     {
         src: 'https://wowsp-wows-na.wgcdn.co/dcont/fb/image/tmb/2242397e-974a-11e7-aecb-d89d6715223c_1200x.jpg',
-        altText: 'Slide 3',
-        caption: 'Slide 3'
+        altText: '',
+        caption: ''
     }
 ];
 
@@ -68,7 +69,7 @@ class Index extends Component {
     }
 
     switchPages(pageId) {
-        // PageId: {1:MainPage, 2:InfoIndex, 3:ShipStatsIndex }
+        // PageId: {0:MainPage, 1:InfoIndex, 2:Player(Graph) }
         this.setState({ pageIndex: pageId});
     }
 
@@ -97,17 +98,31 @@ class Index extends Component {
                 </div>
             );
         }
-        else return (
+        else if(this.state.pageIndex === 2){
+          return (
+              <div>
+                    <Graph/>
+              </div>
+          );
+        }else if(this.state.pageIndex === -1){
+            return (
+                <div>
+                      <Simulator/>
+                </div>
+            );
+        }else return (
             <div>
                 <Jumbotron>
                     <h1 className="display-3">USS Illini</h1>
                     <hr className="my-2" />
-                    <p>USS Illini is a website enable users to search players' and ships' data from out database.</p>
+                    <p>USS Illini is a website enabling users to search players' and ships' data from our database.</p>
                     <p>It can measure the player's performance and enable new players to explore perimeters about new ships.</p>
                     <p className="lead">
                         <Button color="primary" onClick={() => this.switchPages(1)}>Warships Info</Button>
                         {' '}
                         <Button color="success" onClick={() => this.switchPages(2)}>Player Stats</Button>
+                        {' '}
+                        <Button color="info" onClick={() => this.switchPages(-1)}>Main Battery Simulator</Button>
                     </p>
                     <Carousel
                         activeIndex={activeIndex}
