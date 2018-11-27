@@ -45,6 +45,9 @@ class ShipCard extends Component {
                 shot_delay: "N/A",
             },
             torpedoes: {
+                torpedo_name: "N/A",
+                torpedo_speed: "N/A",
+                visibility_dist: "N/A",
                 distance: "N/A",
                 max_damage: "N/A",
                 reload_time: "N/A",
@@ -530,6 +533,7 @@ class ShipCard extends Component {
                 <Card>
                     <CardHeader>Torpedoes</CardHeader>
                     <CardBody>
+                        <CardSubtitle>{this.state.torpedoes.torpedo_name}</CardSubtitle>
                         <div className="row">
                             <div className="col-6">
                                 <CardText className="text-left">Range :</CardText>
@@ -549,6 +553,14 @@ class ShipCard extends Component {
                         </div>
                         <div className="row">
                             <div className="col-6">
+                                <CardText className="text-left">Speed :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText className="text-left">{this.state.torpedoes.torpedo_speed} kts</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-6">
                                 <CardText className="text-left">Reload :</CardText>
                             </div>
                             <div className="col">
@@ -557,10 +569,18 @@ class ShipCard extends Component {
                         </div>
                         <div className="row">
                             <div className="col-6">
-                                <CardText className="text-left">rotation :</CardText>
+                                <CardText className="text-left">Rotation :</CardText>
                             </div>
                             <div className="col">
                                 <CardText className="text-left">{this.state.torpedoes.rotation_time} s</CardText>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-6">
+                                <CardText className="text-left">Visibility :</CardText>
+                            </div>
+                            <div className="col">
+                                <CardText className="text-left">{this.state.torpedoes.visibility_dist} km</CardText>
                             </div>
                         </div>
                     </CardBody>
@@ -589,6 +609,7 @@ class ShipCard extends Component {
         console.log(this.state.dive_bomber);
         console.log(this.state.fighters);
         console.log(this.state.torpedo_bomber);
+        console.log(this.state.torpedoes);
         console.log(this.state.flight_control);
         console.log(data);
     }
