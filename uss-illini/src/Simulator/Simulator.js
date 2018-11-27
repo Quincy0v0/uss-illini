@@ -154,7 +154,8 @@ class Simulator extends Component {
                         <Input type="text" name="y" id="y" value={this.state.y} onChange={this.yChange} placeholder="y"/>
                         <h2>Input Aim theta</h2>
                         <Input type="text" name="theta" id="theta" value={this.state.theta} onChange={this.thetaChange} placeholder="theta"/>
-                        <button className="btn-primary" onClick={() => {this.start(this.state.shots,this.state.distance,this.state.nation,this.state.tier,this.state.is_locked,this.state.x,this.state.y,this.state.theta)}}>Fire!</button>
+                        <button className="btn-primary" onClick={() => {this.start(this.state.shots,this.state.distance,this.state.nation,this.state.tier,this.state.is_locked,this.state.x,this.state.y,this.state.theta)}}>Fire!</button><br/>
+                        <button className="btn-primary" onClick={() => {window.location.reload()}}>NVM...dismissed!</button>
                     </FormGroup>
                     <Plot
                       data = {this.state.data}
