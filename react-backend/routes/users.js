@@ -656,10 +656,14 @@ router.post('/behavior6', function(req, res) {
 router.post('/insert_player',function(req, res){
     var ship_id = String(req.body.ship_id);
     var player_id = String(req.body.player_id);
+    console.log("ship id");
+    console.log(ship_id);
+    console.log("player_id");
+    console.log(player_id);
     const application_id = "b2f122ce4941da951c7b0cafa659608e";
     var request = require("request");
     request({
-        url: "https://developers.wargaming.net/reference/all/wows/account/info/?application_id=" + application_id + "&account_id=" + player_id,
+        url: "https://api.worldofwarships.com/wows/account/info/?application_id=" + application_id + "&account_id=" + player_id,
         json: true
     }, function(error, response, data) {
         if (!error && response.statusCode === 200) {
@@ -690,6 +694,8 @@ router.post('/insert_player',function(req, res){
             var distance = data['data'][player_id]['statistics']['distance'];
 
             var updated_at = data['data'][player_id]['updated_at'];
+            //private
+            var private = data['data'][player_id]['private'];
             var damage_to_buildings = data['data'][player_id]['statistics']['pvp']['damage_to_buildings'];
             var max_damage_dealt_to_buildings = data['data'][player_id]['statistics']['pvp']['max_damage_dealt_to_buildings'];
             var suppressions_count = data['data'][player_id]['statistics']['pvp']['suppressions_count'];
@@ -722,9 +728,9 @@ router.post('/insert_player',function(req, res){
             var aircraft_frags = data['data'][player_id]['statistics']['pvp']['aircraft']['frags'];
 
             var random_ship = [];
-            random_ship.push(wins, draws, losses, battles, survived_wins, survived_battles, xp, max_xp, frags, max_frags_battle, damage_scouting, max_damage_dealt, ships_spotted, max_ships_spotted, team_capture_points,
+            random_ship.push(wins, draws, losses, battles, survived_wins, survived_battles, xp, max_xp, frags, max_frags_battle, damage_scouting, max_damage_scouting, damage_dealt, max_damage_dealt, ships_spotted, max_ships_spotted, team_capture_points,
                 capture_points, dropped_capture_points, team_dropped_capture_points, planes_killed, max_planes_killed, last_battle_time, distance, updated_at, private, damage_to_buildings, max_damage_dealt_to_buildings,
-                suppressions_count, max_suppressions_count, art_agro, torpedo_agro, battles_total, battles_since_510, battles_since_512, ship_id, account_id, main_battery_max_frags_battle, main_battery_frags, main_battery_hits, main_battery_shots,
+                suppressions_count, max_suppressions_count, art_agro, torpedo_agro, max_total_agro, battles_total, battles_since_510, battles_since_512, ship_id, account_id, main_battery_max_frags_battle, main_battery_frags, main_battery_hits, main_battery_shots,
                 second_battery_max_frags_battle, second_battery_frags, second_battery_hits, second_battery_shots, ramming_max_frags_battle, ramming_frags, torpedoes_max_frags_battle, torpedoes_frags, torpedoes_hits, torpedoes_shots,
                 aircraft_max_frags_battle, aircraft_frags);
 
@@ -760,7 +766,6 @@ router.post('/insert_player',function(req, res){
             var battles_total = data['data'][player_id]['statistics']['battles'];
             var leveling_tier = data['data'][player_id]['leveling_tier'];
             var leveling_points = data['data'][player_id]['leveling_points'];
-            var private = data['data'][player_id]['private'];
             var hidden_profile = data['data'][player_id]['hidden_profile'];
             var karma = data['data'][player_id]['karma'];
             var logout_at = data['data'][player_id]['logout_at'];
@@ -775,33 +780,33 @@ router.post('/insert_player',function(req, res){
             var account = [];
             account.push(nickname, account_id, wins, draws, losses, battles, battles_total, survived_wins, survived_battles, xp, max_xp, frags, max_frags_battle, damage_scouting, max_damage_scouting,
             damage_dealt, max_damage_dealt, ships_spotted, max_ships_spotted, team_capture_points, capture_points, dropped_capture_points, team_dropped_capture_points, planes_killed, max_planes_killed,
-            distance, leveling_tier, leveling_points, private, hidden_profile, karma, damage_to_buildings, max_damage_dealt_to_buildings, suppressions_count, max_suppressions_count, art_agro, torpedo_agro,
+            distance, leveling_tier, leveling_points, private, hidden_profile, karma, damage_to_buildings, max_damage_dealt_to_buildings, suppressions_count, max_suppressions_count, art_agro, torpedo_agro, max_total_agro,
             last_battle_time, logout_at, created_at, updated_at, stats_updated_at, battles_since_510, battles_since_512, main_battery_max_frags_battle, main_battery_frags, main_battery_hits, main_battery_shots,
             second_battery_max_frags_battle, second_battery_frags, second_battery_hits, second_battery_shots, ramming_max_frags_battle, ramming_frags, torpedoes_max_frags_battle, torpedoes_frags, torpedoes_hits,
             torpedoes_shots, aircraft_max_frags_battle, aircraft_frags, clan_id, account_id_clan, account_name, role, joined_at);
 
             var command2 = "INSERT INTO account_stats VALUES(";
             for (var value in account) {
-                if (!random_ship[value] || random_ship[value] == "null") {
+                if (!account[value] || account[value] == "null") {
                     command2 += "NULL,"
-                } else if (typeof(random_ship[value]) === "string") {
+                } else if (typeof(account[value]) === "string") {
                     command2 += "'"
-                    command2 += random_ship[value].split("'").join('');
+                    command2 += account[value].split("'").join('');
                     command2 += "',"
-                } else if (random_ship[value] instanceof Array) {
+                } else if (account[value] instanceof Array) {
                     command2 += '"['
-                    for (var i in random_ship[value]) {
-                        command2 += String(random_ship[value][i]).split('"').join('');
+                    for (var i in account[value]) {
+                        command2 += String(account[value][i]).split('"').join('');
                         command2 += ','
                     }
                     command2.slice(0, -1);
                     command2 += ']",'
-                } else if (typeof(random_ship[value]) === "object") {
+                } else if (typeof(account[value]) === "object") {
                     command2 += '"'
-                    command2 += JSON.stringify(random_ship[value]).split('"').join('');
+                    command2 += JSON.stringify(account[value]).split('"').join('');
                     command2 += '",'
                 } else {
-                    command2 += String(random_ship[value]) + ","
+                    command2 += String(account[value]) + ","
                 }
             }
             command2 = command2.slice(0, -1);
@@ -840,7 +845,7 @@ router.post('/insert_account_clan',function(req, res){
     const application_id = "b2f122ce4941da951c7b0cafa659608e";
     var request = require("request");
     request({
-        url: "https://developers.wargaming.net/reference/all/wows/clans/accountinfo/?application_id=" + application_id + "&account_id=" + player_id,
+        url: "https://api.worldofwarships.com/wows/clans/accountinfo/?application_id=" + application_id + "&account_id=" + player_id,
         json: true
     }, function(error, response, data) {
         if (!error && response.statusCode === 200) {
@@ -850,6 +855,9 @@ router.post('/insert_account_clan',function(req, res){
             var role = data['data'][player_id]['role'];
             var joined_at = data['data'][player_id]['joined_at'];
             var i = 0;
+
+            var clan = [];
+            clan.push(clan_id, account_id_clan, account_name, role, joined_at);
 
             var command2 = "UPDATE account_stats SET ";
             for (var value in account) {
@@ -866,30 +874,30 @@ router.post('/insert_account_clan',function(req, res){
                     command2 += "joined_at=";
                 }
 
-                if (!random_ship[value] || random_ship[value] == "null") {
+                if (!clan[value] || clan[value] == "null") {
                     command2 += "NULL,"
-                } else if (typeof(random_ship[value]) === "string") {
+                } else if (typeof(clan[value]) === "string") {
                     command2 += "'"
-                    command2 += random_ship[value].split("'").join('');
+                    command2 += clan[value].split("'").join('');
                     command2 += "',"
-                } else if (random_ship[value] instanceof Array) {
+                } else if (clan[value] instanceof Array) {
                     command2 += '"['
-                    for (var i in random_ship[value]) {
-                        command2 += String(random_ship[value][i]).split('"').join('');
+                    for (var i in clan[value]) {
+                        command2 += String(clan[value][i]).split('"').join('');
                         command2 += ','
                     }
                     command2.slice(0, -1);
                     command2 += ']",'
-                } else if (typeof(random_ship[value]) === "object") {
+                } else if (typeof(clan[value]) === "object") {
                     command2 += '"'
-                    command2 += JSON.stringify(random_ship[value]).split('"').join('');
+                    command2 += JSON.stringify(clan[value]).split('"').join('');
                     command2 += '",'
                 } else {
-                    command2 += String(random_ship[value]) + ","
+                    command2 += String(clan[value]) + ","
                 }
             }
             command2 = command2.slice(0, -1);
-            command += "WHERE account_id = " + account_id;
+            command += " WHERE account_id=" + account_id;
             command2 += ");";
 
             pool.getConnection(function(error, connection){
