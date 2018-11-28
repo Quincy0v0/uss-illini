@@ -49,6 +49,7 @@ router.post('/name', function(req, res) {
 
 router.post('/insert',function(req, res){
     var ship_id = String(req.body.ship_id);
+    // console.log("insert ship!!!!");
     const application_id = "b2f122ce4941da951c7b0cafa659608e";
     var request = require("request");
     request({
@@ -139,12 +140,15 @@ router.post('/insert',function(req, res){
             command = command.slice(0, -1);
             command += ");";
 
+            // console.log("command");
+            // console.log(command);
             pool.getConnection(function(error, connection){
                 if (error){
                     connection.release();
                     throw error;
                 }
-
+                // console.log("command");
+                // console.log(command);
                 connection.query(command,function(error,results,fields) {
                     connection.release();
                     if(error) throw error;
@@ -159,7 +163,7 @@ router.post('/insert',function(req, res){
 });
 
 router.post('/update',function(req,res){
-        var ship_id = String(req.body.ship_id);
+    var ship_id = String(req.body.ship_id);
     const application_id = "b2f122ce4941da951c7b0cafa659608e";
     var request = require("request");
     request({
@@ -654,12 +658,11 @@ router.post('/behavior6', function(req, res) {
 
 // Insert
 router.post('/insert_player',function(req, res){
-    var ship_id = String(req.body.ship_id);
-    var player_id = String(req.body.player_id);
-    console.log("ship id");
-    console.log(ship_id);
-    console.log("player_id");
-    console.log(player_id);
+    // var ship_id = String(req.body.ship_id);
+    console.log("insert player!!");
+    var ship_id = 4282267344;
+    // var player_id = String(req.body.player_id);
+    var player_id = String(req.body.ship_id);
     const application_id = "b2f122ce4941da951c7b0cafa659608e";
     var request = require("request");
     request({
@@ -761,6 +764,8 @@ router.post('/insert_player',function(req, res){
             command = command.slice(0, -1);
             command += ");";
 
+            console.log("command !!");
+            console.log(command);
 
             var nickname = data['data'][player_id]['nickname'];
             var battles_total = data['data'][player_id]['statistics']['battles'];
@@ -812,26 +817,38 @@ router.post('/insert_player',function(req, res){
             command2 = command2.slice(0, -1);
             command2 += ");";
 
+            console.log("command2");
+            console.log(command2);
             pool.getConnection(function(error, connection){
                 if (error){
+                    console.log("error1");
                     connection.release();
                     throw error;
                 }
 
+                console.log("command 1 start");
                 connection.query(command,function(error,results,fields) {
-                    connection.release();
-                    if(error) throw error;
+                    // connection.release();
+                    if(error) {
+                        console.log("error2");
+                        throw error;
+                    }
                     var data = results[0];
                     res.json([data]);
                 });
+                console.log("command 1 end");
 
+                console.log("command 2 start");
                 connection.query(command2,function(error,results,fields) {
-                    connection.release();
-                    if(error) throw error;
+                    // connection.release();
+                    if(error) {
+                        console.log("error2");
+                        throw error;
+                    }
                     var data = results[0];
                     res.json([data]);
                 });
-
+                console.log("command 2 end");
             });
         }else{
             console.log(error);
@@ -841,7 +858,8 @@ router.post('/insert_player',function(req, res){
 
 // Insert clan
 router.post('/insert_account_clan',function(req, res){
-    var player_id = String(req.body.player_id);
+    // var player_id = String(req.body.player_id);
+    var player_id = String(req.body.ship_id);
     const application_id = "b2f122ce4941da951c7b0cafa659608e";
     var request = require("request");
     request({
@@ -860,7 +878,7 @@ router.post('/insert_account_clan',function(req, res){
             clan.push(clan_id, account_id_clan, account_name, role, joined_at);
 
             var command2 = "UPDATE account_stats SET ";
-            for (var value in account) {
+            for (var value in clan) {
                 i += 1;
                 if(i == 1) {
                     command2 += "clan_id=";
@@ -897,9 +915,11 @@ router.post('/insert_account_clan',function(req, res){
                 }
             }
             command2 = command2.slice(0, -1);
-            command += " WHERE account_id=" + account_id;
+            command2 += " WHERE account_id=" + player_id;
             command2 += ");";
 
+            console.log("command for clan");
+            console.log(command2);
             pool.getConnection(function(error, connection){
                 if (error){
                     connection.release();
