@@ -4,6 +4,10 @@ import Plot from 'react-plotly.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import main from './dispersion.js';
 import {
+    Card, CardHeader, CardFooter, CardBody, CardTitle, CardText,
+    Container,
+    Row,
+    Col,
     Collapse,
     Navbar,
     NavbarToggler,
@@ -41,7 +45,6 @@ class Simulator extends Component {
             theta : 180,
             layout:{
               showlegend: false,
-              title:'Dispersion',
               height: 1000,
               width: 1200,
               font: {
@@ -78,7 +81,7 @@ class Simulator extends Component {
 
               ],
               plot_bgcolor:'rgba(9,30,50,1)',
-              margin: {l: 40, b: 40, t: 60},
+              margin: {l: 20, b: 20, t: 20, r: 20},
               xaxis:{
                 range: [-150,150],
                 showgrid: false,
@@ -123,6 +126,7 @@ class Simulator extends Component {
     render() {
         return (
             <div>
+<<<<<<< HEAD
                 <div className="container">
                     <FormGroup>
                         <h2>Input # of Shots</h2>
@@ -164,6 +168,88 @@ class Simulator extends Component {
                       //config = {{scrollZoom: true}}
                     />
                 </div>
+=======
+                <Navbar color="dark" className="navbar-dark navbar-expand-sm" light expand="md">
+                    <NavbarBrand href="/">USS illini</NavbarBrand>
+                    <Collapse isOpen={this.state.isOpen} navbar>
+                        <Nav className="ml-auto" navbar>
+                            <NavItem>
+                                <NavLink href="https://github.com/Quincy0v0/uss-illini">GitHub</NavLink>
+                            </NavItem>
+                        </Nav>
+                    </Collapse>
+                </Navbar>
+            <p/>
+                <Container fluid>
+                        <Row form>
+                        <Col>
+                            <Card body outline color="secondary">
+                                <CardTitle>
+                                    Dispersion Simulator
+                                </CardTitle>
+                        <Form className="text-left">
+                            <FormGroup>
+                                <Label for="shots">Input # of Shots</Label>
+                                <Input type="text" name="shots" id="shots" value={this.state.shots} onChange={this.shotChange} placeholder="# of shots fired"/>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="distance">Input Distance(km)</Label>
+                                <Input type="text" name="distance" id="distance" value={this.state.distance} onChange={this.distanceChange} placeholder="distance(km)" />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="selectnation">Select Nation</Label>
+                                <Input type="select" name="selectnation" id="selectnation" onChange={this.nationChange}>
+                                  <option>japan</option>
+                                  <option>usa</option>
+                                  <option>germany</option>
+                                  <option>uk</option>
+                                  <option>france</option>
+                                </Input>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="selecttier">Select Tier</Label>
+                                <Input type="select" name="selecttier" id="selecttier" onChange={this.tierChange}>
+                                  <option>10</option>
+                                  <option>9</option>
+                                  <option>8</option>
+                                  <option>7</option>
+                                  <option>6</option>
+                                  <option>5</option>
+                                  <option>4</option>
+                                  <option>3</option>
+                                </Input>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="x">Input Aim X</Label>
+                                <Input type="text" name="x" id="x" value={this.state.x} onChange={this.xChange} placeholder="x"/>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="y">Input Aim Y</Label>
+                                <Input type="text" name="y" id="y" value={this.state.y} onChange={this.yChange} placeholder="y"/>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="theta">Input Aim theta</Label>
+                                <Input type="text" name="theta" id="theta" value={this.state.theta} onChange={this.thetaChange} placeholder="theta"/>
+                            </FormGroup>
+                            <FormGroup>
+                                <Button color="primary" onClick={() => {this.start(this.state.shots,this.state.distance,this.state.nation,this.state.tier,this.state.is_locked,this.state.x,this.state.y,this.state.theta)}}>Fire!</Button>
+                            </FormGroup>
+                        </Form>
+                            </Card>
+                        </Col>
+                        <Col>
+                            <Card body outline color="secondary">
+                            <Plot
+                              data = {this.state.data}
+                              layout = {this.state.layout}
+                              //onClick ={(dat) => this.setState({x:dat.points['0']['x'],y:dat.points['0']['y']})}
+                              config = {{displayModeBar: false}}
+                            />
+                            </Card>
+                        </Col>
+                </Row>
+                </Container>
+>>>>>>> 6cdd754ea0b82f5dff3080368645814a0d06ad2e
             </div>
         );
     }
