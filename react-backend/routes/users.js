@@ -730,6 +730,7 @@ router.post('/insert_player',function(req, res){
             var aircraft_max_frags_battle = data['data'][player_id]['statistics']['pvp']['aircraft']['max_frags_battle'];
             var aircraft_frags = data['data'][player_id]['statistics']['pvp']['aircraft']['frags'];
 
+            // var data;
             var random_ship = [];
             random_ship.push(wins, draws, losses, battles, survived_wins, survived_battles, xp, max_xp, frags, max_frags_battle, damage_scouting, max_damage_scouting, damage_dealt, max_damage_dealt, ships_spotted, max_ships_spotted, team_capture_points,
                 capture_points, dropped_capture_points, team_dropped_capture_points, planes_killed, max_planes_killed, last_battle_time, distance, updated_at, private, damage_to_buildings, max_damage_dealt_to_buildings,
@@ -762,7 +763,7 @@ router.post('/insert_player',function(req, res){
                 }
             }
             command = command.slice(0, -1);
-            command += ");";
+            command += ")";
 
             console.log("command !!");
             console.log(command);
@@ -833,8 +834,8 @@ router.post('/insert_player',function(req, res){
                         console.log("error2");
                         throw error;
                     }
-                    var data = results[0];
-                    res.json([data]);
+                    // var data = results[0];
+                    // res.json([data]);
                 });
                 console.log("command 1 end");
 
@@ -845,8 +846,8 @@ router.post('/insert_player',function(req, res){
                         console.log("error2");
                         throw error;
                     }
-                    var data = results[0];
-                    res.json([data]);
+                    // var data = results[0];
+                    // res.json([data]);
                 });
                 console.log("command 2 end");
             });
@@ -916,7 +917,7 @@ router.post('/insert_account_clan',function(req, res){
             }
             command2 = command2.slice(0, -1);
             command2 += " WHERE account_id=" + player_id;
-            command2 += ");";
+            command2 += ";";
 
             console.log("command for clan");
             console.log(command2);
@@ -940,6 +941,121 @@ router.post('/insert_account_clan',function(req, res){
 });
 
 
+router.post('/join_insert', function(req, res) {
+    var ship_id = 4282267344;
+    var player_id = String(req.body.ship_id);
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+        var command = "INSERT INTO random_ships_stats(ship_id, wins, draws, losses, battles, survived_wins, survived_battles, xp, max_xp, frags, max_frags_battle, damage_scouting, max_damage_scouting, damage_dealt, max_damage_dealt, ships_spotted, max_ships_spotted, team_capture_points," +
+                "capture_points, dropped_capture_points, team_dropped_capture_points, planes_killed, max_planes_killed, last_battle_time, distance, updated_at, private, damage_to_buildings, max_damage_dealt_to_buildings," +
+                "suppressions_count, max_suppressions_count, art_agro, torpedo_agro, max_total_agro, battles_total, battles_since_510, battles_since_512, account_id, main_battery_max_frags_battle, main_battery_frags, main_battery_hits, main_battery_shots," +
+                "second_battery_max_frags_battle, second_battery_frags, second_battery_hits, second_battery_shots, ramming_max_frags_battle, ramming_frags, torpedoes_max_frags_battle, torpedoes_frags, torpedoes_hits, torpedoes_shots," +
+                "aircraft_max_frags_battle, aircraft_frags)" +
+                "(SELECT * FROM (SELECT ship_id FROM ships) a CROSS JOIN (SELECT wins, draws, losses, battles, survived_wins, survived_battles, xp, max_xp, frags, max_frags_battle, damage_scouting, max_damage_scouting, damage_dealt, max_damage_dealt, ships_spotted, max_ships_spotted, team_capture_points," +
+                "capture_points, dropped_capture_points, team_dropped_capture_points, planes_killed, max_planes_killed, last_battle_time, distance, updated_at, private, damage_to_buildings, max_damage_dealt_to_buildings," +
+                "suppressions_count, max_suppressions_count, art_agro, torpedo_agro, max_total_agro, battles_total, battles_since_510, battles_since_512, account_id, main_battery_max_frags_battle, main_battery_frags, main_battery_hits, main_battery_shots," +
+                "second_battery_max_frags_battle, second_battery_frags, second_battery_hits, second_battery_shots, ramming_max_frags_battle, ramming_frags, torpedoes_max_frags_battle, torpedoes_frags, torpedoes_hits, torpedoes_shots," +
+                "aircraft_max_frags_battle, aircraft_frags FROM random_ships_stats where account_id =" + player_id + " and ship_id = 4282267344) b);";
+        connection.query(command,function(error,results,fields) {
+            connection.release();
+
+            if(error) throw error;
+            res.json(results);
+        });
+    });
+});
+
+router.post('/insert_clan', function(req, res) {
+    var player_id = String(req.body.ship_id);
+    const application_id = "b2f122ce4941da951c7b0cafa659608e";
+    var request = require("request");
+    var command = "SELECT clan_id FROM account_stats WHERE account_id=" + player_id;
+    pool.getConnection(function(error, connection){
+        if (error){
+            connection.release();
+            throw error;
+        }
+
+        connection.query(command,function(error,results,fields) {
+            // connection.release();
+            if(error) throw error;
+            var clan_id = results[0]['clan_id'];
+            // res.json([data1]);
+            request({
+                url: "https://api.worldofwarships.com/wows/clans/info/?application_id=" + application_id + "&clan_id=" + clan_id,
+                json: true
+            }, function(error, response, data) {
+                if (!error && response.statusCode === 200) {
+                    console.log("data!!!");
+                    console.log(data);
+                    console.log("clan id is ");
+                    console.log(clan_id);
+                    var tag = data['data'][clan_id]['tag'];
+                    var name = data['data'][clan_id]['name'];
+                    var members_count = data['data'][clan_id]['members_count'];
+                    var leader_id = data['data'][clan_id]['leader_id'];
+                    var leader_name = data['data'][clan_id]['leader_name'];
+                    var creator_name = data['data'][clan_id]['creator_name'];
+                    var description = data['data'][clan_id]['description'];
+                    var old_name = data['data'][clan_id]['old_name'];
+                    var old_tag = data['data'][clan_id]['old_tag'];
+                    var renamed_at = data['data'][clan_id]['renamed_at'];
+                    var clan_id1 = data['data'][clan_id]['clan_id'];
+                    var created_at = data['data'][clan_id]['created_at'];
+                    var updated_at = data['data'][clan_id]['updated_at'];
+                    var is_clan_disbanded = data['data'][clan_id]['is_clan_disbanded'];
+                    var members_ids = data['data'][clan_id]['members_ids'];
+
+                    var clan_data = [];
+                    clan_data.push(tag, name, members_count, leader_id, leader_name, creator_name, description, old_name, old_tag, renamed_at,
+                    clan_id1, created_at, updated_at, is_clan_disbanded, members_ids);
+
+                    var command2 = "INSERT INTO clans VALUES(";
+                    for (var value in clan_data) {
+                        if (!clan_data[value] || clan_data[value] == "null") {
+                            command2 += "NULL,"
+                        } else if (typeof(clan_data[value]) === "string") {
+                            command2 += "'"
+                            command2 += clan_data[value].split("'").join('');
+                            command2 += "',"
+                        } else if (clan_data[value] instanceof Array) {
+                            command2 += '"['
+                            for (var i in clan_data[value]) {
+                                command2 += String(clan_data[value][i]).split('"').join('');
+                                command2 += ','
+                            }
+                            command2.slice(0, -1);
+                            command2 += ']",'
+                        } else if (typeof(clan_data[value]) === "object") {
+                            command2 += '"'
+                            command2 += JSON.stringify(clan_data[value]).split('"').join('');
+                            command2 += '",'
+                        } else {
+                            command2 += String(clan_data[value]) + ","
+                        }
+                    }
+                    command2 = command2.slice(0, -1);
+                    command2 += ");";
+
+                    console.log("command2");
+                    console.log(command2);
+                    connection.query(command2,function(error,results,fields) {
+                        connection.release();
+
+                        if(error) throw error;
+                        var data = results[0];
+                        res.json([data]);
+                    });
+                }else{
+                    console.log(error);
+                }
+            });
+            });
+        });
+});
 
 
 
