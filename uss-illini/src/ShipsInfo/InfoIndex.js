@@ -79,7 +79,7 @@ class InfoIndex extends Component {
     }
 
     componentDidMount() {
-        this.load_ships(3761190896);
+        this.load_ships(3763287856);
 
         fetch('/users/listAllShips', {
             method: 'post',
@@ -222,7 +222,7 @@ class InfoIndex extends Component {
                                         Update a ship
                                     </DropdownItem>
                                     <DropdownItem divider />
-                                    <DropdownItem onClick={() => {this.UpdateValModalToggle()}}>
+                                    <DropdownItem disabled onClick={() => {this.UpdateValModalToggle()}}>
                                         Update a ship manually
                                     </DropdownItem>
                                 </DropdownMenu>
