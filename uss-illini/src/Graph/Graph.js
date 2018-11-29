@@ -252,14 +252,9 @@ class Graphs extends Component {
         this.setState({account_list : newaccount_list});
     }
 
-    resetModal(){
-
-    }
-
     toggle() {
       this.setState({ show: !this.state.show });
     }
-
 
     load_account_list_data(){
         this.setState({

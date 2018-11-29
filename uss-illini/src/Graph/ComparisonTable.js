@@ -34,6 +34,7 @@ export default class ComparisonTable extends React.Component {
           combineddata : [],
           called : 0,
           data_arr : [],
+          names: new Set(),
       };
   }
 
@@ -63,9 +64,14 @@ export default class ComparisonTable extends React.Component {
                         }
                     }
                     var newData = this.state.data_arr;
+                    var newNames = this.state.names;
+                    if (newNames.has(dict['name'])){
+                        return;
+                    }
+                    newNames.add(dict['name']);
                     newData.push(dict);
-                    console.log(newData);
                     this.setState({data_arr: newData});
+                    this.setState({names: newNames});
                 }
                 else{
                     //alert("No such player/ship found!");
@@ -74,15 +80,13 @@ export default class ComparisonTable extends React.Component {
     }
 
     componentWillReceiveProps(){
-        if(this.state.called == 2){
-            return;
-        }
+        var s = new Set();
         var data_arr = [];
-        console.log(this.props.data)
+        console.log(this.props.data);
         for(var i = 0; i < this.props.data.length; i++){
             this.radar(this.props.data[i].account_id, this.props.data[i].account_name);
         }
-        var cnt = this.state.called + 1
+        var cnt = this.state.called + 1;
         this.setState({called: cnt})
     }
 
@@ -136,6 +140,7 @@ export default class ComparisonTable extends React.Component {
             });
         }
       }
+      let dataArr = Array.from(this.state.data_arr);
     return (
         <div>
             <BootstrapTable data={combineddata} height='504' scrollTop={ 'Bottom' } options={ this.options }>
@@ -155,7 +160,7 @@ export default class ComparisonTable extends React.Component {
             <Row>
                 <Col>
                     <Plot
-                        data = {this.state.data_arr}
+                        data = {dataArr}
                         layout = {this.props.layout}
                         config = {{displayModeBar: false}}
                         style={{ width: "100%", height: "400px" }}
