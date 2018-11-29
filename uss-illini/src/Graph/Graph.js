@@ -40,6 +40,11 @@ class Graphs extends Component {
         this.load_behavior = this.load_behavior.bind(this);
         this.toggle = this.toggle.bind(this);
         this.toggle_tab = this.toggle_tab.bind(this);
+        this.add_clan = this.add_clan.bind(this);
+        this.add_player = this.add_player.bind(this);
+        this.ClanModalToggle = this.ClanModalToggle.bind(this);
+        this.PlayerModalToggle = this.PlayerModalToggle.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.state = {
             activeTab: '1',
           behavior : [],
@@ -58,6 +63,10 @@ class Graphs extends Component {
           account_data : [],
           account_id : '1019218342',
           allShipData : [],
+            addplayerid : "",
+            addclanid: "",
+            PlayerModal: false,
+            ClanModal: false,
           layout : {
               autosize :true,
             polar: {
@@ -81,6 +90,65 @@ class Graphs extends Component {
             fill: 'toself'
           }],
         };
+    }
+
+    add_player(){
+        fetch('/users/insert_player', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ship_id: this.state.addplayerid }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res[0]){
+                    alert("Success!");
+                }
+                else{
+                    alert("No such ship found!");
+                }
+            })
+    }
+
+    add_clan(){
+        fetch('/insert_account_clan', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ship_id: this.state.addclanid }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res[0]){
+                    alert("Success!");
+                    //this.setState({ data: res[0] });
+                }
+                else{
+                    alert("No such ship found!");
+                }
+            })
+    }
+
+    ClanModalToggle() {
+        this.setState({
+            ClanModal: !this.state.ClanModal
+        });
+    }
+
+    PlayerModalToggle() {
+        this.setState({
+            PlayerModal: !this.state.PlayerModal
+        });
+    }
+
+
+
+    handleChange(event) {
+        this.setState({[event.target.name]: event.target.value});
     }
 
     componentDidMount() {
@@ -252,14 +320,9 @@ class Graphs extends Component {
         this.setState({account_list : newaccount_list});
     }
 
-    resetModal(){
-
-    }
-
     toggle() {
       this.setState({ show: !this.state.show });
     }
-
 
     load_account_list_data(){
         this.setState({
@@ -488,6 +551,13 @@ class Graphs extends Component {
                                     <DropdownItem onClick={() => {this.toggle(),this.load_account_list_data()}}>
                                         Show Comparison Results
                                     </DropdownItem>
+                                    <DropdownItem divider />
+                                    <DropdownItem onClick={() => {this.PlayerModalToggle()}}>
+                                        Add a new player
+                                    </DropdownItem>
+                                    <DropdownItem onClick={() => {this.ClanModalToggle()}}>
+                                        Add a new clan
+                                    </DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                         </Nav>
@@ -550,6 +620,29 @@ class Graphs extends Component {
                     </TabContent>
                 </Container>
 
+                <Modal isOpen={this.state.PlayerModal} toggle={this.PlayerModalToggle} className={this.props.className}>
+                    <ModalHeader toggle={this.PlayerModalToggle}>Add a new Player</ModalHeader>
+                    <ModalBody>
+                        <Label for="UpdatePlayerId">Enter a player id below!</Label>
+                        <Input type="text" name="UpdatePlayerId" value={this.state.addplayerid} placeholder="Enter player id here" onChange={this.handleChange}/>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="info" onClick={() => this.add_player}>Confirm</Button>{' '}
+                        <Button color="secondary" onClick={this.PlayerModalToggle}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
+
+                <Modal isOpen={this.state.ClanModal} toggle={this.ClanModalToggle} className={this.props.className}>
+                    <ModalHeader toggle={this.ClanModalToggle}>Add a new Clan</ModalHeader>
+                    <ModalBody>
+                        <Label for="UpdateClanId">Enter a clan id below!</Label>
+                        <Input type="text" name="UpdateClanId" value={this.state.addclanid} placeholder="Enter clan id here" onChange={this.handleChange}/>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="info" onClick={() => this.add_clan}>Confirm</Button>{' '}
+                        <Button color="secondary" onClick={this.ClanModalToggle}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
 
                 <Modal isOpen={this.state.show} toggle={this.toggle} className={this.props.className} className="Modal">
                   <ModalHeader toggle={this.toggle}>Player Comparison</ModalHeader>
