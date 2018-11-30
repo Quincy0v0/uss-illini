@@ -111,6 +111,60 @@ class Graphs extends Component {
                     alert("No such ship found!");
                 }
             })
+
+        fetch('/users/insert_account_clan', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ship_id: this.state.addplayerid }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res[0]){
+                    alert("Success!");
+                }
+                else{
+                    alert("No such ship found!");
+                }
+            })
+
+        fetch('/users/join_insert', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ship_id: this.state.addplayerid }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res[0]){
+                    alert("Success!");
+                }
+                else{
+                    alert("No such ship found!");
+                }
+            })
+
+        fetch('/users/insert_clan', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ship_id: this.state.addplayerid }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res[0]){
+                    alert("Success!");
+                }
+                else{
+                    alert("No such ship found!");
+                }
+            })
     }
 
     add_clan(){
