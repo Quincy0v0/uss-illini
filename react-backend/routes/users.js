@@ -963,7 +963,8 @@ router.post('/join_insert', function(req, res) {
             connection.release();
 
             if(error) throw error;
-            res.json(results);
+            var data = results[0];
+            res.json([data]);
         });
     });
 });
@@ -984,16 +985,6 @@ router.post('/insert_clan', function(req, res) {
             if(error) throw error;
             var clan_id = results[0]['clan_id'];
             // res.json([data1]);
-
-            // var command3 = "SELECT * FROM clans WHERE clan_id=" + clan_id;
-            // connection.query(command3,function(error,results,fields) {
-            //     if(error) throw error;
-            //     var data = results[0];
-            //     res.json([data]);
-            //      if(!data) {
-                //     res.json([data]);
-                // }
-                // else {
 
             request({
                 url: "https://api.worldofwarships.com/wows/clans/info/?application_id=" + application_id + "&clan_id=" + clan_id,
@@ -1064,7 +1055,6 @@ router.post('/insert_clan', function(req, res) {
                     console.log(error);
                 }
             });
-        // }});
             });
         });
 });
