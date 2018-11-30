@@ -791,7 +791,7 @@ router.post('/insert_player',function(req, res){
             second_battery_max_frags_battle, second_battery_frags, second_battery_hits, second_battery_shots, ramming_max_frags_battle, ramming_frags, torpedoes_max_frags_battle, torpedoes_frags, torpedoes_hits,
             torpedoes_shots, aircraft_max_frags_battle, aircraft_frags, clan_id, account_id_clan, account_name, role, joined_at);
 
-            var command2 = "INSERT INTO account_stats VALUES(";
+            var command2 = "INSERT IGNORE INTO account_stats VALUES(";
             for (var value in account) {
                 if (!account[value] || account[value] == "null") {
                     command2 += "NULL,"
@@ -963,7 +963,8 @@ router.post('/join_insert', function(req, res) {
             connection.release();
 
             if(error) throw error;
-            res.json(results);
+            var data = results[0];
+            res.json([data]);
         });
     });
 });
@@ -984,6 +985,7 @@ router.post('/insert_clan', function(req, res) {
             if(error) throw error;
             var clan_id = results[0]['clan_id'];
             // res.json([data1]);
+
             request({
                 url: "https://api.worldofwarships.com/wows/clans/info/?application_id=" + application_id + "&clan_id=" + clan_id,
                 json: true
@@ -1013,7 +1015,7 @@ router.post('/insert_clan', function(req, res) {
                     clan_data.push(tag, name, members_count, leader_id, leader_name, creator_name, description, old_name, old_tag, renamed_at,
                     clan_id1, created_at, updated_at, is_clan_disbanded, members_ids);
 
-                    var command2 = "INSERT INTO clans VALUES(";
+                    var command2 = "INSERT IGNORE INTO clans VALUES(";
                     for (var value in clan_data) {
                         if (!clan_data[value] || clan_data[value] == "null") {
                             command2 += "NULL,"
