@@ -93,6 +93,7 @@ class Graphs extends Component {
     }
 
     add_player(){
+        console.log("addplayer", this.state.addplayerid)
         fetch('/users/insert_player', {
             method: 'post',
             headers: {
@@ -627,7 +628,7 @@ class Graphs extends Component {
                         <Input type="text" name="addplayerid" value={this.state.addplayerid} placeholder="Enter player id here" onChange={this.handleChange}/>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="info" onClick={() => this.add_player}>Confirm</Button>{' '}
+                        <Button color="info" onClick={this.add_player}>Confirm</Button>{' '}
                         <Button color="secondary" onClick={this.PlayerModalToggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
@@ -639,7 +640,7 @@ class Graphs extends Component {
                         <Input type="text" name="addclanid" value={this.state.addclanid} placeholder="Enter clan id here" onChange={this.handleChange}/>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="info" onClick={() => this.add_clan}>Confirm</Button>{' '}
+                        <Button color="info" onClick={this.add_clan}>Confirm</Button>{' '}
                         <Button color="secondary" onClick={this.ClanModalToggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
