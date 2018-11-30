@@ -623,8 +623,8 @@ class Graphs extends Component {
                 <Modal isOpen={this.state.PlayerModal} toggle={this.PlayerModalToggle} className={this.props.className}>
                     <ModalHeader toggle={this.PlayerModalToggle}>Add a new Player</ModalHeader>
                     <ModalBody>
-                        <Label for="UpdatePlayerId">Enter a player id below!</Label>
-                        <Input type="text" name="UpdatePlayerId" value={this.state.addplayerid} placeholder="Enter player id here" onChange={this.handleChange}/>
+                        <Label for="addplayerid">Enter a player id below!</Label>
+                        <Input type="text" name="addplayerid" value={this.state.addplayerid} placeholder="Enter player id here" onChange={this.handleChange}/>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="info" onClick={() => this.add_player}>Confirm</Button>{' '}
@@ -635,8 +635,8 @@ class Graphs extends Component {
                 <Modal isOpen={this.state.ClanModal} toggle={this.ClanModalToggle} className={this.props.className}>
                     <ModalHeader toggle={this.ClanModalToggle}>Add a new Clan</ModalHeader>
                     <ModalBody>
-                        <Label for="UpdateClanId">Enter a clan id below!</Label>
-                        <Input type="text" name="UpdateClanId" value={this.state.addclanid} placeholder="Enter clan id here" onChange={this.handleChange}/>
+                        <Label for="addclanid">Enter a clan id below!</Label>
+                        <Input type="text" name="addclanid" value={this.state.addclanid} placeholder="Enter clan id here" onChange={this.handleChange}/>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="info" onClick={() => this.add_clan}>Confirm</Button>{' '}
