@@ -104,7 +104,7 @@ $ kill <pid>
 ```
 Front end：
 npm i react-plotly.js plotly.js react-bootstrap-table react-bootstrap-typeahead
-
+npm install --save react-router
 Back end：
 npm i mysql
 
