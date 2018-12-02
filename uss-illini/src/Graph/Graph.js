@@ -104,6 +104,7 @@ class Graphs extends Component {
         })
             .then(res => res.json())
             .then(res => {
+                console.log("step 1")
                 if (res[0]){
                     alert("Success!");
                 }
@@ -111,8 +112,8 @@ class Graphs extends Component {
                     alert("No such ship found!");
                 }
             })
-            .then(
-                fetch('/users/insert_account_clan', {
+            .then(res =>{
+                return fetch('/users/insert_account_clan', {
                     method: 'post',
                     headers: {
                         'Accept': 'application/json',
@@ -122,6 +123,7 @@ class Graphs extends Component {
                 })
                     .then(res => res.json())
                     .then(res => {
+                        console.log("step 2")
                         if (res[0]){
                             alert("Success!");
                         }
@@ -129,8 +131,8 @@ class Graphs extends Component {
                             alert("No such ship found!");
                         }
                     })
-                    .then(
-                        fetch('/users/join_insert', {
+                    .then(res =>{
+                        return fetch('/users/join_insert', {
                             method: 'post',
                             headers: {
                                 'Accept': 'application/json',
@@ -140,6 +142,7 @@ class Graphs extends Component {
                         })
                             .then(res => res.json())
                             .then(res => {
+                                console.log("step 3")
                                 if (res[0]){
                                     alert("Success!");
                                 }
@@ -147,8 +150,8 @@ class Graphs extends Component {
                                     alert("No such ship found!");
                                 }
                             })
-                            .then(
-                                fetch('/users/insert_clan', {
+                            .then(res =>{
+                                return fetch('/users/insert_clan', {
                                     method: 'post',
                                     headers: {
                                         'Accept': 'application/json',
@@ -158,6 +161,7 @@ class Graphs extends Component {
                                 })
                                     .then(res => res.json())
                                     .then(res => {
+                                        console.log("step 4")
                                         if (res[0]){
                                             alert("Success!");
                                         }
@@ -165,9 +169,12 @@ class Graphs extends Component {
                                             alert("No such ship found!");
                                         }
                                     })
-                            )
-                    )
-            )
+
+
+
+                            })
+                    })
+            })
     }
 
     add_clan(){
