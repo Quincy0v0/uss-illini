@@ -846,8 +846,8 @@ router.post('/insert_player',function(req, res){
                         console.log("error2");
                         throw error;
                     }
-                    // var data = results[0];
-                    // res.json([data]);
+                    var data = results[0];
+                    res.json([data]);
                 });
                 console.log("command 2 end");
             });
