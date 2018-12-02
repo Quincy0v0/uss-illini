@@ -40,7 +40,6 @@ class Graphs extends Component {
         this.load_behavior = this.load_behavior.bind(this);
         this.toggle = this.toggle.bind(this);
         this.toggle_tab = this.toggle_tab.bind(this);
-        this.add_clan = this.add_clan.bind(this);
         this.add_player = this.add_player.bind(this);
         this.ClanModalToggle = this.ClanModalToggle.bind(this);
         this.PlayerModalToggle = this.PlayerModalToggle.bind(this);
@@ -105,12 +104,6 @@ class Graphs extends Component {
             .then(res => res.json())
             .then(res => {
                 console.log("step 1")
-                if (res[0]){
-                    alert("Success!");
-                }
-                else{
-                    alert("No such ship found!");
-                }
             })
             .then(res =>{
                 return fetch('/users/insert_account_clan', {
@@ -124,12 +117,6 @@ class Graphs extends Component {
                     .then(res => res.json())
                     .then(res => {
                         console.log("step 2")
-                        if (res[0]){
-                            alert("Success!");
-                        }
-                        else{
-                            alert("No such ship found!");
-                        }
                     })
                     .then(res =>{
                         return fetch('/users/join_insert', {
@@ -142,13 +129,7 @@ class Graphs extends Component {
                         })
                             .then(res => res.json())
                             .then(res => {
-                                console.log("step 3")
-                                if (res[0]){
-                                    alert("Success!");
-                                }
-                                else{
-                                    alert("No such ship found!");
-                                }
+                                console.log("step 3");
                             })
                             .then(res =>{
                                 return fetch('/users/insert_clan', {
@@ -161,40 +142,12 @@ class Graphs extends Component {
                                 })
                                     .then(res => res.json())
                                     .then(res => {
-                                        console.log("step 4")
-                                        if (res[0]){
-                                            alert("Success!");
-                                        }
-                                        else{
-                                            alert("No such ship found!");
-                                        }
+                                        console.log("step 4");
+                                        alert("Success!");
+                                        this.PlayerModalToggle();
                                     })
-
-
-
                             })
                     })
-            })
-    }
-
-    add_clan(){
-        fetch('/insert_account_clan', {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ ship_id: this.state.addclanid }),
-        })
-            .then(res => res.json())
-            .then(res => {
-                if (res[0]){
-                    alert("Success!");
-                    //this.setState({ data: res[0] });
-                }
-                else{
-                    alert("No such ship found!");
-                }
             })
     }
 
@@ -620,9 +573,6 @@ class Graphs extends Component {
                                     <DropdownItem onClick={() => {this.PlayerModalToggle()}}>
                                         Add a new player
                                     </DropdownItem>
-                                    <DropdownItem onClick={() => {this.ClanModalToggle()}}>
-                                        Add a new clan
-                                    </DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                         </Nav>
@@ -694,18 +644,6 @@ class Graphs extends Component {
                     <ModalFooter>
                         <Button color="info" onClick={this.add_player}>Confirm</Button>{' '}
                         <Button color="secondary" onClick={this.PlayerModalToggle}>Cancel</Button>
-                    </ModalFooter>
-                </Modal>
-
-                <Modal isOpen={this.state.ClanModal} toggle={this.ClanModalToggle} className={this.props.className}>
-                    <ModalHeader toggle={this.ClanModalToggle}>Add a new Clan</ModalHeader>
-                    <ModalBody>
-                        <Label for="addclanid">Enter a clan id below!</Label>
-                        <Input type="text" name="addclanid" value={this.state.addclanid} placeholder="Enter clan id here" onChange={this.handleChange}/>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="info" onClick={this.add_clan}>Confirm</Button>{' '}
-                        <Button color="secondary" onClick={this.ClanModalToggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
 
