@@ -846,8 +846,8 @@ router.post('/insert_player',function(req, res){
                         console.log("error2");
                         throw error;
                     }
-                    // var data = results[0];
-                    // res.json([data]);
+                    var data = results[0];
+                    res.json([data]);
                 });
                 console.log("command 2 end");
             });
@@ -859,7 +859,7 @@ router.post('/insert_player',function(req, res){
 
 // Insert clan
 router.post('/insert_account_clan',function(req, res){
-    var player_id = String(req.body.player_id);
+    var player_id = String(req.body.ship_id);
     //var player_id = String(req.body.ship_id);
     const application_id = "b2f122ce4941da951c7b0cafa659608e";
     var request = require("request");
