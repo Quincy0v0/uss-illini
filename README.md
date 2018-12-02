@@ -103,8 +103,7 @@ $ kill <pid>
 ## Install Libraries (Important)
 ```
 Front end：
-npm i react-plotly.js plotly.js react-bootstrap-table react-bootstrap-typeahead
-npm install --save react-router
+npm i react-plotly.js plotly.js react-bootstrap-table react-bootstrap-typeahead react-router-dom
 Back end：
 npm i mysql
 
