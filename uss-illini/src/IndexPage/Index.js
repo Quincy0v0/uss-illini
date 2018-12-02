@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Jumbotron, Button } from 'reactstrap';
+import { Route, Redirect } from 'react-router'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
     Carousel,
@@ -34,7 +35,8 @@ class Index extends Component {
         super(props);
         this.state = {
             activeIndex: 0,
-            pageIndex: 0
+            pageIndex: 0,
+            redir: ""
         };
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
@@ -70,12 +72,10 @@ class Index extends Component {
 
     switchPages(pageId) {
         // PageId: {0:MainPage, 1:InfoIndex, 2:Player(Graph) }
-        this.setState({ pageIndex: pageId});
+        this.setState({ redir: <Redirect to={pageId} />})
     }
 
     render() {
-
-
         const { activeIndex } = this.state;
 
         const slides = items.map((item) => {
@@ -91,26 +91,7 @@ class Index extends Component {
             );
         });
 
-        if(this.state.pageIndex === 1){
-            return (
-                <div>
-                    <InfoIndex/>
-                </div>
-            );
-        }
-        else if(this.state.pageIndex === 2){
-          return (
-              <div>
-                    <Graph/>
-              </div>
-          );
-        }else if(this.state.pageIndex === -1){
-            return (
-                <div>
-                      <Simulator/>
-                </div>
-            );
-        }else return (
+        return (
             <div>
                 <Jumbotron>
                     <h1 className="display-3">USS Illini</h1>
@@ -118,11 +99,11 @@ class Index extends Component {
                     <p>USS Illini is a website enabling users to search players' and ships' data from our database.</p>
                     <p>It can measure the player's performance and enable new players to explore perimeters about new ships.</p>
                     <p className="lead">
-                        <Button color="primary" onClick={() => this.switchPages(1)}>Warships Info</Button>
+                        <Button color="primary" onClick={() => this.switchPages('/Info')}>Warships Info</Button>
                         {' '}
-                        <Button color="success" onClick={() => this.switchPages(2)}>Player Stats</Button>
+                        <Button color="success" onClick={() => this.switchPages('/Player')}>Player Stats</Button>
                         {' '}
-                        <Button color="info" onClick={() => this.switchPages(-1)}>Main Battery Simulator</Button>
+                        <Button color="info" onClick={() => this.switchPages('/Sim')}>Main Battery Simulator</Button>
                     </p>
                     <Carousel
                         activeIndex={activeIndex}
@@ -135,7 +116,7 @@ class Index extends Component {
                         <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
                     </Carousel>
                 </Jumbotron>
-
+                {this.state.redir}
             </div>
         );
     }

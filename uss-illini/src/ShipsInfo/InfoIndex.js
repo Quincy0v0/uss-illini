@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, FormGroup, Label, Input, FormText, InputGroup, InputGroupAddon } from 'reactstrap';
 import { Container } from 'reactstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
+import Header from '../Header.js'
 import {
     Collapse,
     Navbar,
@@ -183,7 +184,8 @@ class InfoIndex extends Component {
 
     render() {
         return (
-            <div>
+            <div className="text-center">
+                <Header/>
                 <Navbar color="dark" className="navbar-dark navbar-expand-sm" light expand="md">
                     <NavbarBrand href="/">USS illini</NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />

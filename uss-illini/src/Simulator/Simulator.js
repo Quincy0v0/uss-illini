@@ -3,6 +3,7 @@ import { Form, FormGroup, Label, Input, FormText, Dropdown } from 'reactstrap';
 import Plot from 'react-plotly.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import main from './dispersion.js';
+import Header from '../Header.js'
 import {
     Card, CardHeader, CardFooter, CardBody, CardTitle, CardText,
     Container,
@@ -125,7 +126,8 @@ class Simulator extends Component {
 
     render() {
         return (
-            <div>
+            <div className="text-center">
+                <Header/>
                 <Navbar color="dark" className="navbar-dark navbar-expand-sm" light expand="md">
                     <NavbarBrand href="/">USS illini</NavbarBrand>
                     <Collapse isOpen={this.state.isOpen} navbar>

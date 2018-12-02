@@ -5,6 +5,7 @@ import { TabContent, TabPane, Card,  CardTitle, CardText } from 'reactstrap';
 import classnames from 'classnames';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import Header from '../Header.js'
 import {
     Collapse,
     Navbar,
@@ -528,7 +529,8 @@ class Graphs extends Component {
   //<Input type="text" name="account_id" id="account_id" value={this.state.all_account[this.state.account_id]} onChange={this.account_idChange} placeholder="nickname"/>
     render() {
         return (
-            <div>
+            <div className="text-center">
+                <Header/>
                 <Navbar color="dark" className="navbar-dark navbar-expand-sm" light expand="md">
                     <NavbarBrand href="/">USS illini</NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
