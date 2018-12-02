@@ -1181,5 +1181,32 @@ router.post('/insert_clan', function(req, res) {
 });
 
 
+router.post('/delete_player', function(req, res) {
+    var player_id = String(req.body.ship_id);
+    pool.getConnection(function(error, connection){
+        if (error){
+            throw error;
+        }
+        var command_d_random = "DELETE FROM random_ships_stats WHERE account_id=" + player_id;
+        connection.query(command_d_random,function(error,results,fields) {
+            if(error) throw error;
+            // connection.release();
+        });
+
+        var command_d_account = "DELETE FROM account_stats WHERE account_id=" + player_id;
+
+        connection.query(command_d_account,function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            var data = results[0];
+            res.json([data]);
+        });
+    });
+
+});
+
+
+
+
 
 module.exports = router;
