@@ -42,8 +42,10 @@ class Graphs extends Component {
         this.toggle = this.toggle.bind(this);
         this.toggle_tab = this.toggle_tab.bind(this);
         this.add_player = this.add_player.bind(this);
+        this.delete_player = this.delete_player.bind(this);
         this.ClanModalToggle = this.ClanModalToggle.bind(this);
         this.PlayerModalToggle = this.PlayerModalToggle.bind(this);
+        this.DeletePlayerModalToggle = this.DeletePlayerModalToggle.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
             activeTab: '1',
@@ -64,7 +66,7 @@ class Graphs extends Component {
           account_id : '1019218342',
           allShipData : [],
             addplayerid : "",
-            addclanid: "",
+            deleteplayerid : "",
             PlayerModal: false,
             ClanModal: false,
           layout : {
@@ -89,6 +91,7 @@ class Graphs extends Component {
             theta: ['Kills','Survival','Wins','Damage','Objective','Kills'],
             fill: 'toself'
           }],
+            DeletePlayerModal:false
         };
     }
 
@@ -146,9 +149,28 @@ class Graphs extends Component {
                                         console.log("step 4");
                                         alert("Success!");
                                         this.PlayerModalToggle();
+                                        window.location.reload();
                                     })
                             })
                     })
+            })
+    }
+
+    delete_player() {
+        console.log("deleteplayer", this.state.deleteplayerid)
+        fetch('/users/delete_player', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ship_id: this.state.deleteplayerid}),
+        })
+            .then(res => res.json())
+            .then(res => {
+                alert("success");
+                this.DeletePlayerModalToggle();
+                window.location.reload();
             })
     }
 
@@ -164,7 +186,11 @@ class Graphs extends Component {
         });
     }
 
-
+    DeletePlayerModalToggle() {
+        this.setState({
+            DeletePlayerModal: !this.state.DeletePlayerModal
+        });
+    }
 
     handleChange(event) {
         this.setState({[event.target.name]: event.target.value});
@@ -575,6 +601,9 @@ class Graphs extends Component {
                                     <DropdownItem onClick={() => {this.PlayerModalToggle()}}>
                                         Add a new player
                                     </DropdownItem>
+                                    <DropdownItem onClick={() => {this.DeletePlayerModalToggle()}}>
+                                        Delete a player
+                                    </DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                         </Nav>
@@ -646,6 +675,18 @@ class Graphs extends Component {
                     <ModalFooter>
                         <Button color="info" onClick={this.add_player}>Confirm</Button>{' '}
                         <Button color="secondary" onClick={this.PlayerModalToggle}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
+
+                <Modal isOpen={this.state.DeletePlayerModal} toggle={this.DeletePlayerModalToggle} className={this.props.className}>
+                    <ModalHeader toggle={this.DeletePlayerModalToggle}>Delete Player</ModalHeader>
+                    <ModalBody>
+                        <Label for="deleteplayerid">Enter a player id below!</Label>
+                        <Input type="text" name="deleteplayerid" value={this.state.deleteplayerid} placeholder="Enter player id here" onChange={this.handleChange}/>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="info" onClick={this.delete_player}>Confirm</Button>{' '}
+                        <Button color="secondary" onClick={this.DeletePlayerModalToggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
 
