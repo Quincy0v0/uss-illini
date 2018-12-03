@@ -731,42 +731,42 @@ router.post('/insert_player',function(req, res){
             var aircraft_frags = data['data'][player_id]['statistics']['pvp']['aircraft']['frags'];
 
             // var data;
-            var random_ship = [];
-            random_ship.push(wins, draws, losses, battles, survived_wins, survived_battles, xp, max_xp, frags, max_frags_battle, damage_scouting, max_damage_scouting, damage_dealt, max_damage_dealt, ships_spotted, max_ships_spotted, team_capture_points,
-                capture_points, dropped_capture_points, team_dropped_capture_points, planes_killed, max_planes_killed, last_battle_time, distance, updated_at, private, damage_to_buildings, max_damage_dealt_to_buildings,
-                suppressions_count, max_suppressions_count, art_agro, torpedo_agro, max_total_agro, battles_total, battles_since_510, battles_since_512, ship_id, account_id, main_battery_max_frags_battle, main_battery_frags, main_battery_hits, main_battery_shots,
-                second_battery_max_frags_battle, second_battery_frags, second_battery_hits, second_battery_shots, ramming_max_frags_battle, ramming_frags, torpedoes_max_frags_battle, torpedoes_frags, torpedoes_hits, torpedoes_shots,
-                aircraft_max_frags_battle, aircraft_frags);
+            // var random_ship = [];
+            // random_ship.push(wins, draws, losses, battles, survived_wins, survived_battles, xp, max_xp, frags, max_frags_battle, damage_scouting, max_damage_scouting, damage_dealt, max_damage_dealt, ships_spotted, max_ships_spotted, team_capture_points,
+            //     capture_points, dropped_capture_points, team_dropped_capture_points, planes_killed, max_planes_killed, last_battle_time, distance, updated_at, private, damage_to_buildings, max_damage_dealt_to_buildings,
+            //     suppressions_count, max_suppressions_count, art_agro, torpedo_agro, max_total_agro, battles_total, battles_since_510, battles_since_512, ship_id, account_id, main_battery_max_frags_battle, main_battery_frags, main_battery_hits, main_battery_shots,
+            //     second_battery_max_frags_battle, second_battery_frags, second_battery_hits, second_battery_shots, ramming_max_frags_battle, ramming_frags, torpedoes_max_frags_battle, torpedoes_frags, torpedoes_hits, torpedoes_shots,
+            //     aircraft_max_frags_battle, aircraft_frags);
 
-            var command = "INSERT INTO random_ships_stats VALUES(";
-            for (var value in random_ship) {
-                if (!random_ship[value] || random_ship[value] == "null") {
-                    command += "NULL,"
-                } else if (typeof(random_ship[value]) === "string") {
-                    command += "'"
-                    command += random_ship[value].split("'").join('');
-                    command += "',"
-                } else if (random_ship[value] instanceof Array) {
-                    command += '"['
-                    for (var i in random_ship[value]) {
-                        command += String(random_ship[value][i]).split('"').join('');
-                        command += ','
-                    }
-                    command.slice(0, -1);
-                    command += ']",'
-                } else if (typeof(random_ship[value]) === "object") {
-                    command += '"'
-                    command += JSON.stringify(random_ship[value]).split('"').join('');
-                    command += '",'
-                } else {
-                    command += String(random_ship[value]) + ","
-                }
-            }
-            command = command.slice(0, -1);
-            command += ")";
-
-            console.log("command !!");
-            console.log(command);
+            // var command = "INSERT INTO random_ships_stats VALUES(";
+            // for (var value in random_ship) {
+            //     if (!random_ship[value] || random_ship[value] == "null") {
+            //         command += "NULL,"
+            //     } else if (typeof(random_ship[value]) === "string") {
+            //         command += "'"
+            //         command += random_ship[value].split("'").join('');
+            //         command += "',"
+            //     } else if (random_ship[value] instanceof Array) {
+            //         command += '"['
+            //         for (var i in random_ship[value]) {
+            //             command += String(random_ship[value][i]).split('"').join('');
+            //             command += ','
+            //         }
+            //         command.slice(0, -1);
+            //         command += ']",'
+            //     } else if (typeof(random_ship[value]) === "object") {
+            //         command += '"'
+            //         command += JSON.stringify(random_ship[value]).split('"').join('');
+            //         command += '",'
+            //     } else {
+            //         command += String(random_ship[value]) + ","
+            //     }
+            // }
+            // command = command.slice(0, -1);
+            // command += ")";
+            //
+            // console.log("command !!");
+            // console.log(command);
 
             var nickname = data['data'][player_id]['nickname'];
             var battles_total = data['data'][player_id]['statistics']['battles'];
@@ -932,6 +932,7 @@ router.post('/insert_account_clan',function(req, res){
                     if(error) throw error;
                     var data = results[0];
                     res.json([data]);
+                    // res.json(results);
                 });
             });
         }else{
@@ -942,30 +943,150 @@ router.post('/insert_account_clan',function(req, res){
 
 
 router.post('/join_insert', function(req, res) {
-    var ship_id = 4282267344;
+    // var ship_id = 4282267344;
     var player_id = String(req.body.ship_id);
-    pool.getConnection(function(error, connection){
-        if (error){
-            connection.release();
-            throw error;
-        }
-        var command = "INSERT INTO random_ships_stats(ship_id, wins, draws, losses, battles, survived_wins, survived_battles, xp, max_xp, frags, max_frags_battle, damage_scouting, max_damage_scouting, damage_dealt, max_damage_dealt, ships_spotted, max_ships_spotted, team_capture_points," +
-                "capture_points, dropped_capture_points, team_dropped_capture_points, planes_killed, max_planes_killed, last_battle_time, distance, updated_at, private, damage_to_buildings, max_damage_dealt_to_buildings," +
-                "suppressions_count, max_suppressions_count, art_agro, torpedo_agro, max_total_agro, battles_total, battles_since_510, battles_since_512, account_id, main_battery_max_frags_battle, main_battery_frags, main_battery_hits, main_battery_shots," +
-                "second_battery_max_frags_battle, second_battery_frags, second_battery_hits, second_battery_shots, ramming_max_frags_battle, ramming_frags, torpedoes_max_frags_battle, torpedoes_frags, torpedoes_hits, torpedoes_shots," +
-                "aircraft_max_frags_battle, aircraft_frags)" +
-                "(SELECT * FROM (SELECT ship_id FROM ships) a CROSS JOIN (SELECT wins, draws, losses, battles, survived_wins, survived_battles, xp, max_xp, frags, max_frags_battle, damage_scouting, max_damage_scouting, damage_dealt, max_damage_dealt, ships_spotted, max_ships_spotted, team_capture_points," +
-                "capture_points, dropped_capture_points, team_dropped_capture_points, planes_killed, max_planes_killed, last_battle_time, distance, updated_at, private, damage_to_buildings, max_damage_dealt_to_buildings," +
-                "suppressions_count, max_suppressions_count, art_agro, torpedo_agro, max_total_agro, battles_total, battles_since_510, battles_since_512, account_id, main_battery_max_frags_battle, main_battery_frags, main_battery_hits, main_battery_shots," +
-                "second_battery_max_frags_battle, second_battery_frags, second_battery_hits, second_battery_shots, ramming_max_frags_battle, ramming_frags, torpedoes_max_frags_battle, torpedoes_frags, torpedoes_hits, torpedoes_shots," +
-                "aircraft_max_frags_battle, aircraft_frags FROM random_ships_stats where account_id =" + player_id + " and ship_id = 4282267344) b);";
-        connection.query(command,function(error,results,fields) {
-            connection.release();
+    const application_id = "b2f122ce4941da951c7b0cafa659608e";
+    var request = require("request");
+    request({
+        url: "https://api.worldofwarships.com/wows/ships/stats/?application_id=" + application_id + "&account_id=" + player_id,
+        json: true
+    }, function(error, response, data) {
+        if (!error && response.statusCode === 200) {
+            pool.getConnection(function(error, connection){
+                if (error){
+                    connection.release();
+                    throw error;
+                }
 
-            if(error) throw error;
-            var data = results[0];
-            res.json([data]);
+            var count = -1;
+            for(var ele in data['data'][player_id]) {
+                count += 1;
+            }
+
+            for(var ele in data['data'][player_id]) {
+                // console.log("ele");
+                // console.log(ele);
+
+                var wins = data['data'][player_id][ele]['pvp']['wins'];
+                var draws = data['data'][player_id][ele]['pvp']['draws'];
+                var losses = data['data'][player_id][ele]['pvp']['losses'];
+                var battles = data['data'][player_id][ele]['battles'];
+                var survived_wins = data['data'][player_id][ele]['pvp']['survived_wins'];
+                var survived_battles = data['data'][player_id][ele]['pvp']['survived_battles'];
+                var xp = data['data'][player_id][ele]['pvp']['xp'];
+                var max_xp = data['data'][player_id][ele]['pvp']['max_xp'];
+                var frags = data['data'][player_id][ele]['pvp']['frags'];
+                var max_frags_battle = data['data'][player_id][ele]['pvp']['max_frags_battle'];
+                var damage_scouting = data['data'][player_id][ele]['pvp']['damage_scouting'];
+                var max_damage_scouting = data['data'][player_id][ele]['pvp']['max_damage_scouting'];
+                var damage_dealt = data['data'][player_id][ele]['pvp']['damage_dealt'];
+                var max_damage_dealt = data['data'][player_id][ele]['pvp']['max_damage_dealt'];
+                var ships_spotted = data['data'][player_id][ele]['pvp']['ships_spotted'];
+                var max_ships_spotted = data['data'][player_id][ele]['pvp']['max_ships_spotted'];
+                var team_capture_points = data['data'][player_id][ele]['pvp']['team_capture_points'];
+                var capture_points = data['data'][player_id][ele]['pvp']['capture_points'];
+                var dropped_capture_points = data['data'][player_id][ele]['pvp']['dropped_capture_points'];
+                var team_dropped_capture_points = data['data'][player_id][ele]['pvp']['team_dropped_capture_points'];
+                var planes_killed = data['data'][player_id][ele]['pvp']['planes_killed'];
+                var max_planes_killed = data['data'][player_id][ele]['pvp']['max_planes_killed'];
+                var last_battle_time = data['data'][player_id]['last_battle_time'];
+                var distance = data['data'][player_id][ele]['distance'];
+
+                var updated_at = data['data'][player_id][ele]['updated_at'];
+                //private
+                var private = data['data'][player_id]['private'];
+                var damage_to_buildings = data['data'][player_id][ele]['pvp']['damage_to_buildings'];
+                var max_damage_dealt_to_buildings = data['data'][player_id][ele]['pvp']['max_damage_dealt_to_buildings'];
+                var suppressions_count = data['data'][player_id][ele]['pvp']['suppressions_count'];
+                var max_suppressions_count = data['data'][player_id][ele]['pvp']['max_suppressions_count'];
+                var art_agro = data['data'][player_id][ele]['pvp']['art_agro'];
+                var torpedo_agro = data['data'][player_id][ele]['pvp']['torpedo_agro'];
+                var max_total_agro = data['data'][player_id][ele]['pvp']['max_total_agro'];
+
+                var battles_total = data['data'][player_id][ele]['pvp']['battles'];
+                var battles_since_510 = data['data'][player_id][ele]['pvp']['battles_since_510'];
+                var battles_since_512 = data['data'][player_id][ele]['pvp']['battles_since_512'];
+                var ship_id = data['data'][player_id][ele]['ship_id'];// Not sure what is ship_id
+
+                var account_id = data['data'][player_id][ele]['account_id'];
+                var main_battery_max_frags_battle = data['data'][player_id][ele]['pvp']['main_battery']['max_frags_battle'];
+                var main_battery_frags = data['data'][player_id][ele]['pvp']['main_battery']['frags'];
+                var main_battery_hits = data['data'][player_id][ele]['pvp']['main_battery']['hits'];
+                var main_battery_shots = data['data'][player_id][ele]['pvp']['main_battery']['shots'];
+                var second_battery_max_frags_battle = data['data'][player_id][ele]['pvp']['second_battery']['max_frags_battle'];
+                var second_battery_frags = data['data'][player_id][ele]['pvp']['second_battery']['frags'];
+                var second_battery_hits = data['data'][player_id][ele]['pvp']['second_battery']['hits'];
+                var second_battery_shots = data['data'][player_id][ele]['pvp']['second_battery']['shots'];
+                var ramming_max_frags_battle = data['data'][player_id][ele]['pvp']['ramming']['max_frags_battle'];
+                var ramming_frags = data['data'][player_id][ele]['pvp']['ramming']['ramming_frags'];
+                var torpedoes_max_frags_battle = data['data'][player_id][ele]['pvp']['torpedoes']['max_frags_battle'];
+                var torpedoes_frags = data['data'][player_id][ele]['pvp']['torpedoes']['frags'];
+                var torpedoes_hits = data['data'][player_id][ele]['pvp']['torpedoes']['hits'];
+                var torpedoes_shots = data['data'][player_id][ele]['pvp']['torpedoes']['shots'];
+                var aircraft_max_frags_battle = data['data'][player_id][ele]['pvp']['aircraft']['max_frags_battle'];
+                var aircraft_frags = data['data'][player_id][ele]['pvp']['aircraft']['frags'];
+
+                var random_ship = [];
+                random_ship.push(wins, draws, losses, battles, survived_wins, survived_battles, xp, max_xp, frags, max_frags_battle, damage_scouting, max_damage_scouting, damage_dealt, max_damage_dealt, ships_spotted, max_ships_spotted, team_capture_points,
+                    capture_points, dropped_capture_points, team_dropped_capture_points, planes_killed, max_planes_killed, last_battle_time, distance, updated_at, private, damage_to_buildings, max_damage_dealt_to_buildings,
+                    suppressions_count, max_suppressions_count, art_agro, torpedo_agro, max_total_agro, battles_total, battles_since_510, battles_since_512, ship_id, account_id, main_battery_max_frags_battle, main_battery_frags, main_battery_hits, main_battery_shots,
+                    second_battery_max_frags_battle, second_battery_frags, second_battery_hits, second_battery_shots, ramming_max_frags_battle, ramming_frags, torpedoes_max_frags_battle, torpedoes_frags, torpedoes_hits, torpedoes_shots,
+                    aircraft_max_frags_battle, aircraft_frags);
+
+                var command = "INSERT IGNORE INTO random_ships_stats VALUES(";
+                for (var value in random_ship) {
+                    if ((!random_ship[value] && random_ship[value] != 0) || random_ship[value] == "null") {
+                    // if (random_ship[value] == "null") {
+                        command += "NULL,"
+                    } else if (typeof(random_ship[value]) === "string") {
+                        command += "'"
+                        command += random_ship[value].split("'").join('');
+                        command += "',"
+                    } else if (random_ship[value] instanceof Array) {
+                        command += '"['
+                        for (var i in random_ship[value]) {
+                            command += String(random_ship[value][i]).split('"').join('');
+                            command += ','
+                        }
+                        command.slice(0, -1);
+                        command += ']",'
+                    } else if (typeof(random_ship[value]) === "object") {
+                        command += '"'
+                        command += JSON.stringify(random_ship[value]).split('"').join('');
+                        command += '",'
+                    } else {
+                        command += String(random_ship[value]) + ","
+                    }
+                }
+                command = command.slice(0, -1);
+                command += ")";
+
+                // console.log("command !!");
+                // console.log(command);
+                if(ele == count) {
+                    connection.query(command,function(error,results,fields) {
+                        connection.release();
+
+                        if(error) throw error;
+                        var data = results[0];
+                        res.json([data]);
+                    });
+                }
+                else {
+                    connection.query(command,function(error,results,fields) {
+                        // connection.release();
+
+                        if(error) throw error;
+                    });
+                }
+            }
+            //
+            // console.log("length");
+            // console.log(count);
         });
+        }else{
+            console.log(error);
+        }
     });
 });
 
@@ -1058,6 +1179,33 @@ router.post('/insert_clan', function(req, res) {
             });
         });
 });
+
+
+router.post('/delete_player', function(req, res) {
+    var player_id = String(req.body.ship_id);
+    pool.getConnection(function(error, connection){
+        if (error){
+            throw error;
+        }
+        var command_d_random = "DELETE FROM random_ships_stats WHERE account_id=" + player_id;
+        connection.query(command_d_random,function(error,results,fields) {
+            if(error) throw error;
+            // connection.release();
+        });
+
+        var command_d_account = "DELETE FROM account_stats WHERE account_id=" + player_id;
+
+        connection.query(command_d_account,function(error,results,fields) {
+            connection.release();
+            if(error) throw error;
+            var data = results[0];
+            res.json([data]);
+        });
+    });
+
+});
+
+
 
 
 
