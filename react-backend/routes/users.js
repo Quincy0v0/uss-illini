@@ -1063,23 +1063,32 @@ router.post('/join_insert', function(req, res) {
 
                 // console.log("command !!");
                 // console.log(command);
-                if(ele == count) {
-                    connection.query(command,function(error,results,fields) {
-                        connection.release();
-
-                        if(error) throw error;
-                        var data = results[0];
-                        res.json([data]);
-                    });
-                }
-                else {
+                // if(ele == count) {
+                //     connection.query(command,function(error,results,fields) {
+                //         connection.release();
+                //
+                //         if(error) throw error;
+                //         var data = results[0];
+                //         res.json([data]);
+                //     });
+                // }
+                // else {
+                if(wins >= 1 && losses >= 1 && battles >= 1) {
                     connection.query(command,function(error,results,fields) {
                         // connection.release();
 
                         if(error) throw error;
                     });
                 }
+                // }
             }
+            connection.query(command,function(error,results,fields) {
+                // connection.release();
+                var data = results[0];
+                res.json([data]);
+                if(error) throw error;
+            });
+
             //
             // console.log("length");
             // console.log(count);
