@@ -169,6 +169,79 @@ class ShipCard extends Component {
 
     shell_card(){
         if (this.state.artillery != undefined) {
+            if (this.state.artillery.shells.HE != undefined && this.state.artillery.shells.AP != undefined) {
+                return (
+                    <Card>
+                        <CardHeader>Main Guns Shells</CardHeader>
+                        <CardBody>
+                            <CardSubtitle>{this.state.artillery.shells.HE.name}</CardSubtitle>
+                            <div className="row">
+                                <div className="col-6">
+                                    <CardText className="text-left">Mass :</CardText>
+                                </div>
+                                <div className="col">
+                                    <CardText
+                                        className="text-left">{this.state.artillery.shells.HE.bullet_mass} kg</CardText>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-6">
+                                    <CardText className="text-left">Speed :</CardText>
+                                </div>
+                                <div className="col">
+                                    <CardText
+                                        className="text-left">{this.state.artillery.shells.HE.bullet_speed} m/s</CardText>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-6">
+                                    <CardText className="text-left">damage :</CardText>
+                                </div>
+                                <div className="col">
+                                    <CardText className="text-left">{this.state.artillery.shells.HE.damage}</CardText>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-6">
+                                    <CardText className="text-left">burn chance :</CardText>
+                                </div>
+                                <div className="col">
+                                    <CardText
+                                        className="text-left">{this.state.artillery.shells.HE.burn_probability} %</CardText>
+                                </div>
+                            </div>
+                            <p/>
+                            <CardSubtitle>{this.state.artillery.shells.AP.name}</CardSubtitle>
+                            <div className="row">
+                                <div className="col-6">
+                                    <CardText className="text-left">Mass :</CardText>
+                                </div>
+                                <div className="col">
+                                    <CardText
+                                        className="text-left">{this.state.artillery.shells.AP.bullet_mass} kg</CardText>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-6">
+                                    <CardText className="text-left">Speed :</CardText>
+                                </div>
+                                <div className="col">
+                                    <CardText
+                                        className="text-left">{this.state.artillery.shells.AP.bullet_speed} m/s</CardText>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-6">
+                                    <CardText className="text-left">damage :</CardText>
+                                </div>
+                                <div className="col">
+                                    <CardText className="text-left">{this.state.artillery.shells.AP.damage}</CardText>
+                                </div>
+                            </div>
+                        </CardBody>
+                    </Card>
+                );
+            }
             if (this.state.artillery.shells.HE != undefined){
                 return (
                     <Card>
@@ -249,76 +322,7 @@ class ShipCard extends Component {
                     </Card>
                 )
             }
-            return (
-                <Card>
-                    <CardHeader>Main Guns Shells</CardHeader>
-                    <CardBody>
-                        <CardSubtitle>{this.state.artillery.shells.HE.name}</CardSubtitle>
-                        <div className="row">
-                            <div className="col-6">
-                                <CardText className="text-left">Mass :</CardText>
-                            </div>
-                            <div className="col">
-                                <CardText
-                                    className="text-left">{this.state.artillery.shells.HE.bullet_mass} kg</CardText>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-6">
-                                <CardText className="text-left">Speed :</CardText>
-                            </div>
-                            <div className="col">
-                                <CardText
-                                    className="text-left">{this.state.artillery.shells.HE.bullet_speed} m/s</CardText>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-6">
-                                <CardText className="text-left">damage :</CardText>
-                            </div>
-                            <div className="col">
-                                <CardText className="text-left">{this.state.artillery.shells.HE.damage}</CardText>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-6">
-                                <CardText className="text-left">burn chance :</CardText>
-                            </div>
-                            <div className="col">
-                                <CardText className="text-left">{this.state.artillery.shells.HE.burn_probability} %</CardText>
-                            </div>
-                        </div>
-                        <p/>
-                        <CardSubtitle>{this.state.artillery.shells.AP.name}</CardSubtitle>
-                        <div className="row">
-                            <div className="col-6">
-                                <CardText className="text-left">Mass :</CardText>
-                            </div>
-                            <div className="col">
-                                <CardText
-                                    className="text-left">{this.state.artillery.shells.AP.bullet_mass} kg</CardText>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-6">
-                                <CardText className="text-left">Speed :</CardText>
-                            </div>
-                            <div className="col">
-                                <CardText
-                                    className="text-left">{this.state.artillery.shells.AP.bullet_speed} m/s</CardText>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-6">
-                                <CardText className="text-left">damage :</CardText>
-                            </div>
-                            <div className="col">
-                                <CardText className="text-left">{this.state.artillery.shells.AP.damage}</CardText>
-                            </div>
-                        </div>
-                    </CardBody>
-                </Card>
-            );
+
         }
     }
 
